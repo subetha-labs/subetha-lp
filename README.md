@@ -1,11 +1,12 @@
-# SubEtha LP — Vision-led review draft
+# SubEtha LP
 
-公開前の静的LP。Heroと主要ストーリーの主語を「PoCの説明」から、SubEthaがagent-native internetに向けて実現しようとしている支払い基盤・境界設計・利用シナリオへ変更した、内部レビュー用アーティファクトです。
+SubEtha（Private x402 payments, settled on zERC20）の静的ランディングページ。デザインは Claude Design プロジェクト「Subetha LP制作」（`SubEtha LP.dc.html`）で作成し、このリポジトリでは依存なしの静的HTMLとして保守します。
 
 ## Files
 
-- `index-v2.html` — self-contained HTML/CSS/JS LP
-- `DESIGN_NOTES.md` — vision-led copyの意図、claim boundary、未確定事項
+- `index.html` — self-contained HTML/CSS/JS LP（EN/JA 両言語を内包）
+- `assets/web-demo.png` — ガイド付き Web デモのスクリーンショット
+- `DESIGN_NOTES.md` — デザインの出自、移植時の変換方針、公開前レビューゲート
 
 ## Start locally
 
@@ -13,59 +14,37 @@
 python3 -m http.server 4173
 ```
 
-Open `http://127.0.0.1:4173/index-v2.html`.
+Open `http://127.0.0.1:4173/`.
 
-No build step or package install is required. Google Fonts are optional; local fallback stacks are included.
+ビルド不要・パッケージインストール不要。Google Fonts（Space Grotesk / IBM Plex）はネットワークがない場合サンセリフのフォールバックで表示されます。
 
-## Message architecture
+## Page structure
 
-1. Hero: SubEtha's project vision — payment rails for agents; intended participants; the boundary between paying, receiving value, and accountability.
-2. Why now: agent/API-era payment needs a new boundary design, with concrete future scenarios.
-3. Boundary: participant, observer, responsibility, and visibility map.
-4. Validation: the vision is tested through a local / non-production PoC, without making the PoC the hero or CTA.
-5. Current status / FAQ / footer: unaudited and non-production qualifiers remain explicit.
-6. CTA: invite discussion of a use case, not a production signup or commercial offer.
-
-English is the default (`<html lang="en">`). EN / JA switches preserve the same vision and claim boundaries. Both languages cover the Hero, why-now narrative, boundary map, current status, CTA, FAQ, and footer qualifiers.
+1. Hero: x402 のHTTP決済フローを保ったまま、zERC20 burn / mint で決済し、支払者と受取プロバイダのオンチェーンリンクを残さないという提案。「What the chain sees」パネル付き。
+2. Problem: 支払いログ＝戦略ログ（エージェント側の行動漏洩・プロバイダ側の売上漏洩）。
+3. How it works: 5ステップフローと、burn と mint がリンクしない理由・導出式。
+4. Demo: 実 zERC20 スタック上のガイド付きブラウザデモ紹介。
+5. Use cases: 金融リサーチ / B2B調達 / 創薬 / セキュリティ / APIプロバイダ。
+6. FAQ / Roadmap / Contact / Footer。
 
 ## Implemented interactions
 
-- Sticky navigation with mobile menu toggle.
-- Anchor navigation to the narrative sections.
-- FAQ disclosure buttons with `aria-expanded` state.
-- EN / JA buttons with `aria-pressed`; switching updates document language and title.
-- Keyboard focus-visible states and `prefers-reduced-motion` support.
-- Responsive desktop/mobile layout.
+- EN / JA 切り替え: `data-lang` ボタン + `aria-pressed`。切り替えで `<html lang>` とタイトルも更新、`localStorage` に永続化。英語が静的デフォルト（`<html lang="en">`）。
+- 言語ごとに独立したDOMツリー（`#page-en` / `#page-ja`）。アンカーIDは JA 側に `-ja` サフィックスを付与して重複を回避。
+- FAQ は `<details>/<summary>` によるネイティブ開閉。
+- Hero とユースケースの CTA は Contact セクションへのページ内アンカー。`mailto:` はアドレスがラベルに見えている Contact ボタンとフッターのみ。Contact にはアドレスのコピー用ボタンあり。
+- focus-visible スタイル、`prefers-reduced-motion` 対応、960px / 600px ブレークポイントのレスポンシブ。
 
-The contact CTA intentionally remains a non-submitting `[ CONTACT URL TBD ]` placeholder until a human-approved destination exists.
+## Verification
 
-## Verification record
+CI（`.github/workflows/validate.yml`）が PR / main push で以下を検証:
 
-Run from this directory:
+- `<!doctype html>` 先頭・`<html lang="en">`・EN/JA スイッチマーカー・`aria-pressed`・`prefers-reduced-motion`
+- 連絡先が人間承認済みアドレス（`mailto:pioneerandf@gmail.com`）のままであること
+- HTML パース・資格情報らしき文字列の混入なし
 
-```bash
-python3 - <<'PY'
-from pathlib import Path
-from html.parser import HTMLParser
-
-path = Path('index-v2.html')
-text = path.read_text(encoding='utf-8')
-assert text.startswith('<!doctype html>')
-assert '</html>' in text
-assert text.count('<script>') == 1
-assert '<html lang="en">' in text
-assert 'Build <em>payment rails</em>' in text
-assert 'prefers-reduced-motion' in text
-assert 'aria-expanded' in text and 'aria-pressed' in text
-assert 'LOCAL / NON-PRODUCTION POC ONLY' in text
-HTMLParser().feed(text)
-print('HTML_PARSE_OK')
-print(f'BYTES={path.stat().st_size}')
-PY
-```
-
-Browser review remains required for desktop/mobile rendering, EN/JA transitions, keyboard FAQ/menu behavior, console errors, and horizontal overflow.
+ブラウザでのデスクトップ/モバイル描画、EN/JA遷移、キーボード操作、コンソールエラーの確認は引き続き人間レビューの対象です。
 
 ## Publication review gates
 
-This is a static internal-review artifact, not a production service, commercial offer, audited security product, complete-anonymity claim, or official zERC20 partnership statement. Before publication, a human must confirm implementation evidence, real-process HTTP E2E behavior, dependency/version/artifact boundaries, naming and permission conditions, contact destination, and the final claim matrix. No publish, deploy, external share, or push was performed.
+公開前に人間が確認すること: zERC20 の名称・公式関係・利用許諾の表現、プロダクション/監査状況に関するクレーム、デモの実挙動と記載の整合、最終的な公開チャネル。
