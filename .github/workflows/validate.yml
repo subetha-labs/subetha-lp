@@ -1,0 +1,47 @@
+name: Validate LP
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  static-check:
+    name: Static HTML check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate HTML and language switch markers
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+          assert text.startswith("<!doctype html>"), "missing doctype"
+          assert "<html lang=\"en\">" in text, "English must be the default language"
+          assert 'data-lang="en"' in text, "missing EN switch"
+          assert 'data-lang="ja"' in text, "missing JA switch"
+          assert "aria-pressed" in text, "language switch must expose aria-pressed"
+          assert "prefers-reduced-motion" in text, "reduced-motion rule is required"
+          assert "CONTACT URL TBD" in text, "contact destination must remain human-controlled"
+          HTMLParser().feed(text)
+          print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
+          PY
+
+      - name: Check for accidental credentials
+        run: |
+          if grep -RInE '(CLOUDFLARE_API_TOKEN|CF_API_TOKEN|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' . \
+            --exclude-dir=.git --exclude='*.md'; then
+            echo "Potential credential material found"
+            exit 1
+          fi
+          echo "CREDENTIAL_SCAN_OK"
