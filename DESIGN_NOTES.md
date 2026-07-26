@@ -16,6 +16,14 @@ Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` 
 - `style-hover` 属性 → ホバー用CSSクラス（`.h-*`、インラインスタイルに勝つため `!important`）。
 - JA ツリーのセクションIDに `-ja` サフィックスを付与し、ID重複とアンカー不整合を解消。
 - デザインには無いレスポンシブ（960px / 600px でグリッド折り畳み・ナビ横スクロール）、focus-visible、`prefers-reduced-motion` を追加。CI の必須マーカーを維持。
+- デザイン原本からの意図的な内容変更: ロードマップ先頭に現在地行（NOW — 動くフロー / ローカルPoC・非本番・未監査）を追加。subetha リポジトリの戦略ドキュメント（PRODUCT-STRATEGY.md / LAUNCH-AND-MOAT.md の主張規律）との整合をオーナーと確認して決定。クロスチェーン拡張（同 §9）は「MVP直後の機能ではない」ため意図的に非掲載。
+- ロードマップ更新: 実装済みの facilitator / provider / Python / MCP / CLI / agent policy をPhase 1〜2へ反映し、NOWからデザインパートナー探索を並走させた。商用化の本体を「SDK」ではなくmanaged private payment layerと明記し、permit/self-transfer、実験的batch、accepted/finalized、商用許諾の境界をLP上でも条件付きで表現。
+- 対外表示の整理: Mordred、journal recovery、具体的なKYB実装、zERC20 grantの詳細はロードマップ本文から外し、agent-runtime integrations、trusted provider network、licensing and operational readinessという外部向けの抽象度に統一。詳細はdocs・協業資料・内部ロードマップで扱う。
+- Phase 2の表現を「Enterprise controls」から「Agent controls & operations / エージェント統制と運用」へ変更。企業向け管理画面ではなく、AIエージェントの支出を予算・Provider・人間承認・決済状態・レポートで制御するControl Planeであることを外部向けに明示。
+- 採用戦略を追加: 企業への販売だけでなく、API Provider側の受け入れとAI Agent/Agent Builder側のpayer・runtime採用を別々の導入面として扱う。ロードマップにADOPTION行を追加し、Provider向けのdrop-in x402 adapter / testnet sandbox / onboarding / fee transparencyと、Agent向けのSDK / MCP・Python・CLI / framework integration / safe defaults / reference appsを明記。両面の導入を通じて、ProviderはAPIを変えずに受け入れ、Agentはprivate settlementを自前実装せずに利用できる状態を目標とする。
+- CONTACT文言を自然な対象者表現へ更新。「エージェント開発者・APIプロバイダ・投資家」という限定的で硬い呼称を避け、AIエージェントを開発・運用する人、エージェント向けサービス提供者、この領域に関心のある人へ呼びかける表現に統一。英語も同じ意味に調整。
+- フッターの作品名由来（『銀河ヒッチハイク・ガイド』のSub-Etha）に関するコピーを削除。著作権・出典上の不要な論点を避け、フッターは公式リンクのみの簡潔な構成とした。
+- 技術記事の導線をEN/JA双方に追加。Zenn記事（`https://zenn.dev/peaceandwhisky/articles/6f0b8b672a6f78`）とMedium記事（`https://takuyafujita.medium.com/your-ai-agents-payment-log-is-its-strategy-log-subetha-hides-who-paid-whom-8a5fde719093`）をリンク化した。
 - デザイン原本からの意図的なUX変更: Hero「Get in touch / 連絡する」とユースケースカード「Tell us about it → / 相談する →」の `mailto:` を Contact セクションへのページ内アンカーに変更（ラベルからメール起動が予測できず、メールクライアント未設定のデスクトップで離脱要因になるため）。Contact セクションにはアドレスのコピー用ボタンを追加（Clipboard API + `execCommand` フォールバック）。`mailto:` はアドレスがラベルに明示された Contact ボタンとフッターのみに残す。
 
 再生成が必要な場合、変換スクリプトはセッションのスクラッチパッド（`build_lp.py`）にあり、原本はClaude Design側に残っている。手直しは `index.html` を直接編集してよい。
