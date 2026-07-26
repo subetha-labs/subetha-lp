@@ -24,6 +24,7 @@ Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` 
 - CONTACT文言を自然な対象者表現へ更新。「エージェント開発者・APIプロバイダ・投資家」という限定的で硬い呼称を避け、AIエージェントを開発・運用する人、エージェント向けサービス提供者、この領域に関心のある人へ呼びかける表現に統一。英語も同じ意味に調整。
 - フッターの作品名由来（『銀河ヒッチハイク・ガイド』のSub-Etha）に関するコピーを削除。著作権・出典上の不要な論点を避け、フッターは公式リンクのみの簡潔な構成とした。
 - 技術記事の導線をEN/JA双方に追加。Zenn記事（`https://zenn.dev/peaceandwhisky/articles/6f0b8b672a6f78`）とMedium記事（`https://takuyafujita.medium.com/your-ai-agents-payment-log-is-its-strategy-log-subetha-hides-who-paid-whom-8a5fde719093`）をリンク化した。
+- JAヒーローの訴求を「APIの支払いは、公開のまま。／支払者と提供者のつながりは、直接は見えない。」へ変更。Fable相当の独立レビューで、抽象的な「リンクは消える」や匿名決済を想起させる表現を避け、支払い自体は公開される一方、payerとproviderの対応関係が直接は見えないというclaim boundaryを先に伝える案を採用した。
 - デザイン原本からの意図的なUX変更: Hero「Get in touch / 連絡する」とユースケースカード「Tell us about it → / 相談する →」の `mailto:` を Contact セクションへのページ内アンカーに変更（ラベルからメール起動が予測できず、メールクライアント未設定のデスクトップで離脱要因になるため）。Contact セクションにはアドレスのコピー用ボタンを追加（Clipboard API + `execCommand` フォールバック）。`mailto:` はアドレスがラベルに明示された Contact ボタンとフッターのみに残す。
 
 再生成が必要な場合、変換スクリプトはセッションのスクラッチパッド（`build_lp.py`）にあり、原本はClaude Design側に残っている。手直しは `index.html` を直接編集してよい。
