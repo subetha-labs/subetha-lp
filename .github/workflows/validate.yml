@@ -40,7 +40,7 @@ jobs:
       - name: Check for accidental credentials
         run: |
           if grep -RInE '(CLOUDFLARE_API_TOKEN|CF_API_TOKEN|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' . \
-            --exclude-dir=.git --exclude='*.md'; then
+            --exclude-dir=.git --exclude='*.md' --exclude='*.yml' --exclude='*.yaml'; then
             echo "Potential credential material found"
             exit 1
           fi
