@@ -218,14 +218,14 @@
         <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">Payments across supplier, logistics, credit and FX APIs expose supply chains and demand forecasts — handing negotiating power to competitors and suppliers.</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">DRUG DISCOVERY</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">Pharma &amp; bio AI pipelines</div>
-        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">Usage of compound DBs, genome analysis and patent APIs reveals research targets and candidate compounds — the intellectual property itself.</p>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">TRADING BOTS</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">Bots that trade on paid signals</div>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">A bot paying per call for market data, signals and execution APIs stamps its strategy onto the chain — the timing and cadence of its payments show what it watches and when it acts. Observers can reverse-engineer, copy, or front-run it.</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">SECURITY OPS</div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">Threat-intelligence agents</div>
-        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">What vulnerability and dark-web data a SOC buys exposes its weak points and live incidents — dangerous in the hands of attackers.</p>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">AI INFRASTRUCTURE</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">Agents that buy their own stack</div>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">An agent paying per call for inference, specialized models and tool APIs publishes its own architecture — which providers it depends on, at what volume, at what unit cost. That is your product's blueprint and cost structure, readable by competitors.</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">API PROVIDERS</div>
@@ -249,27 +249,27 @@
       <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:6px 28px">
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Is this a mixer or anonymous payments?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. SubEtha hides one specific thing: the correspondence between the paying agent and the API provider. The treasury address does appear on-chain at mint time — what never appears is which payer's burn fed it. The framing is confidential machine payments for enterprise AI agents, and auditable disclosure (view keys) is an explicit part of the roadmap.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. Both ends of a payment stay visible: anyone can see that the agent spent tokens, and anyone can see that the provider's treasury received tokens. The one thing that never appears on-chain is the link between the two — which payment became which deposit. The goal is confidential machine payments for enterprise AI agents, not anonymity: auditable disclosure through view keys is an explicit part of the roadmap.</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Does it change how I integrate x402?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">The HTTP shape stays the same: request → 402 Payment Required → pay → result. The difference is inside the 402 — payTo carries a one-time burn address instead of a receiving address — and settlement goes through zERC20's burn → proof-gated mint.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">Barely. The flow stays the familiar one: call the API, get told “payment required”, pay, receive the result. The only difference is the payment address you're handed — a single-use address created just for that one payment (the burn address), instead of the provider's own receiving address. Settlement then runs behind the scenes through zERC20's burn → mint.</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Does the paying agent need gas?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. In the main path (permit mode), the agent only signs — an EIP-2612 permit plus a burn-bind authorization naming the exact burn address. The facilitator broadcasts the burn and pays the gas.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. The agent only signs an approval — think of it as signing a check (technically, an EIP-2612 permit plus an authorization pinned to that exact payment address). A relay server called the facilitator submits it to the blockchain and pays the transaction fee (gas) on the agent's behalf.</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">What actually remains on-chain?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">Two facts: a burn (an ordinary-looking transfer to an opaque fresh address) and a mint (a proof-gated teleport to the treasury). The proof's public signals don't include which burn was spent, so the two can't be linked.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">Only two records. One: the payer sent tokens to a single-use address (the burn). Two: tokens arrived in the provider's treasury (the mint). Nothing written on-chain connects the two, so an outside observer can't tell which payment became which deposit.</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Is there a new token?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. SubEtha issues no token and forks nothing — it is the bridge that combines the x402-style payment flow with settlement on the official zERC20 toolchain.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. SubEtha issues no token of its own and modifies (forks) nothing that already exists. It is the bridge that connects the x402-style payment flow to settlement on the official zERC20 toolchain.</p>
         </details>
         <details style="padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Can a provider settle many payments at once?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">Yes. A provider can accept many API payments and mint them together in one teleport, at a time of its choosing. Every payment still uses a fresh burn address, so batching does not sacrifice unlinkability.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">Yes. A provider can let payments accumulate and settle them into its treasury in one batch, at a time of its choosing. Since every payment used its own single-use address, settling in bulk still doesn't reveal which payment was which.</p>
         </details>
       </div>
     </div>
@@ -508,14 +508,14 @@
         <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">サプライヤー・物流・与信・為替APIをまたぐ支払いは、サプライチェーンと需要予測を露呈し、競合とサプライヤーに交渉力を渡してしまいます。</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">創薬</div>
-        <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">製薬・バイオAIパイプライン</div>
-        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">化合物DB・ゲノム解析・特許APIの利用パターンは、研究テーマと候補化合物 — 知財そのもの — を露呈します。</p>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">トレーディングBOT</div>
+        <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">シグナルを買って取引するBot</div>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">マーケットデータ・シグナル・執行系APIに呼び出しごとに支払うBotは、支払いのタイミングと頻度がそのまま戦略を刻印します。観測者はそこから戦略を逆算し、コピーし、先回りすらできてしまいます。</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">セキュリティ</div>
-        <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">脅威インテリジェンスエージェント</div>
-        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">SOCがどの脆弱性情報・ダークウェブ監視データを買っているかは、自社の弱点と進行中のインシデントを露呈します — 攻撃者に見えれば危険です。</p>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">AIインフラ</div>
+        <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">自分のスタックを買うエージェント</div>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">推論・特化モデル・ツールAPIに呼び出しごとに支払うエージェントは、自らのアーキテクチャを公開してしまいます — どのプロバイダに、どの規模で、いくら払っているか。それはプロダクトの設計図と原価構造であり、競合から読み取れてしまいます。</p>
       </div>
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">API プロバイダ</div>
@@ -539,27 +539,27 @@
       <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:6px 28px">
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">これはミキサーや匿名決済ですか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。SubEtha が隠すのは一点のみ — 支払うエージェントとAPIプロバイダの対応関係です。treasury アドレスは mint 時にオンチェーンに現れます。決して現れないのは「どの支払者の burn がその mint に対応するか」。位置づけは企業AIエージェント向けの秘匿マシン決済であり、監査可能な開示(view key)はロードマップに明記されています。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。支払いの両端はどちらも見えたままです — エージェントがトークンを支払ったことも、プロバイダの口座（treasury）に入金があったことも、チェーン上で誰でも確認できます。決して現れないのは、その2つを結ぶ対応関係 — どの支払いがどの入金になったのか — だけです。目指すのは企業AIエージェント向けの秘匿マシン決済であって匿名化ではなく、view key による監査可能な開示もロードマップに明記しています。</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">x402 の統合方法は変わりますか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">HTTPの形はそのままです: リクエスト → 402 Payment Required → 支払い → 結果。違いは402の中身 — payTo に受取アドレスではなくワンタイム burn アドレスが載ること — と、決済が zERC20 の burn → 証明ゲート付き mint を通ることです。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">ほとんど変わりません。「APIを呼ぶ → 『支払いが必要です』と返ってくる → 支払う → 結果を受け取る」という手順はそのままです。違いは、案内される支払い先がプロバイダ本来の受け取りアドレスではなく、その支払い専用に作られた使い捨てアドレス（burn アドレス）になること。あとの精算は zERC20 の burn → mint が裏側で処理します。</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">支払うエージェントにガスは必要ですか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">不要です。メインパス(permit モード)では、エージェントは署名するだけ — EIP-2612 permit と、burn アドレスを指定する burn-bind 認可です。burn のブロードキャストとガスの支払いはファシリテータが行います。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">不要です。エージェントが行うのは「この支払いを許可します」という署名だけ — 小切手にサインするようなイメージです（技術的には EIP-2612 permit と、支払い先を固定する認可）。それをブロックチェーンに送り届け、手数料（ガス）を支払う作業は、ファシリテータと呼ばれる仲介サーバーが代わりに引き受けます。</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">オンチェーンには実際何が残りますか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">2つの事実です: burn(不透明な新規アドレスへの、普通の送金に見えるもの)と mint(treasury への証明ゲート付き teleport)。証明の公開シグナルにはどの burn を使ったかが含まれないため、両者はリンクできません。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">残るのは2つの記録だけです。1つは「支払者が使い捨てアドレスにトークンを送った」という記録（burn）、もう1つは「プロバイダの口座にトークンが入った」という記録（mint）。この2つを結びつける情報はチェーン上のどこにも書かれないため、外から見ても、どの支払いがどの入金になったのかは分かりません。</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">新しいトークンを発行するのですか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。SubEtha はトークンを発行せず、何もフォークしません — x402 型の決済フローと公式 zERC20 ツールチェーン上の決済を組み合わせるブリッジです。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。SubEtha 独自のトークンは発行しませんし、既存の仕組みの改変（フォーク）もしません。x402 型の支払いフローと、公式 zERC20 ツールチェーン上の精算とをつなぐ橋渡し役です。</p>
         </details>
         <details style="padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">プロバイダは複数の支払いをまとめて精算できますか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">できます。プロバイダは多数のAPI支払いを受けてから、都合の良いタイミングで1回の teleport にまとめて mint できます。その場合も支払いごとに新しい burn アドレスを使うため、バッチ化がリンク不能性を犠牲にすることはありません。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">できます。プロバイダは受け取った支払いをためておき、都合の良いタイミングで1回にまとめて自分の口座（treasury）へ精算できます。支払いごとに別々の使い捨てアドレスが使われているため、まとめて精算しても、個々の支払いがどれだったのかは分からないままです。</p>
         </details>
       </div>
     </div>

@@ -24,7 +24,7 @@ Open `http://127.0.0.1:4173/`.
 2. Problem: 支払いログ＝戦略ログ（エージェント側の行動漏洩・プロバイダ側の売上漏洩）。
 3. How it works: 5ステップフローと、burn と mint がリンクしない理由・導出式。
 4. Demo: 実 zERC20 スタック上のガイド付きブラウザデモ紹介。
-5. Use cases: 金融リサーチ / B2B調達 / 創薬 / セキュリティ / APIプロバイダ。
+5. Use cases: 金融リサーチ / B2B調達 / トレーディングBot / AIインフラ / APIプロバイダ。
 6. FAQ / Roadmap / Contact / Footer。
 
 ## Implemented interactions
