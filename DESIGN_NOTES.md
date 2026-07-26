@@ -1,48 +1,43 @@
 # SubEtha LP — Design Notes
 
-Status: internal review / local, non-production PoC only
-Artifact: `index-v2.html`
+Status: Claude Design 移植版（v3）。旧 vision-led 版（`feat/vision-led-lp` 以前の `index.html`）は廃止。
 
-## Change intent: PoC-led → vision-led
+## Provenance
 
-P0-C.10 changes the page's primary subject. The Hero no longer presents SubEtha mainly as a local PoC or privacy experiment. It introduces SubEtha as a project building payment rails and explicit boundaries for an agent-native internet: autonomous software should be able to discover APIs, exchange value, and remain accountable.
+- デザイン原本: Claude Design プロジェクト「Subetha LP制作」（projectId `1e3dd830-2a95-4f5d-ae27-7be428263747`）の `SubEtha LP.dc.html`。
+- `assets/web-demo.png` は `subetha` リポジトリ `docs/images/web-demo.png` のオリジナル（デザインプロジェクト側の同名アセットと同一ソース）。
 
-The PoC remains visible, but moves to the appropriate evidence layer: Hero-side “NOW”, Current status, validation phases, FAQ, footer, and publication review gates. `local / non-production PoC` is deliberately not the Hero headline or primary CTA.
+## Porting decisions (.dc.html → static index.html)
 
-## Copy decisions
+Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` / `<sc-if>` / `{{ props }}` / `style-hover` / DCLogic）に依存するため、次の変換で静的化した:
 
-- Hero: project vision, intended builders/users, and the desired payment boundary.
-- Why now: explains why agent/API-era value exchange needs more than a transfer primitive.
-- Scenarios: agent discovers an API; provider returns value under clear terms; payment/result responsibility is separated; operations account for observability.
-- Boundary map: makes participant, observer, dependency, and responsibility boundaries visible rather than promising invisibility.
-- CTA: invites a use-case conversation, without inventing a contact endpoint or commercial availability.
-- EN/JA: both translations retain the vision, local PoC qualifier, unaudited status, no-complete-anonymity boundary, and no official zERC20 relationship claim.
+- `<sc-if isEn/isJa>` の2ツリーを `#page-en` / `#page-ja` として両方DOMに保持し、`hidden` 属性で切り替え。言語ボタンは `data-lang` + `aria-pressed`、選択は `localStorage`（キー `subetha-lp-lang`）に永続化。DCLogic の挙動と同等。
+- props のデフォルト値を焼き込み: contact = `pioneerandf@gmail.com`、GitHub = `github.com/peaceandwhisky/SubEtha`、X = `x.com/peaceandwhisky`。
+- `style-hover` 属性 → ホバー用CSSクラス（`.h-*`、インラインスタイルに勝つため `!important`）。
+- JA ツリーのセクションIDに `-ja` サフィックスを付与し、ID重複とアンカー不整合を解消。
+- デザインには無いレスポンシブ（960px / 600px でグリッド折り畳み・ナビ横スクロール）、focus-visible、`prefers-reduced-motion` を追加。CI の必須マーカーを維持。
+- デザイン原本からの意図的な内容変更: ロードマップ先頭に現在地行（NOW — 動くフロー / ローカルPoC・非本番・未監査）を追加。subetha リポジトリの戦略ドキュメント（PRODUCT-STRATEGY.md / LAUNCH-AND-MOAT.md の主張規律）との整合をオーナーと確認して決定。クロスチェーン拡張（同 §9）は「MVP直後の機能ではない」ため意図的に非掲載。
+- ロードマップ更新: 実装済みの facilitator / provider / Python / MCP / CLI / agent policy をPhase 1〜2へ反映し、NOWからデザインパートナー探索を並走させた。商用化の本体を「SDK」ではなくmanaged private payment layerと明記し、permit/self-transfer、実験的batch、accepted/finalized、商用許諾の境界をLP上でも条件付きで表現。
+- 対外表示の整理: Mordred、journal recovery、具体的なKYB実装、zERC20 grantの詳細はロードマップ本文から外し、agent-runtime integrations、trusted provider network、licensing and operational readinessという外部向けの抽象度に統一。詳細はdocs・協業資料・内部ロードマップで扱う。
+- Phase 2の表現を「Enterprise controls」から「Agent controls & operations / エージェント統制と運用」へ変更。企業向け管理画面ではなく、AIエージェントの支出を予算・Provider・人間承認・決済状態・レポートで制御するControl Planeであることを外部向けに明示。
+- 採用戦略を追加: 企業への販売だけでなく、API Provider側の受け入れとAI Agent/Agent Builder側のpayer・runtime採用を別々の導入面として扱う。ロードマップにADOPTION行を追加し、Provider向けのdrop-in x402 adapter / testnet sandbox / onboarding / fee transparencyと、Agent向けのSDK / MCP・Python・CLI / framework integration / safe defaults / reference appsを明記。両面の導入を通じて、ProviderはAPIを変えずに受け入れ、Agentはprivate settlementを自前実装せずに利用できる状態を目標とする。
+- CONTACT文言を自然な対象者表現へ更新。「エージェント開発者・APIプロバイダ・投資家」という限定的で硬い呼称を避け、AIエージェントを開発・運用する人、エージェント向けサービス提供者、この領域に関心のある人へ呼びかける表現に統一。英語も同じ意味に調整。
+- フッターの作品名由来（『銀河ヒッチハイク・ガイド』のSub-Etha）に関するコピーを削除。著作権・出典上の不要な論点を避け、フッターは公式リンクのみの簡潔な構成とした。
+- 技術記事の導線をEN/JA双方に追加。Zenn記事（`https://zenn.dev/peaceandwhisky/articles/6f0b8b672a6f78`）とMedium記事（`https://takuyafujita.medium.com/your-ai-agents-payment-log-is-its-strategy-log-subetha-hides-who-paid-whom-8a5fde719093`）をリンク化した。
+- JAヒーローの訴求を「APIの支払いは、公開のまま。／支払者と提供者のつながりは、直接は見えない。」へ変更。Fable相当の独立レビューで、抽象的な「リンクは消える」や匿名決済を想起させる表現を避け、支払い自体は公開される一方、payerとproviderの対応関係が直接は見えないというclaim boundaryを先に伝える案を採用した。
+- デザイン原本からの意図的なUX変更: Hero「Get in touch / 連絡する」とユースケースカード「Tell us about it → / 相談する →」の `mailto:` を Contact セクションへのページ内アンカーに変更（ラベルからメール起動が予測できず、メールクライアント未設定のデスクトップで離脱要因になるため）。Contact セクションにはアドレスのコピー用ボタンを追加（Clipboard API + `execCommand` フォールバック）。`mailto:` はアドレスがラベルに明示された Contact ボタンとフッターのみに残す。
 
-## Claim boundary
+再生成が必要な場合、変換スクリプトはセッションのスクラッチパッド（`build_lp.py`）にあり、原本はClaude Design側に残っている。手直しは `index.html` を直接編集してよい。
 
-The page does not claim production readiness, audit completion, commercial availability, complete anonymity, complete untraceability, official zERC20 partnership, endorsement, certification, or licensing permission. zERC20/toolchain references remain dependency/context language and require formal confirmation before publication. `[ CONTACT URL TBD ]` remains a non-submitting placeholder.
+## Claim posture change from v2
 
-The vision language is intentionally aspirational (“building”, “aims”, “we want to enable”) rather than a claim that the full agent economy or production payment rail already exists.
+- 連絡先は `[ CONTACT URL TBD ]` プレースホルダから実メールアドレスに変更（人間がデザイン内で決定済み）。CI の該当アサーションも実アドレス維持チェックに更新。
+- Hero は「Private x402 payments · settled on zERC20」を正面に出す。「Built on the official zERC20 toolchain」は公式ツールチェーン**上に**構築という依存関係の記述であり、公式パートナーシップの主張ではない。
+- FAQ で明示的に否定していること: ミキサー/匿名決済ではない、新トークンなし、フォークなし。treasury は mint 時に公開され、隠すのは支払者との対応関係のみ。view key による監査可能な開示はロードマップに明記。
 
-## Surface and visual principles
+## Open review gates (before publication)
 
-Primary surface: **Decide / Learn**. The existing paper/ink composition is retained: restrained teal accent, editorial typography, narrow rules, participant/observer diagram, unequal validation phases, responsibility split, and review-aware CTA. This keeps the page project-specific without copying Stripe, Linear, or Framer layouts or identity.
-
-The visual hierarchy now follows: vision → why now → boundary design → validation → current scope → conversation. This prevents a status label from becoming the product story while keeping status available for an honest review.
-
-## Accessibility and responsive posture
-
-- English is the static default (`<html lang="en">`); JA is available through native buttons with `aria-pressed`.
-- Language switching updates document language and title.
-- Semantic headings, nav, lists, buttons, FAQ `aria-expanded`, focus-visible states, mobile menu state, and reduced-motion handling are retained.
-- Mobile layout collapses diagrams and preserves usable controls.
-
-## Open review gates
-
-1. Human review of vision copy and whether the intended audience/scenarios are accurate.
-2. Verify real-process HTTP E2E behavior and reconcile implementation/version/artifact boundaries.
-3. Confirm zERC20 naming, logo, official-relationship, and commercial-use permissions.
-4. Confirm production readiness, audit, operations, legal/regulatory, contact, and data-retention claims separately.
-5. Decide final contact destination and publication channel.
-
-No external sharing, deployment, publication, or push was performed for this draft.
+1. zERC20 の名称・ロゴ・公式関係・商用利用の許諾表現の最終確認。
+2. デモ記載（実 zERC20 スタック、permit モード、バッチ teleport）と実装の整合確認。
+3. プロダクション readiness / 監査 / 法規制まわりのクレーム最終確認。
+4. 公開チャネルとデプロイ先の決定。
