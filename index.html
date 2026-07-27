@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SubEtha — Private x402 payments, settled on zERC20</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D1A17'/%3E%3Cpath d='M8 16h16M16 8v16' stroke='%237EE2C0' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/brand/subetha-glyph-favicon-16.png">
+<link rel="icon" type="image/png" sizes="20x20" href="assets/brand/subetha-glyph-favicon-20.png">
+<link rel="icon" type="image/png" sizes="24x24" href="assets/brand/subetha-glyph-favicon-24.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/brand/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/brand/icon-maskable.png">
+<meta name="theme-color" content="#12233F">
 <meta name="description" content="SubEtha keeps the x402 HTTP payment flow — request, 402 Payment Required, pay, result — and settles through zERC20 burn / mint. The public chain does not expose a direct payer-to-provider link.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -28,6 +34,7 @@
   .h-mint-bg:hover { background: #4ADE9D !important; color: #0D1A17 !important; }
   .h-outline-mint:hover { border-color: #7EE2C0 !important; color: #7EE2C0 !important; }
   .h-mint:hover { color: #7EE2C0 !important; }
+  .brand-wordmark { display:block;width:96px;height:auto; }
   #scroll-progress { position:fixed;top:0;left:0;z-index:100;width:100%;height:3px;pointer-events:none;background:transparent; }
   #scroll-progress > span { display:block;width:0;height:100%;background:#0E7A6A;transform-origin:left center;transition:width 0.12s linear; }
   html.motion-ready .scroll-reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
@@ -67,7 +74,7 @@
 <div id="page-en" lang="en" style="min-height:100vh">
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
     <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
-      <a href="#top" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;color:#14201C">SubEtha</a>
+      <a href="#top" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
       <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
         <a href="#problem" style="color:#5A6963" class="h-ink">Problem</a>
         <a href="#how" style="color:#5A6963" class="h-ink">How it works</a>
@@ -400,7 +407,7 @@
 <div id="page-ja" lang="ja" style="min-height:100vh" hidden>
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
     <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
-      <a href="#top-ja" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;color:#14201C">SubEtha</a>
+      <a href="#top-ja" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
       <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
         <a href="#problem-ja" style="color:#5A6963" class="h-ink">課題</a>
         <a href="#how-ja" style="color:#5A6963" class="h-ink">仕組み</a>
