@@ -32,7 +32,7 @@ jobs:
           assert 'data-lang="ja"' in text, "missing JA switch"
           assert "aria-pressed" in text, "language switch must expose aria-pressed"
           assert "prefers-reduced-motion" in text, "reduced-motion rule is required"
-          assert "mailto:pioneerandf@gmail.com" in text, "contact must stay the human-approved address"
+          assert "mailto:contact@subethalabs.com" in text, "contact must stay the human-approved address"
           HTMLParser().feed(text)
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
