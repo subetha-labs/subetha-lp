@@ -42,3 +42,14 @@ Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` 
 2. デモ記載（実 zERC20 スタック、permit モード、バッチ teleport）と実装の整合確認。
 3. プロダクション readiness / 監査 / 法規制まわりのクレーム最終確認。
 4. 公開チャネルとデプロイ先の決定。
+
+## Content direction update (2026-07-27, Fable レビュー反映)
+
+承認済みのFableレコメンデーションを反映し、「見えなくする」訴求から「何が公開で、何が結びつかず、何が当事者に見えるか」を明示する claim-bounded な訴求へ調整した。
+
+- EN H1 を「AI agents pay APIs. The payment is public. The link is not.」へ変更（JA H1 は既存の claim boundary 型のまま維持）。EN/JA ヒーローの実装表記を「オープンソースのローカルリファレンス実装（公式 zERC20 ツールチェーン上・新トークンなし・フォークなし・未監査・非本番）」に統一。
+- 新セクション `#visibility` / `#visibility-ja`（ヒーロー直後）: 公開の場で見えるもの（両端は今日見える／payer↔provider の直接対応はオンチェーンに無い＝Live today）と、当事者に見えるもの（各自の記録による突き合わせ＝Live today、標準化された view key・期限付き監査人開示＝Phase 3 Roadmap・未提供）をチップ付きカードで分離。
+- 新セクション `#status` / `#status-ja`（デモ後・ユースケース前）: Today（開発者・実験者向けローカルOSSリファレンス実装、未監査・非本番）/ Next（x402互換レイヤー、providerアダプタ、payer SDK、外部検証、デザインパートナー募集中）/ Future（fleet spend controls、顧客保有 view key、期限付き開示、監査人エクスポート＝ロードマップ・未提供）の3カード + 詳細ロードマップへのリンク。
+- 過剰主張の修正: 「対応関係は決して現れない」→ 直接の対応関係はオンチェーンに書かれない、「追跡可能な入金はゼロ」→ 支払者まで遡れる入金は現れない、「売上を読めなくする」→ 支払者単位の追跡可能性・顧客単位の入金を読めなくする、「Design partners — running now / 現在並走」→ now recruiting / 現在募集中。バッチのタイミング・金額相関の注意書きは維持。
+- CTA/Contact: ヒーロー第2CTAを「Work with us early → / 初期段階から関わる →」（既存の contact アンカー）へ。Contact は AIエージェント開発者・x402実験者・有料APIプロバイダ・プライバシー/決済インフラエンジニアに PoC 実行とギャップ報告を呼びかけ、組織からのロードマップ要件共有も歓迎する文面へ更新（メール・コピー・GitHub・X の連絡手段は維持）。
+- ナビに Visibility / 見える範囲、Status / 現在地 を追加（既存の横スクロールモバイルナビと互換）。

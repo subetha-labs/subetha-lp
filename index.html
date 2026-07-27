@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SubEtha — Private x402 payments, settled on zERC20</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D1A17'/%3E%3Cpath d='M8 16h16M16 8v16' stroke='%237EE2C0' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/brand/subetha-glyph-favicon-16.png">
+<link rel="icon" type="image/png" sizes="20x20" href="assets/brand/subetha-glyph-favicon-20.png">
+<link rel="icon" type="image/png" sizes="24x24" href="assets/brand/subetha-glyph-favicon-24.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/brand/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/brand/icon-maskable.png">
+<meta name="theme-color" content="#12233F">
 <meta name="description" content="SubEtha keeps the x402 HTTP payment flow — request, 402 Payment Required, pay, result — and settles through zERC20 burn / mint. The public chain does not expose a direct payer-to-provider link.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -28,6 +34,7 @@
   .h-mint-bg:hover { background: #4ADE9D !important; color: #0D1A17 !important; }
   .h-outline-mint:hover { border-color: #7EE2C0 !important; color: #7EE2C0 !important; }
   .h-mint:hover { color: #7EE2C0 !important; }
+  .brand-wordmark { display:block;width:96px;height:auto; }
   #scroll-progress { position:fixed;top:0;left:0;z-index:100;width:100%;height:3px;pointer-events:none;background:transparent; }
   #scroll-progress > span { display:block;width:0;height:100%;background:#0E7A6A;transform-origin:left center;transition:width 0.12s linear; }
   html.motion-ready .scroll-reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
@@ -67,11 +74,13 @@
 <div id="page-en" lang="en" style="min-height:100vh">
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
     <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
-      <a href="#top" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;color:#14201C">SubEtha</a>
+      <a href="#top" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
       <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
+        <a href="#visibility" style="color:#5A6963" class="h-ink">Visibility</a>
         <a href="#problem" style="color:#5A6963" class="h-ink">Problem</a>
         <a href="#how" style="color:#5A6963" class="h-ink">How it works</a>
         <a href="#demo" style="color:#5A6963" class="h-ink">Demo</a>
+        <a href="#status" style="color:#5A6963" class="h-ink">Status</a>
         <a href="#usecases" style="color:#5A6963" class="h-ink">Use cases</a>
         <a href="#faq" style="color:#5A6963" class="h-ink">FAQ</a>
         <a href="#articles" style="color:#5A6963" class="h-ink">Articles</a>
@@ -89,13 +98,13 @@
   <section id="top" class="g-hero" style="max-width:1120px;margin:0 auto;padding:92px 32px 84px;display:grid;grid-template-columns:1.05fr 0.95fr;gap:64px;align-items:center">
     <div style="display:flex;flex-direction:column;gap:26px">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0E7A6A;font-weight:600">Private x402 payments · settled on zERC20</div>
-      <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:56px;line-height:1.06;letter-spacing:-0.025em;font-weight:600;color:#14201C;text-wrap:pretty">AI agents pay APIs.<br>The public link is gone.</h1>
+      <h1 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:56px;line-height:1.06;letter-spacing:-0.025em;font-weight:600;color:#14201C;text-wrap:pretty">AI agents pay APIs.<br>The payment is public. The link is not.</h1>
       <p style="margin:0;font-size:18px;line-height:1.65;color:#5A6963;max-width:52ch;text-wrap:pretty">SubEtha keeps the x402 HTTP payment flow — request, <span style="font-family:'IBM Plex Mono',monospace;font-size:16px;background:#EEF3F1;padding:1px 7px;border-radius:6px;color:#14201C">402 Payment Required</span>, pay, result — and replaces settlement with zERC20 burn / mint. The provider gets paid, while the public chain does not expose a direct link between the paying agent and the API provider.</p>
       <div style="display:flex;gap:14px;align-items:center">
         <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="background:#0E7A6A;color:#FFFFFF;border-radius:10px;padding:14px 26px;font-size:15px;font-weight:600" class="h-teal-dark">Try the demo</a>
-        <a href="#contact" style="border:1px solid #D4DDDA;color:#14201C;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:#FFFFFF" class="h-outline-teal">Get in touch</a>
+        <a href="#contact" style="border:1px solid #D4DDDA;color:#14201C;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:#FFFFFF" class="h-outline-teal">Work with us early →</a>
       </div>
-      <div style="font-size:13px;color:#8A9793">Built on the official zERC20 toolchain — no new token, no fork.</div>
+      <div style="font-size:13px;color:#8A9793">Open-source local reference implementation, built on the official zERC20 toolchain — no new token, no fork. Unaudited, non-production.</div>
     </div>
     <div style="background:#0D1A17;border-radius:18px;padding:26px 28px;box-shadow:0 28px 70px -28px rgba(13,26,23,0.45);font-family:'IBM Plex Mono',monospace;display:flex;flex-direction:column;gap:0">
       <div style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7C918B;padding-bottom:18px">
@@ -117,7 +126,37 @@
         <div style="font-size:14px;color:#E8F2EE">→ treasury&nbsp; <span style="color:#4ADE9D">+1234</span></div>
         <div style="font-size:11.5px;color:#7C918B">proof-gated — which burn it corresponds to stays a private witness</div>
       </div>
-      <div style="font-size:11.5px;color:#7C918B;padding-top:18px;line-height:1.55">Two facts remain on-chain: a burn and a mint. The correspondence between them never appears.</div>
+      <div style="font-size:11.5px;color:#7C918B;padding-top:18px;line-height:1.55">Two facts remain on-chain: a burn and a mint. The direct correspondence between them is not written on-chain.</div>
+    </div>
+  </section>
+
+  <section id="visibility" style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0E7A6A;font-weight:600">Visibility</div>
+      <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:38px;line-height:1.15;letter-spacing:-0.02em;font-weight:600;color:#14201C;text-wrap:pretty">Unlinkable in public. Reconcilable by the parties.</h2>
+      <p style="margin:0;font-size:16.5px;line-height:1.7;color:#5A6963;text-wrap:pretty">This is not anonymity. What an outside observer can read and what the transacting parties can reconcile are deliberately different — and only part of that story is shipped today.</p>
+    </div>
+    <div class="g-2" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">WHAT THE PUBLIC SEES</div>
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#14201C">Both ends are visible. The direct link is not.</h3>
+        <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963;text-wrap:pretty">Anyone can see today that a payer sent tokens to a one-time burn address, and that a provider's treasury received a mint. What is not written on-chain is a direct correspondence between a specific payer and a specific provider — which payment became which deposit.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:14px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">WHAT AUTHORIZED PARTIES SEE</div>
+        <h3 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#14201C">The parties can still reconcile their own payments.</h3>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963;text-wrap:pretty">The provider knows which burn address it issued for which request, and the payer knows what it paid — each side keeps its own records and can reconcile them today.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963;text-wrap:pretty">Standardized customer-held view keys and time-bound auditor disclosure are planned as <a href="#roadmap">roadmap Phase 3</a> — designed, not shipped.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -208,11 +247,45 @@
           <div style="display:flex;align-items:center;gap:12px;font-size:14.5px;color:#14201C"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600;width:52px">③ Burn</span>Broadcast the burn — resource served on confirmation <span style="font-size:11.5px;color:#8A9793;border:1px solid #D4DDDA;border-radius:999px;padding:2px 9px">Provider</span></div>
           <div style="display:flex;align-items:center;gap:12px;font-size:14.5px;color:#14201C"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600;width:52px">④ Mint</span>Settle — the proof-gated mint lands in the treasury <span style="font-size:11.5px;color:#8A9793;border:1px solid #D4DDDA;border-radius:999px;padding:2px 9px">Provider</span></div>
         </div>
-        <p style="margin:0;font-size:15px;line-height:1.65;color:#14201C;font-weight:500">The payoff: the treasury grows, while traceable inflows to it stay at zero.</p>
+        <p style="margin:0;font-size:15px;line-height:1.65;color:#14201C;font-weight:500">The payoff: the treasury grows, without inflows traceable back to a payer.</p>
         <div><a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-block;background:#14201C;color:#FFFFFF;border-radius:10px;padding:13px 24px;font-size:14.5px;font-weight:600" class="h-teal-dark">Run it yourself → GitHub</a></div>
       </div>
       <div style="border:1px solid #E3E9E6;border-radius:16px;overflow:hidden;box-shadow:0 28px 70px -30px rgba(13,26,23,0.35);background:#0D1117;max-height:620px">
         <img src="assets/web-demo.png" alt="SubEtha guided web demo" style="width:100%;display:block">
+      </div>
+    </div>
+  </section>
+
+  <section id="status" style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0E7A6A;font-weight:600">Where we are</div>
+      <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:38px;line-height:1.15;letter-spacing:-0.02em;font-weight:600;color:#14201C;text-wrap:pretty">What runs today — and what is still roadmap.</h2>
+      <p style="margin:0;font-size:16.5px;line-height:1.7;color:#5A6963;text-wrap:pretty">SubEtha is early, and we'd rather you know exactly how early. See the <a href="#roadmap">detailed roadmap</a> for the full phase-by-phase plan.</p>
+    </div>
+    <div class="g-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">TODAY</div>
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">For builders and experimenters</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">A local, open-source reference implementation of the full flow — request, 402, burn, proof-gated mint — on the official zERC20 toolchain. Unaudited and non-production.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">NEXT</div>
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">An x402-compatible layer, tested externally</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">Harden the x402-compatible payment layer — a provider adapter and payer SDKs — for external testing. Design partners: now recruiting.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">FUTURE</div>
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">Controls and auditable disclosure</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">Fleet spend controls, customer-held view keys, time-bound disclosure, and auditor exports. All roadmap — none of it shipped.</p>
       </div>
     </div>
   </section>
@@ -247,7 +320,7 @@
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">API PROVIDERS</div>
         <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#14201C">The sell side, protected too</div>
-        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">With a fixed payTo, anyone can chart a provider's revenue, growth and key-customer dependence. SubEtha makes revenue unreadable from the chain.</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#5A6963">With a fixed payTo, anyone can chart a provider's revenue, growth and key-customer dependence. SubEtha removes payer-level traceability, so customer-level inflows can no longer be charted from the chain.</p>
       </div>
       <div style="background:#0D1A17;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px;justify-content:center">
         <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;color:#FFFFFF">Your agents? Your APIs?</div>
@@ -266,7 +339,7 @@
       <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:6px 28px">
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Is this a mixer or anonymous payments?<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. Both ends of a payment stay visible: anyone can see that the agent spent tokens, and anyone can see that the provider's treasury received tokens. The one thing that never appears on-chain is the link between the two — which payment became which deposit. The goal is confidential machine payments for enterprise AI agents, not anonymity: auditable disclosure through view keys is an explicit part of the roadmap.</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#5A6963">No. Both ends of a payment stay visible: anyone can see that the agent spent tokens, and anyone can see that the provider's treasury received tokens. What is not written on-chain is the direct correspondence between the two — which payment became which deposit. The goal is confidential machine payments for AI agents and the organizations behind them, not anonymity: auditable disclosure through view keys is an explicit part of the roadmap.</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:16px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">Does it change how I integrate x402?<span style="color:#0E7A6A">+</span></summary>
@@ -330,7 +403,7 @@
       <div class="g-road" style="display:grid;grid-template-columns:120px 1fr;gap:28px;padding:26px 0;border-top:1px solid #E3E9E6">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#0E7A6A;font-weight:600">DISCOVERY</div>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:#14201C">Design partners — running now</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:#14201C">Design partners — now recruiting</div>
           <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963">Validate the payment-history leakage problem with financial research teams, data providers, and agent builders now — before choosing which enterprise controls and provider integrations to prioritize.</p>
         </div>
       </div>
@@ -366,7 +439,7 @@
         <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#0E7A6A;font-weight:600">PHASE 4</div>
         <div style="display:flex;flex-direction:column;gap:6px">
           <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:#14201C">Commercialization</div>
-          <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963">Operate a managed private payment layer for enterprise AI agents: convert design partners into paid deployments, build a trusted provider network, publish a public draft of the x402 privacy scheme, and harden the developer integrations for external use. The product is operated confidentiality — not only a library.</p>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#5A6963">Operate a managed private payment layer for enterprise AI agents: convert design partners into paid deployments, build a trusted provider network, publish a public draft of the x402 privacy scheme, and harden the developer integrations for external use. The product is a managed private payment layer — not only a library.</p>
         </div>
       </div>
     </div>
@@ -375,8 +448,8 @@
   <section id="contact" style="background:#0D1A17">
     <div style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:26px;align-items:flex-start">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#7EE2C0;font-weight:600">Contact</div>
-      <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:40px;line-height:1.12;letter-spacing:-0.02em;font-weight:600;color:#FFFFFF;max-width:20ch;text-wrap:pretty">Building services for AI agents?</h2>
-      <p style="margin:0;font-size:16.5px;line-height:1.7;color:#9DB3AC;max-width:56ch;text-wrap:pretty">SubEtha is a privacy-preserving payment layer for AI agents using APIs and data services. We're speaking with people building or operating agents, providing services to them, and exploring this space. Try the demo, read the code, or get in touch.</p>
+      <h2 style="margin:0;font-family:'Space Grotesk',sans-serif;font-size:40px;line-height:1.12;letter-spacing:-0.02em;font-weight:600;color:#FFFFFF;max-width:20ch;text-wrap:pretty">Run the PoC. Tell us where it falls short.</h2>
+      <p style="margin:0;font-size:16.5px;line-height:1.7;color:#9DB3AC;max-width:56ch;text-wrap:pretty">SubEtha is an open-source local reference implementation of private x402 payments, settled on zERC20. If you build AI agents, experiment with x402, run a paid API, or work on privacy or payment infrastructure, we'd like you to run the PoC and report the gaps — in the protocol, the developer experience, or the claims. Organizations with requirements for the roadmap — spend controls, disclosure, integrations — are welcome to share them too.</p>
       <div style="display:flex;gap:14px;flex-wrap:wrap">
         <a href="mailto:pioneerandf@gmail.com" style="background:#7EE2C0;color:#0D1A17;border-radius:10px;padding:14px 26px;font-size:15px;font-weight:600" class="h-mint-bg">pioneerandf@gmail.com</a>
         <button type="button" data-copy-email="pioneerandf@gmail.com" data-copied-label="Copied ✓" data-failed-label="Copy failed" aria-live="polite" style="border:1px solid #2C443D;color:#E8F2EE;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:transparent;cursor:pointer;font-family:inherit" class="h-outline-mint">Copy address</button>
@@ -400,11 +473,13 @@
 <div id="page-ja" lang="ja" style="min-height:100vh" hidden>
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
     <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
-      <a href="#top-ja" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-0.01em;color:#14201C">SubEtha</a>
+      <a href="#top-ja" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
       <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
+        <a href="#visibility-ja" style="color:#5A6963" class="h-ink">見える範囲</a>
         <a href="#problem-ja" style="color:#5A6963" class="h-ink">課題</a>
         <a href="#how-ja" style="color:#5A6963" class="h-ink">仕組み</a>
         <a href="#demo-ja" style="color:#5A6963" class="h-ink">デモ</a>
+        <a href="#status-ja" style="color:#5A6963" class="h-ink">現在地</a>
         <a href="#usecases-ja" style="color:#5A6963" class="h-ink">ユースケース</a>
         <a href="#faq-ja" style="color:#5A6963" class="h-ink">FAQ</a>
         <a href="#articles-ja" style="color:#5A6963" class="h-ink">記事</a>
@@ -426,9 +501,9 @@
       <p style="margin:0;font-size:17px;line-height:1.8;color:#5A6963;max-width:52ch;text-wrap:pretty">SubEtha は x402 の HTTP 決済フロー — リクエスト、<span style="font-family:'IBM Plex Mono',monospace;font-size:15px;background:#EEF3F1;padding:1px 7px;border-radius:6px;color:#14201C">402 Payment Required</span>、支払い、結果 — をそのままに、決済を zERC20 の burn / mint に置き換えます。プロバイダには支払いが届きますが、公開台帳には支払ったエージェントとAPIプロバイダを直接結ぶリンクが現れません。</p>
       <div style="display:flex;gap:14px;align-items:center">
         <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="background:#0E7A6A;color:#FFFFFF;border-radius:10px;padding:14px 26px;font-size:15px;font-weight:600" class="h-teal-dark">デモを試す</a>
-        <a href="#contact-ja" style="border:1px solid #D4DDDA;color:#14201C;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:#FFFFFF" class="h-outline-teal">連絡する</a>
+        <a href="#contact-ja" style="border:1px solid #D4DDDA;color:#14201C;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:#FFFFFF" class="h-outline-teal">初期段階から関わる →</a>
       </div>
-      <div style="font-size:13px;color:#8A9793">公式 zERC20 ツールチェーン上に構築 — 新トークンの発行もフォークもありません。</div>
+      <div style="font-size:13px;color:#8A9793">公式 zERC20 ツールチェーン上に構築したオープンソースのローカルリファレンス実装 — 新トークンの発行もフォークもありません。未監査・非本番です。</div>
     </div>
     <div style="background:#0D1A17;border-radius:18px;padding:26px 28px;box-shadow:0 28px 70px -28px rgba(13,26,23,0.45);font-family:'IBM Plex Mono',monospace;display:flex;flex-direction:column;gap:0">
       <div style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7C918B;padding-bottom:18px">
@@ -450,7 +525,37 @@
         <div style="font-size:14px;color:#E8F2EE">→ treasury&nbsp; <span style="color:#4ADE9D">+1234</span></div>
         <div style="font-size:11.5px;color:#7C918B;font-family:'IBM Plex Sans JP',sans-serif">証明ゲート付き — どの burn に対応するかは非公開の witness（秘密入力）のまま</div>
       </div>
-      <div style="font-size:11.5px;color:#7C918B;padding-top:18px;line-height:1.7;font-family:'IBM Plex Sans JP',sans-serif">オンチェーンに残るのは burn と mint という2つの事実だけ。両者の対応関係は決して現れません。</div>
+      <div style="font-size:11.5px;color:#7C918B;padding-top:18px;line-height:1.7;font-family:'IBM Plex Sans JP',sans-serif">オンチェーンに残るのは burn と mint という2つの事実だけ。両者を直接結ぶ対応関係は、オンチェーンには書かれません。</div>
+    </div>
+  </section>
+
+  <section id="visibility-ja" style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0E7A6A;font-weight:600">Visibility</div>
+      <h2 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:34px;line-height:1.3;letter-spacing:-0.01em;font-weight:700;color:#14201C;text-wrap:pretty">公開の場では結びつかない。当事者の間では突き合わせられる。</h2>
+      <p style="margin:0;font-size:16px;line-height:1.85;color:#5A6963;text-wrap:pretty">これは匿名化ではありません。外部の観測者に読めるものと、取引の当事者が突き合わせられるものは意図的に分けられています — そして、その全てが今日提供されているわけではありません。</p>
+    </div>
+    <div class="g-2" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">公開の場から見えるもの</div>
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:20px;font-weight:700;color:#14201C">両端は見える。直接のリンクは見えない。</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.8;color:#5A6963;text-wrap:pretty">支払者が使い捨ての burn アドレスにトークンを送ったことも、プロバイダの treasury に mint が届いたことも、今日誰でも確認できます。オンチェーンに書かれないのは、特定の支払者と特定のプロバイダを直接結ぶ対応関係 — どの支払いがどの入金になったのか — だけです。</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:14px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">権限を持つ当事者に見えるもの</div>
+        <h3 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:20px;font-weight:700;color:#14201C">当事者は、自分の支払いを突き合わせられる。</h3>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+          <p style="margin:0;font-size:14.5px;line-height:1.8;color:#5A6963;text-wrap:pretty">プロバイダはどのリクエストにどの burn アドレスを発行したかを知っており、支払者は自分が何に支払ったかを知っています。それぞれが自分の記録を持ち、今日から突き合わせられます。</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+          <p style="margin:0;font-size:14.5px;line-height:1.8;color:#5A6963;text-wrap:pretty">標準化された顧客保有の view key と期限付きの監査人向け開示は、<a href="#roadmap-ja">ロードマップの Phase 3</a> として計画中です — 設計段階であり、未提供です。</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -541,11 +646,45 @@
           <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:#14201C"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600;width:52px">③ Burn</span>burn をブロードキャスト — 確定と同時にリソース提供 <span style="font-size:11.5px;color:#8A9793;border:1px solid #D4DDDA;border-radius:999px;padding:2px 9px">Provider</span></div>
           <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:#14201C"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600;width:52px">④ Mint</span>決済 — 証明ゲート付き mint が treasury に着金 <span style="font-size:11.5px;color:#8A9793;border:1px solid #D4DDDA;border-radius:999px;padding:2px 9px">Provider</span></div>
         </div>
-        <p style="margin:0;font-size:14.5px;line-height:1.8;color:#14201C;font-weight:500">その結果: treasury の残高は増えるのに、そこへ追跡可能な入金はゼロのまま。</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.8;color:#14201C;font-weight:500">その結果: treasury の残高は増えても、支払者まで遡って追跡できる入金は現れません。</p>
         <div><a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-block;background:#14201C;color:#FFFFFF;border-radius:10px;padding:13px 24px;font-size:14.5px;font-weight:600" class="h-teal-dark">自分で動かす → GitHub</a></div>
       </div>
       <div style="border:1px solid #E3E9E6;border-radius:16px;overflow:hidden;box-shadow:0 28px 70px -30px rgba(13,26,23,0.35);background:#0D1117;max-height:620px">
         <img src="assets/web-demo.png" alt="SubEtha ガイド付き Web デモ" style="width:100%;display:block">
+      </div>
+    </div>
+  </section>
+
+  <section id="status-ja" style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;flex-direction:column;gap:16px;max-width:760px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#0E7A6A;font-weight:600">Where we are</div>
+      <h2 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:34px;line-height:1.3;letter-spacing:-0.01em;font-weight:700;color:#14201C;text-wrap:pretty">今日動いているもの — そして、まだロードマップのもの。</h2>
+      <p style="margin:0;font-size:16px;line-height:1.85;color:#5A6963;text-wrap:pretty">SubEtha はまだ初期段階です。どれくらい初期なのかを、正確にお伝えします。フェーズごとの計画は<a href="#roadmap-ja">詳細ロードマップ</a>をご覧ください。</p>
+    </div>
+    <div class="g-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">TODAY</div>
+          <span style="font-size:11.5px;font-weight:600;color:#0E7A6A;background:#E6F5EF;border:1px solid #BFE5D8;border-radius:999px;padding:3px 10px;white-space:nowrap">Live today</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">開発者と実験者のために</h3>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">リクエスト、402、burn、証明ゲート付き mint という一連のフローを、公式 zERC20 ツールチェーン上で動かせるローカルのオープンソース・リファレンス実装。未監査・非本番です。</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">NEXT</div>
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">x402 互換レイヤーの外部検証</h3>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">x402 互換の決済レイヤー — プロバイダ向けアダプタと payer SDK — を外部検証に向けて強化します。デザインパートナーは現在募集中です。</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">FUTURE</div>
+          <span style="font-size:11.5px;font-weight:600;color:#5A6963;background:#EEF3F1;border:1px solid #D4DDDA;border-radius:999px;padding:3px 10px;white-space:nowrap">Roadmap</span>
+        </div>
+        <h3 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">統制と監査可能な開示</h3>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">エージェント群の支出管理、顧客保有の view key、期限付き開示、監査人向けエクスポート。いずれもロードマップ段階で、未提供です。</p>
       </div>
     </div>
   </section>
@@ -580,7 +719,7 @@
       <div style="background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0E7A6A;font-weight:600">API プロバイダ</div>
         <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#14201C">売り手側も守られる</div>
-        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">固定の payTo では、売上・成長率・大口顧客への依存度を誰でもグラフ化できます。SubEtha はチェーンから売上を読めなくします。</p>
+        <p style="margin:0;font-size:14px;line-height:1.8;color:#5A6963">固定の payTo では、売上・成長率・大口顧客への依存度を誰でもグラフ化できます。SubEtha は支払者単位の追跡可能性を断ち、顧客ごとの入金をチェーンから読み取れなくします。</p>
       </div>
       <div style="background:#0D1A17;border-radius:14px;padding:28px 30px;display:flex;flex-direction:column;gap:11px;justify-content:center">
         <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:18px;font-weight:700;color:#FFFFFF">あなたのエージェントは？あなたのAPIは？</div>
@@ -599,7 +738,7 @@
       <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E3E9E6;border-radius:14px;padding:6px 28px">
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">これはミキサーや匿名決済ですか？<span style="color:#0E7A6A">+</span></summary>
-          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。支払いの両端はどちらも見えたままです — エージェントがトークンを支払ったことも、プロバイダの口座（treasury）に入金があったことも、チェーン上で誰でも確認できます。決して現れないのは、その2つを結ぶ対応関係 — どの支払いがどの入金になったのか — だけです。目指すのは企業AIエージェント向けの秘匿マシン決済であって匿名化ではなく、view key による監査可能な開示もロードマップに明記しています。</p>
+          <p style="margin:12px 0 0;font-size:14.5px;line-height:1.85;color:#5A6963">いいえ。支払いの両端はどちらも見えたままです — エージェントがトークンを支払ったことも、プロバイダの口座（treasury）に入金があったことも、チェーン上で誰でも確認できます。オンチェーンに書かれないのは、その2つを直接結ぶ対応関係 — どの支払いがどの入金になったのか — です。目指すのはAIエージェントとその運用主体のための秘匿マシン決済であって匿名化ではなく、view key による監査可能な開示はロードマップ上の計画です。</p>
         </details>
         <details style="border-bottom:1px solid #EEF3F1;padding:20px 0">
           <summary style="cursor:pointer;font-size:15.5px;font-weight:600;color:#14201C;display:flex;justify-content:space-between;gap:16px">x402 の統合方法は変わりますか？<span style="color:#0E7A6A">+</span></summary>
@@ -663,7 +802,7 @@
       <div class="g-road" style="display:grid;grid-template-columns:120px 1fr;gap:28px;padding:26px 0;border-top:1px solid #E3E9E6">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#0E7A6A;font-weight:600">DISCOVERY</div>
         <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:17px;font-weight:700;color:#14201C">デザインパートナー — 現在並走</div>
+          <div style="font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:17px;font-weight:700;color:#14201C">デザインパートナー — 現在募集中</div>
           <p style="margin:0;font-size:14.5px;line-height:1.8;color:#5A6963">金融リサーチチーム、データプロバイダ、エージェント開発者と、支払い履歴が戦略を漏らす問題を今の段階から検証します。企業管理機能やProvider統合の優先順位は、この検証結果から決めます。</p>
         </div>
       </div>
@@ -708,8 +847,8 @@
   <section id="contact-ja" style="background:#0D1A17">
     <div style="max-width:1120px;margin:0 auto;padding:88px 32px;display:flex;flex-direction:column;gap:26px;align-items:flex-start">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#7EE2C0;font-weight:600">Contact</div>
-      <h2 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:34px;line-height:1.35;letter-spacing:-0.01em;font-weight:700;color:#FFFFFF;max-width:26ch;text-wrap:pretty">AIエージェント向けのサービスを提供していますか？</h2>
-      <p style="margin:0;font-size:16px;line-height:1.85;color:#9DB3AC;max-width:56ch;text-wrap:pretty">SubEthaは、AIエージェントがAPIやデータサービスを利用するための、秘匿性を備えた決済レイヤーです。AIエージェントを開発・運用している方、エージェント向けのサービスを提供している方、この領域に関心のある方とお話ししたいと考えています。デモやコードについて、ぜひお気軽にご連絡ください。</p>
+      <h2 style="margin:0;font-family:'Space Grotesk','IBM Plex Sans JP',sans-serif;font-size:34px;line-height:1.35;letter-spacing:-0.01em;font-weight:700;color:#FFFFFF;max-width:26ch;text-wrap:pretty">PoC を動かして、足りない点を教えてください。</h2>
+      <p style="margin:0;font-size:16px;line-height:1.85;color:#9DB3AC;max-width:56ch;text-wrap:pretty">SubEtha は、zERC20 で精算する private x402 決済のオープンソース・ローカルリファレンス実装です。AIエージェントを開発している方、x402 を試している方、有料APIを提供している方、プライバシーや決済インフラに取り組むエンジニアの方に、PoC を実際に動かし、プロトコル・開発体験・主張のギャップを報告していただきたいと考えています。支出管理・開示・統合など、ロードマップへの要件をお持ちの組織からのご連絡も歓迎します。</p>
       <div style="display:flex;gap:14px;flex-wrap:wrap">
         <a href="mailto:pioneerandf@gmail.com" style="background:#7EE2C0;color:#0D1A17;border-radius:10px;padding:14px 26px;font-size:15px;font-weight:600" class="h-mint-bg">pioneerandf@gmail.com</a>
         <button type="button" data-copy-email="pioneerandf@gmail.com" data-copied-label="コピーしました ✓" data-failed-label="コピーできませんでした" aria-live="polite" style="border:1px solid #2C443D;color:#E8F2EE;border-radius:10px;padding:13px 26px;font-size:15px;font-weight:600;background:transparent;cursor:pointer;font-family:inherit" class="h-outline-mint">アドレスをコピー</button>
