@@ -12,7 +12,7 @@ Status: Claude Design 移植版（v3）。旧 vision-led 版（`feat/vision-led-
 Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` / `<sc-if>` / `{{ props }}` / `style-hover` / DCLogic）に依存するため、次の変換で静的化した:
 
 - `<sc-if isEn/isJa>` の2ツリーを `#page-en` / `#page-ja` として両方DOMに保持し、`hidden` 属性で切り替え。言語ボタンは `data-lang` + `aria-pressed`、選択は `localStorage`（キー `subetha-lp-lang`）に永続化。DCLogic の挙動と同等。
-- props のデフォルト値を焼き込み: contact = `pioneerandf@gmail.com`、GitHub = `github.com/peaceandwhisky/SubEtha`、X = `x.com/peaceandwhisky`。
+- props のデフォルト値を焼き込み: contact = `contact@subethalabs.com`、GitHub = `github.com/peaceandwhisky/SubEtha`、X = `x.com/subethalabs`。
 - `style-hover` 属性 → ホバー用CSSクラス（`.h-*`、インラインスタイルに勝つため `!important`）。
 - JA ツリーのセクションIDに `-ja` サフィックスを付与し、ID重複とアンカー不整合を解消。
 - デザインには無いレスポンシブ（960px / 600px でグリッド折り畳み・ナビ横スクロール）、focus-visible、`prefers-reduced-motion` を追加。CI の必須マーカーを維持。

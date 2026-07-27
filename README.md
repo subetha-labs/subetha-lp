@@ -40,7 +40,7 @@ Open `http://127.0.0.1:4173/`.
 CI（`.github/workflows/validate.yml`）が PR / main push で以下を検証:
 
 - `<!doctype html>` 先頭・`<html lang="en">`・EN/JA スイッチマーカー・`aria-pressed`・`prefers-reduced-motion`
-- 連絡先が人間承認済みアドレス（`mailto:pioneerandf@gmail.com`）のままであること
+- 連絡先が人間承認済みアドレス（`mailto:contact@subethalabs.com`）のままであること
 - HTML パース・資格情報らしき文字列の混入なし
 
 ブラウザでのデスクトップ/モバイル描画、EN/JA遷移、キーボード操作、コンソールエラーの確認は引き続き人間レビューの対象です。
