@@ -35,6 +35,21 @@
   .h-outline-mint:hover { border-color: #7EE2C0 !important; color: #7EE2C0 !important; }
   .h-mint:hover { color: #7EE2C0 !important; }
   .brand-wordmark { display:block;width:96px;height:auto; }
+  .nav-links a, .hdr-docs { white-space: nowrap; }
+  .nav-more { position: relative; }
+  .nav-more > summary { cursor: pointer; color: #5A6963; white-space: nowrap; }
+  .nav-more[open] > summary { color: #14201C; }
+  .nav-caret { display: inline-block; font-size: 10px; transition: transform 0.2s ease; }
+  .nav-more[open] .nav-caret, .nav-menu[open] .nav-caret { transform: rotate(180deg); }
+  .nav-panel { position: absolute; z-index: 60; display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #E3E9E6; border-radius: 12px; box-shadow: 0 22px 48px -20px rgba(13,26,23,0.3); padding: 8px; }
+  .nav-more > .nav-panel { top: calc(100% + 12px); left: -10px; min-width: 150px; }
+  .nav-panel a { color: #5A6963; font-size: 13.5px; font-weight: 500; padding: 8px 12px; border-radius: 8px; white-space: nowrap; }
+  .nav-panel a:hover { color: #14201C; background: #F1F5F3; }
+  .nav-menu { display: none; }
+  .nav-menu > summary { cursor: pointer; display: inline-flex; align-items: center; gap: 7px; border: 1px solid #D4DDDA; border-radius: 999px; padding: 7px 15px; background: #FFFFFF; color: #14201C; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .nav-menu > .nav-panel { left: 0; right: 0; top: 100%; border-radius: 0 0 14px 14px; border-left: none; border-right: none; border-top: 1px solid #EDF1EF; background: #FBFCFC; padding: 10px 20px 18px; gap: 2px; max-height: calc(100vh - 72px); overflow: auto; box-shadow: 0 28px 48px -24px rgba(13,26,23,0.3); }
+  .nav-menu .nav-panel a { font-size: 14.5px; padding: 11px 8px; }
+  .nav-panel-group { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid #E3E9E6; margin-top: 8px; padding-top: 10px; }
   #scroll-progress { position:fixed;top:0;left:0;z-index:100;width:100%;height:3px;pointer-events:none;background:transparent; }
   #scroll-progress > span { display:block;width:0;height:100%;background:#0E7A6A;transform-origin:left center;transition:width 0.12s linear; }
   html.motion-ready .scroll-reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
@@ -53,12 +68,15 @@
     .g-hero, .g-2, .g-3, .g-split, .g-demo { grid-template-columns: 1fr !important; }
     .g-5 { grid-template-columns: 1fr 1fr !important; }
     .g-hero { gap: 40px !important; padding-top: 56px !important; padding-bottom: 56px !important; }
-    .hdr-in { flex-wrap: wrap; row-gap: 10px; }
-    .nav-links { order: 3; width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 2px; }
+    .nav-links { display: none !important; }
+    .hdr-docs { display: none !important; }
+    .nav-menu { display: block; }
   }
   @media (max-width: 600px) {
-    .hdr-in { padding: 13px 20px !important; gap: 10px 14px !important; }
-    .g-5, .nav-links { grid-template-columns: 1fr !important; }
+    .hdr-in { padding: 13px 20px !important; gap: 12px !important; flex-wrap: wrap; row-gap: 10px; }
+    .hdr-github { display: none !important; }
+    .brand-wordmark { width: 86px; }
+    .g-5 { grid-template-columns: 1fr !important; }
     .g-road { grid-template-columns: 1fr !important; gap: 8px !important; }
     h1 { font-size: 34px !important; line-height: 1.2 !important; }
     h2 { font-size: 27px !important; line-height: 1.3 !important; }
@@ -66,6 +84,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     details > summary > span { transition: none; }
+    .nav-caret { transition: none; }
   }
 </style>
 </head>
@@ -73,26 +92,49 @@
 <div id="scroll-progress" aria-hidden="true"><span></span></div>
 <div id="page-en" lang="en" style="min-height:100vh">
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
-    <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
+    <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:22px">
       <a href="#top" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
-      <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
-        <a href="#visibility" style="color:#5A6963" class="h-ink">Visibility</a>
+      <nav class="nav-links" aria-label="Primary" style="display:flex;align-items:center;gap:20px;font-size:13.5px;font-weight:500">
         <a href="#problem" style="color:#5A6963" class="h-ink">Problem</a>
         <a href="#how" style="color:#5A6963" class="h-ink">How it works</a>
         <a href="#demo" style="color:#5A6963" class="h-ink">Demo</a>
         <a href="#status" style="color:#5A6963" class="h-ink">Status</a>
-        <a href="#usecases" style="color:#5A6963" class="h-ink">Use cases</a>
         <a href="#faq" style="color:#5A6963" class="h-ink">FAQ</a>
-        <a href="#articles" style="color:#5A6963" class="h-ink">Articles</a>
-        <a href="#roadmap" style="color:#5A6963" class="h-ink">Roadmap</a>
-        <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener" style="color:#5A6963" class="h-ink">Documentation ↗</a>
+        <details class="nav-more">
+          <summary class="h-ink">More <span class="nav-caret" aria-hidden="true">▾</span></summary>
+          <div class="nav-panel">
+            <a href="#visibility">Visibility</a>
+            <a href="#usecases">Use cases</a>
+            <a href="#articles">Articles</a>
+            <a href="#roadmap">Roadmap</a>
+          </div>
+        </details>
       </nav>
       <div style="flex:1"></div>
+      <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener" style="color:#5A6963;font-size:13.5px;font-weight:500" class="hdr-docs h-ink">Documentation ↗</a>
       <div style="display:flex;border:1px solid #E3E9E6;border-radius:999px;overflow:hidden;font-size:12px;font-weight:600">
         <button type="button" data-lang="en" aria-pressed="true" style="border:none;cursor:pointer;padding:6px 14px;background:#14201C;color:#FFFFFF;font-family:inherit;font-size:12px;font-weight:600">EN</button>
         <button type="button" data-lang="ja" aria-pressed="false" style="border:none;cursor:pointer;padding:6px 14px;background:transparent;color:#5A6963;font-family:inherit;font-size:12px;font-weight:600" class="h-ink">日本語</button>
       </div>
-      <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#14201C;color:#FFFFFF;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600" class="h-teal-dark">GitHub ↗</a>
+      <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#14201C;color:#FFFFFF;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600" class="hdr-github h-teal-dark">GitHub ↗</a>
+      <details class="nav-menu">
+        <summary>Menu <span class="nav-caret" aria-hidden="true">▾</span></summary>
+        <div class="nav-panel">
+          <a href="#visibility">Visibility</a>
+          <a href="#problem">Problem</a>
+          <a href="#how">How it works</a>
+          <a href="#demo">Demo</a>
+          <a href="#status">Status</a>
+          <a href="#usecases">Use cases</a>
+          <a href="#faq">FAQ</a>
+          <a href="#articles">Articles</a>
+          <a href="#roadmap">Roadmap</a>
+          <div class="nav-panel-group">
+            <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener">Documentation ↗</a>
+            <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -474,26 +516,49 @@
 
 <div id="page-ja" lang="ja" style="min-height:100vh" hidden>
   <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.88);backdrop-filter:blur(12px);border-bottom:1px solid #E3E9E6">
-    <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:28px">
+    <div class="hdr-in" style="max-width:1120px;margin:0 auto;padding:13px 32px;display:flex;align-items:center;gap:22px">
       <a href="#top-ja" aria-label="SubEtha home"><img class="brand-wordmark" src="assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
-      <nav class="nav-links" style="display:flex;gap:22px;font-size:13.5px;font-weight:500">
-        <a href="#visibility-ja" style="color:#5A6963" class="h-ink">見える範囲</a>
+      <nav class="nav-links" aria-label="メインナビゲーション" style="display:flex;align-items:center;gap:20px;font-size:13.5px;font-weight:500">
         <a href="#problem-ja" style="color:#5A6963" class="h-ink">課題</a>
         <a href="#how-ja" style="color:#5A6963" class="h-ink">仕組み</a>
         <a href="#demo-ja" style="color:#5A6963" class="h-ink">デモ</a>
         <a href="#status-ja" style="color:#5A6963" class="h-ink">現在地</a>
-        <a href="#usecases-ja" style="color:#5A6963" class="h-ink">ユースケース</a>
         <a href="#faq-ja" style="color:#5A6963" class="h-ink">FAQ</a>
-        <a href="#articles-ja" style="color:#5A6963" class="h-ink">記事</a>
-        <a href="#roadmap-ja" style="color:#5A6963" class="h-ink">ロードマップ</a>
-        <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener" style="color:#5A6963" class="h-ink">技術Docs ↗</a>
+        <details class="nav-more">
+          <summary class="h-ink">その他 <span class="nav-caret" aria-hidden="true">▾</span></summary>
+          <div class="nav-panel">
+            <a href="#visibility-ja">見える範囲</a>
+            <a href="#usecases-ja">ユースケース</a>
+            <a href="#articles-ja">記事</a>
+            <a href="#roadmap-ja">ロードマップ</a>
+          </div>
+        </details>
       </nav>
       <div style="flex:1"></div>
+      <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener" style="color:#5A6963;font-size:13.5px;font-weight:500" class="hdr-docs h-ink">技術Docs ↗</a>
       <div style="display:flex;border:1px solid #E3E9E6;border-radius:999px;overflow:hidden;font-size:12px;font-weight:600">
         <button type="button" data-lang="en" aria-pressed="false" style="border:none;cursor:pointer;padding:6px 14px;background:transparent;color:#5A6963;font-family:inherit;font-size:12px;font-weight:600" class="h-ink">EN</button>
         <button type="button" data-lang="ja" aria-pressed="true" style="border:none;cursor:pointer;padding:6px 14px;background:#14201C;color:#FFFFFF;font-family:inherit;font-size:12px;font-weight:600">日本語</button>
       </div>
-      <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#14201C;color:#FFFFFF;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600" class="h-teal-dark">GitHub ↗</a>
+      <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#14201C;color:#FFFFFF;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:600" class="hdr-github h-teal-dark">GitHub ↗</a>
+      <details class="nav-menu">
+        <summary>メニュー <span class="nav-caret" aria-hidden="true">▾</span></summary>
+        <div class="nav-panel">
+          <a href="#visibility-ja">見える範囲</a>
+          <a href="#problem-ja">課題</a>
+          <a href="#how-ja">仕組み</a>
+          <a href="#demo-ja">デモ</a>
+          <a href="#status-ja">現在地</a>
+          <a href="#usecases-ja">ユースケース</a>
+          <a href="#faq-ja">FAQ</a>
+          <a href="#articles-ja">記事</a>
+          <a href="#roadmap-ja">ロードマップ</a>
+          <div class="nav-panel-group">
+            <a href="https://docs.subethalabs.com/" target="_blank" rel="noopener">技術Docs ↗</a>
+            <a href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </details>
     </div>
   </header>
 
@@ -887,6 +952,7 @@
       buttons[i].setAttribute('aria-pressed', String(buttons[i].getAttribute('data-lang') === lang));
     }
     try { localStorage.setItem('subetha-lp-lang', lang); } catch (e) {}
+    closeNavMenus(null);
     if (window.requestAnimationFrame && pages[lang]) {
       window.requestAnimationFrame(function () { markVisibleInViewport(pages[lang]); });
     }
@@ -897,6 +963,32 @@
       btn.addEventListener('click', function () { setLang(btn.getAttribute('data-lang')); });
     })(buttons[i]);
   }
+  var navMenus = document.querySelectorAll('details.nav-more, details.nav-menu');
+  function closeNavMenus(except) {
+    for (var i = 0; i < navMenus.length; i++) {
+      if (navMenus[i] !== except && navMenus[i].open) navMenus[i].removeAttribute('open');
+    }
+  }
+  for (var n = 0; n < navMenus.length; n++) {
+    (function (menu) {
+      menu.addEventListener('toggle', function () { if (menu.open) closeNavMenus(menu); });
+      menu.addEventListener('keydown', function (e) {
+        if ((e.key === 'Escape' || e.key === 'Esc') && menu.open) {
+          menu.removeAttribute('open');
+          var s = menu.querySelector('summary');
+          if (s) s.focus();
+        }
+      });
+      var menuLinks = menu.querySelectorAll('a');
+      for (var m = 0; m < menuLinks.length; m++) {
+        menuLinks[m].addEventListener('click', function () { menu.removeAttribute('open'); });
+      }
+    })(navMenus[n]);
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!(t && t.closest && t.closest('details.nav-more, details.nav-menu'))) closeNavMenus(null);
+  });
   var copyBtns = document.querySelectorAll('[data-copy-email]');
   for (var j = 0; j < copyBtns.length; j++) {
     (function (btn) {

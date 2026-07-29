@@ -1,0 +1,2 @@
+**Blocker**
+- P0: `.gstack/` still exists in the worktree and contains session artifacts, including [.gstack/terminal-internal-token](/Users/peaceandwhisky/.worktrees/subetha/lp-header-cleanup/.gstack/terminal-internal-token:1). This contradicts the workflow note’s removal claim and violates the “no credential artifacts remain” requirement. Remove `.gstack/` from the repo/worktree before approval.
