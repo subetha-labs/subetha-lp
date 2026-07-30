@@ -26,7 +26,7 @@ Claude Design のコンポーネント形式は独自ランタイム（`<x-dc>` 
 - 技術記事の導線をEN/JA双方に追加。Zenn記事（`https://zenn.dev/peaceandwhisky/articles/6f0b8b672a6f78`）とMedium記事（`https://takuyafujita.medium.com/your-ai-agents-payment-log-is-its-strategy-log-subetha-hides-who-paid-whom-8a5fde719093`）をリンク化した。
 - JAヒーローの訴求を「APIの支払いは、公開のまま。／支払者と提供者のつながりは、直接は見えない。」へ変更。Fable相当の独立レビューで、抽象的な「リンクは消える」や匿名決済を想起させる表現を避け、支払い自体は公開される一方、payerとproviderの対応関係が直接は見えないというclaim boundaryを先に伝える案を採用した。
 - スクロール体験を強化。固定の進捗バー、IntersectionObserverによるセクション／カード／ロードマップ行の段階的なreveal、EN/JA切替後の表示状態再計算を追加。JavaScript非対応時の表示フォールバックと`prefers-reduced-motion`対応を維持し、演出が情報理解を邪魔しない範囲に限定した。
-- デザイン原本からの意図的なUX変更: Hero「Get in touch / 連絡する」とユースケースカード「Tell us about it → / 相談する →」の `mailto:` を Contact セクションへのページ内アンカーに変更（ラベルからメール起動が予測できず、メールクライアント未設定のデスクトップで離脱要因になるため）。Contact セクションにはアドレスのコピー用ボタンを追加（Clipboard API + `execCommand` フォールバック）。`mailto:` はアドレスがラベルに明示された Contact ボタンとフッターのみに残す。
+- デザイン原本からの意図的なUX変更: Hero「Get in touch / 連絡する」とユースケースカード「Tell us about it → / 相談する →」の `mailto:` を Contact セクションへのページ内アンカーに変更（ラベルからメール起動が予測できず、メールクライアント未設定のデスクトップで離脱要因になるため）。Contact のメールアドレス表示とフッターの Email は `mailto:` を使わず、クリックでコピーするボタンに統一。`⧉ Copy` / `⧉ コピー`、`title`、`aria-label` で操作を明示し、Clipboard API + `execCommand` フォールバックでコピーする。
 
 再生成が必要な場合、変換スクリプトはセッションのスクラッチパッド（`build_lp.py`）にあり、原本はClaude Design側に残っている。手直しは `index.html` を直接編集してよい。
 

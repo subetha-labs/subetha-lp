@@ -32,7 +32,9 @@ jobs:
           assert 'data-lang="ja"' in text, "missing JA switch"
           assert "aria-pressed" in text, "language switch must expose aria-pressed"
           assert "prefers-reduced-motion" in text, "reduced-motion rule is required"
-          assert "mailto:contact@subethalabs.com" in text, "contact must stay the human-approved address"
+          assert "mailto:" not in text, "contact email must not launch a mail client"
+          assert text.count('title="Click to copy"') >= 2, "English copy affordance must be visible"
+          assert text.count('title="クリックでコピー"') >= 1, "Japanese copy affordance must be visible"
           HTMLParser().feed(text)
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
