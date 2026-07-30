@@ -32,7 +32,7 @@ Open `http://127.0.0.1:4173/`.
 - EN / JA 切り替え: `data-lang` ボタン + `aria-pressed`。切り替えで `<html lang>` とタイトルも更新、`localStorage` に永続化。英語が静的デフォルト（`<html lang="en">`）。
 - 言語ごとに独立したDOMツリー（`#page-en` / `#page-ja`）。アンカーIDは JA 側に `-ja` サフィックスを付与して重複を回避。
 - FAQ は `<details>/<summary>` によるネイティブ開閉。
-- Hero とユースケースの CTA は Contact セクションへのページ内アンカー。`mailto:` はアドレスがラベルに見えている Contact ボタンとフッターのみ。Contact にはアドレスのコピー用ボタンあり。
+- Hero とユースケースの CTA は Contact セクションへのページ内アンカー。Contact のメールアドレス表示とフッターの Email はメールクライアントを起動せず、クリックでクリップボードへコピーするボタン。`⧉ Copy` / `⧉ コピー` とツールチップで操作を明示。
 - focus-visible スタイル、`prefers-reduced-motion` 対応、960px / 600px ブレークポイントのレスポンシブ。
 
 ## Verification
@@ -40,7 +40,7 @@ Open `http://127.0.0.1:4173/`.
 CI（`.github/workflows/validate.yml`）が PR / main push で以下を検証:
 
 - `<!doctype html>` 先頭・`<html lang="en">`・EN/JA スイッチマーカー・`aria-pressed`・`prefers-reduced-motion`
-- 連絡先が人間承認済みアドレス（`mailto:contact@subethalabs.com`）のままであること
+- `mailto:` が存在せず、EN/JA の Contact とフッターにコピー用ボタンがあること
 - HTML パース・資格情報らしき文字列の混入なし
 
 ブラウザでのデスクトップ/モバイル描画、EN/JA遷移、キーボード操作、コンソールエラーの確認は引き続き人間レビューの対象です。
