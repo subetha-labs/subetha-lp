@@ -1,12 +1,13 @@
 # SubEtha LP
 
-SubEtha（Private x402 payments, settled on zERC20）の静的ランディングページ。デザインは Claude Design プロジェクト「Subetha LP制作」（`SubEtha LP.dc.html`）で作成し、このリポジトリでは依存なしの静的HTMLとして保守します。
+SubEtha の静的ランディングページ。x402-compatible private machine payments と、現行実装に追加された facilitator / participant-scoped payment history / explicit lifecycle を、依存なしのHTMLとして説明します。
 
 ## Files
 
-- `index.html` — self-contained HTML/CSS/JS LP（EN/JA 両言語を内包）
-- `assets/web-demo.png` — ガイド付き Web デモのスクリーンショット
-- `DESIGN_NOTES.md` — デザインの出自、移植時の変換方針、公開前レビューゲート
+- `index.html` — 現行LP（EN/JA、レスポンシブ、FAQ、言語切替、コピーCTA）
+- `index-v3-previous.html` — 改修前のLP保存版
+- `assets/web-demo.png` — ガイド付きWebデモのスクリーンショット
+- `DESIGN_NOTES.md` — 改修方針・実装内容・公開前ゲート
 
 ## Start locally
 
@@ -16,35 +17,40 @@ python3 -m http.server 4173
 
 Open `http://127.0.0.1:4173/`.
 
-ビルド不要・パッケージインストール不要。Google Fonts（Space Grotesk / IBM Plex）はネットワークがない場合サンセリフのフォールバックで表示されます。
-
 ## Page structure
 
-1. Hero: x402 のHTTP決済フローを保ったまま、zERC20 burn / mint で決済し、支払者と受取プロバイダのオンチェーンリンクを残さないという提案。「What the chain sees」パネル付き。
-2. Problem: 支払いログ＝戦略ログ（エージェント側の行動漏洩・プロバイダ側の売上漏洩）。
-3. How it works: 5ステップフローと、burn と mint がリンクしない理由・導出式。
-4. Demo: 実 zERC20 スタック上のガイド付きブラウザデモ紹介。
-5. Use cases: 金融リサーチ / B2B調達 / トレーディングBot / AIインフラ / APIプロバイダ。
-6. FAQ / Roadmap / Contact / Footer。
-
-## Implemented interactions
-
-- EN / JA 切り替え: `data-lang` ボタン + `aria-pressed`。切り替えで `<html lang>` とタイトルも更新、`localStorage` に永続化。英語が静的デフォルト（`<html lang="en">`）。
-- 言語ごとに独立したDOMツリー（`#page-en` / `#page-ja`）。アンカーIDは JA 側に `-ja` サフィックスを付与して重複を回避。
-- FAQ は `<details>/<summary>` によるネイティブ開閉。
-- Hero とユースケースの CTA は Contact セクションへのページ内アンカー。Contact のメールアドレス表示とフッターの Email はメールクライアントを起動せず、クリックでクリップボードへコピーするボタン。`⧉ Copy` / `⧉ コピー` とツールチップで操作を明示。
-- focus-visible スタイル、`prefers-reduced-motion` 対応、960px / 600px ブレークポイントのレスポンシブ。
+1. Hero — payment/link boundary and public ledger visual
+2. Problem — payer-side strategy leakage / provider-side revenue leakage
+3. Protocol — request → 402 → authorize → accepted → finalized
+4. Operational layer — participant-scoped history and explicit lifecycle
+5. Current scope — facilitator, history, profile gates, roadmap
+6. Use cases — research, providers, agents, trading/procurement, infrastructure
+7. Demo — current guided browser demo
+8. FAQ / Contact
 
 ## Verification
 
-CI（`.github/workflows/validate.yml`）が PR / main push で以下を検証:
+```bash
+python3 - <<'PY'
+from html.parser import HTMLParser
+from pathlib import Path
+p = Path('index.html')
+s = p.read_text()
+HTMLParser().feed(s)
+for marker in ['accepted', 'finalized', 'participant-scoped', 'fail-closed', 'data-lang', 'prefers-reduced-motion']:
+    assert marker in s, marker
+assert 'mailto:' not in s
+print('HTML parser: OK')
+print('bytes:', len(s.encode()))
+PY
+```
 
-- `<!doctype html>` 先頭・`<html lang="en">`・EN/JA スイッチマーカー・`aria-pressed`・`prefers-reduced-motion`
-- `mailto:` が存在せず、EN/JA の Contact とフッターにコピー用ボタンがあること
-- HTML パース・資格情報らしき文字列の混入なし
+ブラウザでEN/JA切替、FAQ、コピーCTA、desktop/mobile幅、console error、画像404、reduced-motionを確認してください。
 
-ブラウザでのデスクトップ/モバイル描画、EN/JA遷移、キーボード操作、コンソールエラーの確認は引き続き人間レビューの対象です。
+## Publication gates
 
-## Publication review gates
-
-公開前に人間が確認すること: zERC20 の名称・公式関係・利用許諾の表現、プロダクション/監査状況に関するクレーム、デモの実挙動と記載の整合、最終的な公開チャネル。
+- zERC20 の名称・公式関係・ライセンス表現
+- 実装済み / testnet-enabled / production-gated / roadmap の分類
+- accepted / finalized、payment history、offline verificationのclaim boundary
+- デモの実挙動と記載の整合
+- 公開チャネルとデプロイ先

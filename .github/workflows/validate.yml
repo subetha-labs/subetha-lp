@@ -33,8 +33,9 @@ jobs:
           assert "aria-pressed" in text, "language switch must expose aria-pressed"
           assert "prefers-reduced-motion" in text, "reduced-motion rule is required"
           assert "mailto:" not in text, "contact email must not launch a mail client"
-          assert text.count('title="Click to copy"') >= 2, "English copy affordance must be visible"
-          assert text.count('title="クリックでコピー"') >= 1, "Japanese copy affordance must be visible"
+          assert 'data-copy="contact@subethalabs.com"' in text, "copy contact affordance is required"
+          for marker in ("accepted", "finalized", "participant-scoped", "fail-closed"):
+            assert marker in text, f"missing current implementation marker: {marker}"
           HTMLParser().feed(text)
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
