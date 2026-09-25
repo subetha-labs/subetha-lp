@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SubEtha Router — Pay with the rail you have</title>
+<meta name="description" content="A router that accepts one payment rail and pays a provider on another. Two self-hosted providers are live: one accepts x402 exact, the other MPP tempo charge. Testnet only, unaudited, not production.">
+<link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/brand/subetha-glyph-favicon-24.png" type="image/png">
+<link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #FBFCFC; color: #1A2522; font-family: 'IBM Plex Sans', 'IBM Plex Sans JP', sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0E7A6A; text-decoration: none; }
+  a:hover { color: #0A5C50; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+  a:focus-visible, button:focus-visible { outline: 2px solid #0E7A6A; outline-offset: 2px; border-radius: 4px; }
+  .h-ink:hover { color: #14201C !important; }
+  .h-teal-dark:hover { background: #0A5C50 !important; color: #FFFFFF !important; }
+  .h-outline-teal:hover { border-color: #0E7A6A !important; color: #0E7A6A !important; }
+  .brand-wordmark { display:block;width:96px;height:auto; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .card { background:#FFFFFF;border:1px solid #E3E9E7;border-radius:14px;padding:24px; }
+  .g-2 { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+  .g-2 > *, .g-3 > *, .g-hero > * { min-width: 0; }
+  .g-3 { display:grid;grid-template-columns:repeat(3,1fr);gap:20px; }
+  .chip { display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px; }
+  .chip-live { background:#E7F7F1;color:#0A5C50; }
+  .chip-soon { background:#F2F4F3;color:#5A6963; }
+  pre { background:#0D1A17;color:#E8F4F0;border-radius:10px;padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.7;margin:0; }
+  pre .c { color:#7EE2C0; }
+  h1 { font-family:'Space Grotesk',sans-serif;font-size:44px;line-height:1.12;letter-spacing:-0.02em;margin:0 0 18px; }
+  h2 { font-family:'Space Grotesk',sans-serif;font-size:28px;line-height:1.2;letter-spacing:-0.01em;margin:0 0 14px; }
+  h3 { font-size:16px;font-weight:600;margin:0 0 8px; }
+  p { line-height:1.75;color:#3C4A45;margin:0 0 14px; }
+  section { padding: 72px 0; border-top: 1px solid #EDF1F0; }
+  table { width:100%;border-collapse:collapse;font-size:14px; }
+  th,td { text-align:left;padding:10px 12px;border-bottom:1px solid #EDF1F0;vertical-align:top; }
+  th { font-weight:600;color:#5A6963;font-size:12px;text-transform:uppercase;letter-spacing:0.04em; }
+  @media (max-width: 860px) {
+    .g-2, .g-3, .g-hero { grid-template-columns: 1fr !important; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 23px; }
+    .nav-links { display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================== EN ============================== -->
+<div id="page-en" lang="en">
+  <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.92);backdrop-filter:blur(8px);border-bottom:1px solid #EDF1F0">
+    <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px">
+      <a href="/" aria-label="SubEtha home"><img class="brand-wordmark" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
+      <nav class="nav-links" style="display:flex;gap:20px;font-size:14px">
+        <a href="#why" style="color:#5A6963" class="h-ink">Why</a>
+        <a href="#try" style="color:#5A6963" class="h-ink">Try it</a>
+        <a href="#how" style="color:#5A6963" class="h-ink">How it works</a>
+        <a href="#status" style="color:#5A6963" class="h-ink">Status</a>
+        <a href="/" style="color:#5A6963" class="h-ink">SubEtha &rarr;</a>
+      </nav>
+      <div style="display:flex;border:1px solid #E3E9E7;border-radius:999px;overflow:hidden">
+        <button type="button" data-lang="en" aria-pressed="true" style="border:none;cursor:pointer;padding:6px 14px;background:#14201C;color:#FFFFFF;font-family:inherit;font-size:12px;font-weight:600">EN</button>
+        <button type="button" data-lang="ja" aria-pressed="false" style="border:none;cursor:pointer;padding:6px 14px;background:transparent;color:#5A6963;font-family:inherit;font-size:12px;font-weight:600" class="h-ink">日本語</button>
+      </div>
+    </div>
+  </header>
+
+  <section id="top" style="border-top:none;padding-top:80px">
+    <div class="wrap">
+      <div class="g-hero" style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:start">
+        <div>
+      <span class="chip chip-soon" style="margin-bottom:18px;display:inline-block">Work in progress &middot; testnet only</span>
+      <h1>Your wallet speaks one<br>payment rail. The API speaks<br>another.</h1>
+      <p style="font-size:18px;max-width:720px">An API can be perfectly good and still be unreachable — not because of the data, but because it settles on a rail your wallet does not hold. SubEtha Router accepts a payment on one rail and pays the provider on another. Two legs, two separate funds. No swap, no bridge.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+        <a href="#try" style="background:#0E7A6A;color:#FFFFFF;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px" class="h-teal-dark">Try the live providers &rarr;</a>
+        <a href="#how" style="border:1px solid #E3E9E7;color:#3C4A45;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px" class="h-outline-teal">How it works</a>
+      </div>
+        </div>
+        <aside class="card" style="align-self:start">
+          <h3 style="margin-bottom:14px">What the chain sees today</h3>
+          <table style="font-size:13px">
+            <tr><td style="padding-left:0">Providers reachable over HTTPS</td><td style="text-align:right;font-weight:600;padding-right:0">2</td></tr>
+            <tr><td style="padding-left:0">Payment rails they speak</td><td style="text-align:right;font-weight:600;padding-right:0">x402 exact &middot; MPP tempo</td></tr>
+            <tr><td style="padding-left:0">Chains settled on</td><td style="text-align:right;font-weight:600;padding-right:0">Base Sepolia &middot; Tempo Moderato</td></tr>
+            <tr><td style="padding-left:0">Price per call</td><td style="text-align:right;font-weight:600;padding-right:0">10000 base units</td></tr>
+            <tr><td style="padding-left:0;border-bottom:none">Seeing the 402 offer</td><td style="text-align:right;font-weight:600;padding-right:0;border-bottom:none">free, no wallet</td></tr>
+          </table>
+          <p style="font-size:12px;color:#5A6963;margin:14px 0 0">Testnet payments. Market data is a read-only mainnet reference.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <h2>The barrier is the rail, not the data</h2>
+      <p style="max-width:760px">Paid APIs are starting to price per call over HTTP 402. That part is converging. What has not converged is <em>how</em> you pay: x402 exact on one chain, MPP tempo charge on another, each with its own asset. Hold the wrong one and a perfectly documented endpoint is simply closed to you.</p>
+      <div class="g-2" style="margin-top:26px">
+        <div class="card">
+          <h3>Without a router</h3>
+          <p style="margin:0">You need the exact asset, on the exact chain, that each provider demands. Two providers, two rails, two funded wallets — before you read a single byte.</p>
+        </div>
+        <div class="card" style="border-color:#CDEBE1;background:#F6FCFA">
+          <h3>With the router</h3>
+          <p style="margin:0">You pay once, on the rail you already hold. The router pays the provider on theirs, from its own funds, and returns the provider's response unchanged.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="wrap">
+      <h2>Two providers are live. Check them yourself.</h2>
+      <p style="max-width:760px">These are self-hosted market-data providers we run. <strong>You do not need a wallet, an account, or our permission to see the payment contract</strong> — an unauthenticated request returns the 402 challenge, which is the whole offer in the open.</p>
+
+      <div class="g-2" style="margin-top:26px">
+        <div class="card">
+          <h3><span class="chip chip-live">Live</span> &nbsp;x402 exact</h3>
+          <p style="font-size:14px">ETH perpetual snapshot (Hyperliquid mark price, 24h change).<br>Base Sepolia &middot; USDC &middot; 10000 base units.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+            <button type="button" data-probe="x402" style="background:#0E7A6A;color:#FFFFFF;border:none;cursor:pointer;padding:9px 16px;border-radius:999px;font-family:inherit;font-weight:600;font-size:13px" class="h-teal-dark">Run it &rarr;</button>
+            <span data-probe-note="x402" style="font-size:12px;color:#5A6963"></span>
+          </div>
+          <pre data-probe-out="x402"><span class="c"># the 402 offer, no payment involved</span>
+curl -si https://provider-x402.subethalabs.com/v1/eth/snapshot \
+  | grep -i payment-required</pre>
+        </div>
+        <div class="card">
+          <h3><span class="chip chip-live">Live</span> &nbsp;MPP tempo charge</h3>
+          <p style="font-size:14px">Uniswap v3 USDC/WETH spot reference.<br>Tempo Moderato (42431) &middot; pathUSD &middot; 10000 base units.</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+            <button type="button" data-probe="mpp" style="background:#0E7A6A;color:#FFFFFF;border:none;cursor:pointer;padding:9px 16px;border-radius:999px;font-family:inherit;font-weight:600;font-size:13px" class="h-teal-dark">Run it &rarr;</button>
+            <span data-probe-note="mpp" style="font-size:12px;color:#5A6963"></span>
+          </div>
+          <pre data-probe-out="mpp"><span class="c"># the 402 challenge, no payment involved</span>
+curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
+  | grep -i www-authenticate</pre>
+        </div>
+      </div>
+
+      <p style="margin-top:22px;font-size:14px;color:#5A6963">Both answer <span class="mono">GET /v1/eth/snapshot</span> and publish <span class="mono">/health</span> and <span class="mono">/manifest</span>. Payment is testnet; the market data is a read-only mainnet reference and is not an executable quote. Neither provider is operated by Hyperliquid or Uniswap.</p>
+
+      <div class="card" style="margin-top:26px;border-color:#E3D9C7;background:#FDFBF6">
+        <h3>Paying for real</h3>
+        <p style="margin:0;font-size:14px">A paid call needs testnet funds on the matching rail — Base Sepolia USDC for the x402 provider, Tempo pathUSD for the MPP one. Both providers have settled real testnet payments end to end. The agent-facing path for doing that through the router is still being built; see <a href="#status">Status</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>Two payments, deliberately unlinked</h2>
+      <p style="max-width:760px">The router does not convert anything. It takes a payment on the inbound rail and makes a <em>separate</em> payment on the outbound rail, each prefunded on its own chain. Calling it a swap or a bridge would be wrong.</p>
+
+      <div class="card mono" style="margin-top:24px;font-size:13px;line-height:2;overflow-x:auto">
+        you &nbsp;&rarr;&nbsp; <strong>pay on the rail you hold</strong> &nbsp;&rarr;&nbsp; SubEtha Router &nbsp;&rarr;&nbsp; <strong>pays the provider on theirs</strong> &nbsp;&rarr;&nbsp; provider's response, unchanged
+      </div>
+
+      <div class="g-3" style="margin-top:26px">
+        <div class="card">
+          <h3>Quote first</h3>
+          <p style="margin:0;font-size:14px">The router reads the provider's live offer before quoting you, so the price you approve is bound to the offer that will actually be paid.</p>
+        </div>
+        <div class="card">
+          <h3>Approve explicitly</h3>
+          <p style="margin:0;font-size:14px">Nothing moves on a conversational turn alone. Approval is bound to a specific quote, and an offer that changes after approval is refused.</p>
+        </div>
+        <div class="card">
+          <h3>At most once</h3>
+          <p style="margin:0;font-size:14px">A durable journal records each purchase. Repeat or concurrent requests do not re-send either leg, and an uncertain outcome stays uncertain rather than retrying blindly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="status">
+    <div class="wrap">
+      <h2>What runs today</h2>
+      <p style="max-width:760px">Stated narrowly on purpose. This is a hackathon-stage implementation: unaudited, testnet only, not production.</p>
+      <table style="margin-top:22px">
+        <tr><th>Piece</th><th>State</th></tr>
+        <tr><td>Two self-hosted providers, publicly reachable over HTTPS</td><td><span class="chip chip-live">Live</span></td></tr>
+        <tr><td>Real testnet settlement to each provider, x402 and MPP</td><td><span class="chip chip-live">Live</span></td></tr>
+        <tr><td>Router paying a provider on the outbound rail</td><td><span class="chip chip-live">Live</span></td></tr>
+        <tr><td>Inbound rail — the payment <em>you</em> make to the router</td><td><span class="chip chip-soon">In progress</span></td></tr>
+        <tr><td>MCP access, so an agent can use the router directly</td><td><span class="chip chip-soon">In progress</span></td></tr>
+        <tr><td>Hosted endpoint you can point an agent at without running anything</td><td><span class="chip chip-soon">Planned</span></td></tr>
+      </table>
+      <p style="margin-top:22px;font-size:14px;color:#5A6963">Setup instructions for agents will land here once the access path is settled, rather than being written ahead of what works.</p>
+    </div>
+  </section>
+
+  <section id="ctx" style="background:#F6F9F8">
+    <div class="wrap">
+      <h2>Why we ended up building this</h2>
+      <p style="max-width:760px">We were building <a href="/">SubEtha</a> — private machine payments for x402, settled on zERC20 — and kept running into the same wall from the other side: a payment method is only as useful as the set of APIs that accept it. Routing is what makes a rail worth holding. The privacy work and this are the same problem approached from two ends.</p>
+      <a href="/" style="display:inline-block;margin-top:10px;font-weight:600">Read about SubEtha &rarr;</a>
+    </div>
+  </section>
+
+  <footer style="padding:40px 0 56px">
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:#5A6963">
+      <span>&copy; SubEtha Labs &middot; Testnet only, unaudited, not production</span>
+      <span style="display:flex;gap:18px">
+        <a href="https://github.com/peaceandwhisky/SubEtha">GitHub</a>
+        <a href="https://x.com/subethalabs">X</a>
+        <a href="/">SubEtha</a>
+      </span>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================== JA ============================== -->
+<div id="page-ja" lang="ja" hidden>
+  <header style="position:sticky;top:0;z-index:50;background:rgba(251,252,252,0.92);backdrop-filter:blur(8px);border-bottom:1px solid #EDF1F0">
+    <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px">
+      <a href="/" aria-label="SubEtha home"><img class="brand-wordmark" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a>
+      <nav class="nav-links" style="display:flex;gap:20px;font-size:14px">
+        <a href="#why-ja" style="color:#5A6963" class="h-ink">背景</a>
+        <a href="#try-ja" style="color:#5A6963" class="h-ink">試す</a>
+        <a href="#how-ja" style="color:#5A6963" class="h-ink">仕組み</a>
+        <a href="#status-ja" style="color:#5A6963" class="h-ink">現在地</a>
+        <a href="/" style="color:#5A6963" class="h-ink">SubEtha &rarr;</a>
+      </nav>
+      <div style="display:flex;border:1px solid #E3E9E7;border-radius:999px;overflow:hidden">
+        <button type="button" data-lang="en" aria-pressed="false" style="border:none;cursor:pointer;padding:6px 14px;background:transparent;color:#5A6963;font-family:inherit;font-size:12px;font-weight:600" class="h-ink">EN</button>
+        <button type="button" data-lang="ja" aria-pressed="true" style="border:none;cursor:pointer;padding:6px 14px;background:#14201C;color:#FFFFFF;font-family:inherit;font-size:12px;font-weight:600">日本語</button>
+      </div>
+    </div>
+  </header>
+
+  <section id="top-ja" style="border-top:none;padding-top:80px">
+    <div class="wrap">
+      <div class="g-hero" style="display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:start">
+        <div>
+      <span class="chip chip-soon" style="margin-bottom:18px;display:inline-block">開発中 &middot; テストネット限定</span>
+      <h1>手元のウォレットと、<br>API が受け付ける支払い方法が<br>噛み合わない。</h1>
+      <p style="font-size:18px;max-width:720px">API の品質に問題がなくても、決済レールが手持ちと違うだけで使えないことがあります。SubEtha Router は、あるレールで支払いを受け取り、別のレールでプロバイダに支払います。2 つのレグは独立した支払いで、交換もブリッジもしません。</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+        <a href="#try-ja" style="background:#0E7A6A;color:#FFFFFF;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px" class="h-teal-dark">公開中のプロバイダを試す &rarr;</a>
+        <a href="#how-ja" style="border:1px solid #E3E9E7;color:#3C4A45;padding:12px 22px;border-radius:999px;font-weight:600;font-size:15px" class="h-outline-teal">仕組みを見る</a>
+      </div>
+        </div>
+        <aside class="card" style="align-self:start">
+          <h3 style="margin-bottom:14px">現在チェーンに見えているもの</h3>
+          <table style="font-size:13px">
+            <tr><td style="padding-left:0">HTTPS で到達できるプロバイダ</td><td style="text-align:right;font-weight:600;padding-right:0">2</td></tr>
+            <tr><td style="padding-left:0">対応する決済レール</td><td style="text-align:right;font-weight:600;padding-right:0">x402 exact &middot; MPP tempo</td></tr>
+            <tr><td style="padding-left:0">決済チェーン</td><td style="text-align:right;font-weight:600;padding-right:0">Base Sepolia &middot; Tempo Moderato</td></tr>
+            <tr><td style="padding-left:0">1 回あたりの価格</td><td style="text-align:right;font-weight:600;padding-right:0">10000 base units</td></tr>
+            <tr><td style="padding-left:0;border-bottom:none">402 提示の確認</td><td style="text-align:right;font-weight:600;padding-right:0;border-bottom:none">無料・ウォレット不要</td></tr>
+          </table>
+          <p style="font-size:12px;color:#5A6963;margin:14px 0 0">決済はテストネット。市場データはメインネットの読み取り専用参照値です。</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="why-ja">
+    <div class="wrap">
+      <h2>障壁はデータではなく、レール</h2>
+      <p style="max-width:760px">有料 API は HTTP 402 で 1 回ごとに課金する形に収束しつつあります。収束していないのは<strong>支払い方法</strong>です。あるチェーンでは x402 exact、別のチェーンでは MPP tempo charge、資産もそれぞれ違う。手持ちが違えば、どれだけ整備された API でも到達できません。</p>
+      <div class="g-2" style="margin-top:26px">
+        <div class="card">
+          <h3>Router がない場合</h3>
+          <p style="margin:0">プロバイダごとに、要求されるチェーンの、要求される資産が要ります。プロバイダが 2 つなら、レールも 2 つ、資金を入れたウォレットも 2 つ。データを 1 バイト読む前の話です。</p>
+        </div>
+        <div class="card" style="border-color:#CDEBE1;background:#F6FCFA">
+          <h3>Router がある場合</h3>
+          <p style="margin:0">手持ちのレールで 1 回支払うだけ。Router が自分の資金でプロバイダ側のレールに支払い、プロバイダの応答をそのまま返します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="try-ja">
+    <div class="wrap">
+      <h2>2 つのプロバイダが公開中です。ご自身で確認できます。</h2>
+      <p style="max-width:760px">いずれも当方が自前でホストしているマーケットデータ提供元です。<strong>ウォレットもアカウントも許可も不要</strong>——認証なしのリクエストを送れば 402 チャレンジが返り、支払い条件がそのまま公開されています。</p>
+
+      <div class="g-2" style="margin-top:26px">
+        <div class="card">
+          <h3><span class="chip chip-live">公開中</span> &nbsp;x402 exact</h3>
+          <p style="font-size:14px">ETH 無期限先物スナップショット（Hyperliquid の mark price と 24 時間変化）。<br>Base Sepolia &middot; USDC &middot; 10000 base units。</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+            <button type="button" data-probe="x402-ja" style="background:#0E7A6A;color:#FFFFFF;border:none;cursor:pointer;padding:9px 16px;border-radius:999px;font-family:inherit;font-weight:600;font-size:13px" class="h-teal-dark">実行する &rarr;</button>
+            <span data-probe-note="x402-ja" style="font-size:12px;color:#5A6963"></span>
+          </div>
+          <pre data-probe-out="x402-ja"><span class="c"># 402 の提示内容。支払いは発生しません</span>
+curl -si https://provider-x402.subethalabs.com/v1/eth/snapshot \
+  | grep -i payment-required</pre>
+        </div>
+        <div class="card">
+          <h3><span class="chip chip-live">公開中</span> &nbsp;MPP tempo charge</h3>
+          <p style="font-size:14px">Uniswap v3 USDC/WETH のスポット参照値。<br>Tempo Moderato (42431) &middot; pathUSD &middot; 10000 base units。</p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+            <button type="button" data-probe="mpp-ja" style="background:#0E7A6A;color:#FFFFFF;border:none;cursor:pointer;padding:9px 16px;border-radius:999px;font-family:inherit;font-weight:600;font-size:13px" class="h-teal-dark">実行する &rarr;</button>
+            <span data-probe-note="mpp-ja" style="font-size:12px;color:#5A6963"></span>
+          </div>
+          <pre data-probe-out="mpp-ja"><span class="c"># 402 チャレンジ。支払いは発生しません</span>
+curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
+  | grep -i www-authenticate</pre>
+        </div>
+      </div>
+
+      <p style="margin-top:22px;font-size:14px;color:#5A6963">どちらも <span class="mono">GET /v1/eth/snapshot</span> で応答し、<span class="mono">/health</span> と <span class="mono">/manifest</span> を公開しています。決済はテストネット、市場データはメインネットの読み取り専用の参照値で、約定可能な気配値ではありません。Hyperliquid・Uniswap が運営するものでもありません。</p>
+
+      <div class="card" style="margin-top:26px;border-color:#E3D9C7;background:#FDFBF6">
+        <h3>実際に支払う場合</h3>
+        <p style="margin:0;font-size:14px">有料リクエストには、該当レールのテストネット資金が要ります（x402 側は Base Sepolia の USDC、MPP 側は Tempo の pathUSD）。両プロバイダとも実テストネット決済を端から端まで通しています。Router を経由してエージェントから支払う経路は構築中です。<a href="#status-ja">現在地</a>をご覧ください。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-ja">
+    <div class="wrap">
+      <h2>2 つの支払いは、意図的に切り離されています</h2>
+      <p style="max-width:760px">Router は資産を変換しません。受信レールで支払いを受け取り、送信レールで<strong>別の</strong>支払いを行います。各レールはそれぞれのチェーンで事前に資金供給されており、交換やブリッジと説明するのは誤りです。</p>
+
+      <div class="card mono" style="margin-top:24px;font-size:13px;line-height:2;overflow-x:auto">
+        利用者 &nbsp;&rarr;&nbsp; <strong>手持ちのレールで支払う</strong> &nbsp;&rarr;&nbsp; SubEtha Router &nbsp;&rarr;&nbsp; <strong>プロバイダ側のレールで支払う</strong> &nbsp;&rarr;&nbsp; プロバイダの応答をそのまま返す
+      </div>
+
+      <div class="g-3" style="margin-top:26px">
+        <div class="card">
+          <h3>先に見積もる</h3>
+          <p style="margin:0;font-size:14px">Router はプロバイダの実提示を読んでから見積もりを出すため、承認する金額は実際に支払われる提示に束縛されます。</p>
+        </div>
+        <div class="card">
+          <h3>明示的に承認する</h3>
+          <p style="margin:0;font-size:14px">会話のやり取りだけでは何も動きません。承認は特定の見積もりに束縛され、承認後に提示が変われば実行を拒否します。</p>
+        </div>
+        <div class="card">
+          <h3>多くとも 1 回</h3>
+          <p style="margin:0;font-size:14px">各購入は耐久的な journal に記録されます。再送・並行要求でもどちらのレグも再実行されず、結果が不確かな場合は不確かなまま保持し、当てずっぽうの再試行をしません。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="status-ja">
+    <div class="wrap">
+      <h2>現在動いているもの</h2>
+      <p style="max-width:760px">意図的に狭く記載しています。ハッカソン段階の実装であり、未監査・テストネット限定・非本番です。</p>
+      <table style="margin-top:22px">
+        <tr><th>項目</th><th>状態</th></tr>
+        <tr><td>自前ホストのプロバイダ 2 つを HTTPS で公開</td><td><span class="chip chip-live">公開中</span></td></tr>
+        <tr><td>各プロバイダへの実テストネット決済（x402 / MPP）</td><td><span class="chip chip-live">動作</span></td></tr>
+        <tr><td>Router から送信レールでプロバイダへ支払う</td><td><span class="chip chip-live">動作</span></td></tr>
+        <tr><td>受信レール——<strong>利用者が Router に支払う</strong>部分</td><td><span class="chip chip-soon">構築中</span></td></tr>
+        <tr><td>MCP 経由でエージェントが Router を直接使う</td><td><span class="chip chip-soon">構築中</span></td></tr>
+        <tr><td>何も起動せずエージェントから指定できるホスト済みエンドポイント</td><td><span class="chip chip-soon">予定</span></td></tr>
+      </table>
+      <p style="margin-top:22px;font-size:14px;color:#5A6963">エージェント向けのセットアップ手順は、アクセス経路が固まってからここに掲載します。動く前に書くことはしません。</p>
+    </div>
+  </section>
+
+  <section id="ctx-ja" style="background:#F6F9F8">
+    <div class="wrap">
+      <h2>なぜこれを作ることになったか</h2>
+      <p style="max-width:760px">私たちは <a href="/">SubEtha</a>——x402 の秘匿マシン決済を zERC20 で精算する仕組み——を作っていて、反対側から同じ壁に何度もぶつかりました。決済手段の有用性は、それを受け付ける API の数で決まります。ルーティングは、そのレールを持つ価値を成立させる部分です。秘匿性の取り組みとこれは、同じ問題を両端から見たものです。</p>
+      <a href="/" style="display:inline-block;margin-top:10px;font-weight:600">SubEtha について読む &rarr;</a>
+    </div>
+  </section>
+
+  <footer style="padding:40px 0 56px">
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13px;color:#5A6963">
+      <span>&copy; SubEtha Labs &middot; テストネット限定・未監査・非本番</span>
+      <span style="display:flex;gap:18px">
+        <a href="https://github.com/peaceandwhisky/SubEtha">GitHub</a>
+        <a href="https://x.com/subethalabs">X</a>
+        <a href="/">SubEtha</a>
+      </span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var pages = { en: document.getElementById('page-en'), ja: document.getElementById('page-ja') };
+  var titles = {
+    en: 'SubEtha Router — Pay with the rail you have',
+    ja: 'SubEtha Router — 手持ちのレールで支払う'
+  };
+  function setLang(lang) {
+    pages.en.hidden = lang !== 'en';
+    pages.ja.hidden = lang !== 'ja';
+    document.documentElement.lang = lang;
+    document.title = titles[lang];
+    var buttons = document.querySelectorAll('[data-lang]');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].setAttribute('aria-pressed', String(buttons[i].getAttribute('data-lang') === lang));
+    }
+    try { localStorage.setItem('subetha-lp-lang', lang); } catch (e) {}
+  }
+  var buttons = document.querySelectorAll('[data-lang]');
+  for (var i = 0; i < buttons.length; i++) {
+    (function (btn) {
+      btn.addEventListener('click', function () { setLang(btn.getAttribute('data-lang')); });
+    })(buttons[i]);
+  }
+  // Same storage key as the main page, so a visitor's language choice carries across.
+  var saved = null;
+  try { saved = localStorage.getItem('subetha-lp-lang'); } catch (e) {}
+  if (saved !== 'en' && saved !== 'ja') {
+    saved = (navigator.language || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+  }
+  setLang(saved);
+})();
+</script>
+
+<script>
+(function () {
+  // Fetch the UNPAID 402 from the live providers and show what actually came back.
+  // No wallet, no credential, no payment: this is the same request any visitor can make with
+  // curl. The providers grant CORS to this origin for unpaid reads only.
+  var RAILS = {
+    'x402':    { url: 'https://provider-x402.subethalabs.com/v1/eth/snapshot', header: 'payment-required' },
+    'mpp':     { url: 'https://provider-mpp.subethalabs.com/v1/eth/snapshot',  header: 'www-authenticate' },
+    'x402-ja': { url: 'https://provider-x402.subethalabs.com/v1/eth/snapshot', header: 'payment-required' },
+    'mpp-ja':  { url: 'https://provider-mpp.subethalabs.com/v1/eth/snapshot',  header: 'www-authenticate' }
+  };
+  var T = {
+    en: { running: 'requesting…', ok: 'live response', fail: 'could not reach the provider — the curl above still works',
+          noHeader: 'responded, but without the expected header' },
+    ja: { running: 'リクエスト中…', ok: '実際の応答', fail: 'プロバイダに到達できませんでした（上の curl は有効です）',
+          noHeader: '応答はありましたが、期待するヘッダがありません' }
+  };
+  function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function decode(header, raw) {
+    try {
+      if (header === 'payment-required') return JSON.parse(atob(raw));
+      // MPP carries its offer in base64url inside the challenge's `request` parameter.
+      var m = /request="([^"]*)"/.exec(raw);
+      if (!m) return null;
+      var b64 = m[1].replace(/-/g,'+').replace(/_/g,'/');
+      return JSON.parse(atob(b64));
+    } catch (e) { return null; }
+  }
+  function run(key, btn) {
+    var rail = RAILS[key];
+    var out = document.querySelector('[data-probe-out="' + key + '"]');
+    var note = document.querySelector('[data-probe-note="' + key + '"]');
+    var lang = key.slice(-3) === '-ja' ? 'ja' : 'en';
+    var t = T[lang];
+    btn.disabled = true;
+    note.textContent = t.running;
+    fetch(rail.url, { method: 'GET' }).then(function (res) {
+      var raw = res.headers.get(rail.header);
+      if (!raw) { note.textContent = t.noHeader; return; }
+      var decoded = decode(rail.header, raw);
+      var lines = 'HTTP ' + res.status + '\n' + rail.header + ': ' + raw.slice(0, 96) + (raw.length > 96 ? '…' : '');
+      if (decoded) lines += '\n\n' + JSON.stringify(decoded, null, 2);
+      out.textContent = lines;
+      note.textContent = t.ok + ' · ' + new Date().toLocaleTimeString();
+    }).catch(function () {
+      note.textContent = t.fail;
+    }).then(function () { btn.disabled = false; });
+  }
+  var btns = document.querySelectorAll('[data-probe]');
+  for (var i = 0; i < btns.length; i++) {
+    (function (btn) {
+      btn.addEventListener('click', function () { run(btn.getAttribute('data-probe'), btn); });
+    })(btns[i]);
+  }
+})();
+</script>
+</body>
+</html>
