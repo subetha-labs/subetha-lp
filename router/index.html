@@ -120,6 +120,11 @@ curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
 <p><strong>Leave a few seconds between payments.</strong> The public x402 facilitator collides with its own pending transactions when calls arrive back to back — measured at 2 failures in 20 with no gap, and 0 in 15 with a three second gap.</p>
 <p><strong>You may see <code>paid_data_unavailable</code>.</strong> That means the payment went through but fetching the data did not, so the funds did move. The Router does not retry on its own, because a blind retry is how you pay twice. Retrying the call works. We hit this on our own first real payment against the hosted endpoint, and the retry delivered. Both legs of the first attempt had already settled on chain.</p>
 </div>
+<div class="split" style="margin-top:52px">
+<div><div class="mono eyebrow">Signing the credential</div><h3>Use the signer if you have it.</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">The <code>credential</code> is an x402 authorization you sign yourself. If you cloned the repository, <code>npm run sign</code> produces it and you can stop reading here.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">If you are calling the endpoint directly and have no checkout, the shape is on the right. Two fields are easy to miss, and leaving either out fails with <code>invalid_payment_header</code>: the <code>accepted</code> object, which is the offer exactly as the Router issued it, and <code>challengeNonce</code> inside <code>payload</code>. The same nonce is the <code>nonce</code> of the EIP-3009 authorization you sign.</p></div>
+<div class="codebox"><div class="mono">The credential, before base64</div><br>{<br>  <span class="accent">"x402Version"</span>: 2,<br>  <span class="accent">"accepted"</span>: { …the offer, verbatim },<br>  <span class="accent">"payload"</span>: {<br>    <span class="accent">"challengeNonce"</span>: "0x…",<br>    "signature": "0x…",<br>    "authorization": { from, to, value,<br>      validAfter, validBefore, nonce }<br>  }<br>}<br><br>base64 the whole object.</div>
+</div>
+
 </div></section>
 
 <section id="faq" class="band section"><div class="wrap faq">
@@ -220,6 +225,11 @@ curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
 <p><strong>決済は数秒空けてください。</strong> 公開の x402 facilitator は、連続して呼ぶと自分の保留中トランザクションと衝突します（実測で、間隔なしでは20回中2回失敗、3秒空けると15回中0回）。</p>
 <p><strong><code>paid_data_unavailable</code> が返ることがあります。</strong> 支払いは成立したがデータ取得に失敗した状態で、<strong>資金は動いています</strong>。安易な再送は二重払いにつながるため、Routerは自動では再試行しません。呼び直せば通ります。ホスト版に対する私たち自身の初回の実決済がこれで、再試行では配信されました。1回目も両レグはオンチェーンで成立済みでした。</p>
 </div>
+<div class="split" style="margin-top:52px">
+<div><div class="mono eyebrow">credential の署名</div><h3>署名ツールがあるなら、それを使う。</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)"><code>credential</code> は自分で署名する x402 の authorization です。リポジトリを clone してあるなら <code>npm run sign</code> が生成するので、ここから先は読まなくて構いません。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">clone せずエンドポイントを直接叩く場合の形が右です。見落としやすいフィールドが2つあり、どちらを欠いても <code>invalid_payment_header</code> で失敗します。Routerが発行した offer をそのまま入れる <code>accepted</code> と、<code>payload</code> 内の <code>challengeNonce</code> です。この nonce は、署名する EIP-3009 authorization の <code>nonce</code> と同じ値です。</p></div>
+<div class="codebox"><div class="mono">base64 前の credential</div><br>{<br>  <span class="accent">"x402Version"</span>: 2,<br>  <span class="accent">"accepted"</span>: { …offer をそのまま },<br>  <span class="accent">"payload"</span>: {<br>    <span class="accent">"challengeNonce"</span>: "0x…",<br>    "signature": "0x…",<br>    "authorization": { from, to, value,<br>      validAfter, validBefore, nonce }<br>  }<br>}<br><br>全体を base64 にする。</div>
+</div>
+
 </div></section>
 
 <section id="faq-ja" class="band section"><div class="wrap faq">
