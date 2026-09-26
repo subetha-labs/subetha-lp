@@ -23,6 +23,11 @@
 .rails .meta{font-size:13px;line-height:1.65;color:var(--muted);margin:0 0 18px}
 .probe{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .probe-note{font:11px var(--mono);letter-spacing:.06em;color:var(--muted)}
+.caveat{border:1px solid var(--line);border-left:3px solid var(--orange);background:var(--paper);padding:24px 26px}
+.caveat p{font-size:15px;line-height:1.75;color:var(--muted);margin:0 0 12px}
+.caveat p:last-child{margin-bottom:0}
+.caveat strong{color:var(--ink)}
+.caveat code{font:13px var(--mono);background:rgba(0,0,0,.05);padding:1px 5px}
 .out{background:var(--navy);color:#cfdfda;padding:18px;font:12px/1.75 var(--mono);overflow:auto;max-height:330px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;min-width:0}
 .out .accent{color:#9cdbbe}
 .live{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
@@ -37,14 +42,14 @@
 </head><body>
 <div id="en">
 <div class="topbar"><div class="wrap"><span>Routing payments across rails · testnet only</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="ja" aria-pressed="false">日本語</button></div><a class="btn btn-dark" href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">Read the code ↗</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="ja" aria-pressed="false">日本語</button></div><a class="btn btn-dark" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">Read the code ↗</a></div></header>
 <main id="top">
 <section class="hero"><div class="wrap hero-grid">
 <div><div class="mono eyebrow">SubEtha Router</div>
 <h1>Your wallet speaks one rail.<br><em>The API speaks another.</em></h1>
 <p class="hero-lede">An API can be perfectly good and still be unreachable — not because of the data, but because it settles on a rail your wallet does not hold. The Router takes a payment on one rail and pays the provider on another. Two legs, two separate funds. No swap, no bridge.</p>
 <div class="hero-actions"><a class="btn btn-green" href="#try">Try the live providers</a><a class="btn btn-light" href="#how">How it works →</a></div>
-<p class="hero-note">Hackathon-stage implementation on testnet. Unaudited, not production. The outbound leg settles for real today; the inbound leg is still being built.</p></div>
+<p class="hero-note">Hackathon-stage implementation on testnet. Unaudited, not production. Both legs settle for real on chain today, and the Router is reachable as a hosted MCP endpoint.</p></div>
 <div class="ledger" data-reveal><div class="ledger-head"><span class="mono">2 rails / 1 request</span><strong>LIVE PROVIDERS</strong></div>
 <div><div class="ledger-line"><span class="ok">X402</span><span>provider-x402<br><small>Base Sepolia · USDC</small></span><strong class="ok">10000</strong></div>
 <div class="ledger-line"><span class="ok">MPP</span><span>provider-mpp<br><small>Tempo Moderato · pathUSD</small></span><strong class="ok">10000</strong></div></div>
@@ -95,40 +100,55 @@ curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
 <div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Two providers, publicly reachable</h3><p>Both serve their 402 over HTTPS and can be inspected by anyone, without a wallet.</p></div><div class="mono muted">verified</div></div>
 <div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Real testnet settlement on both rails</h3><p>x402 exact on Base Sepolia and MPP tempo charge on Tempo Moderato, each settled end to end against the live providers.</p></div><div class="mono muted">verified</div></div>
 <div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Router paying a provider</h3><p>The outbound leg — the Router paying a provider on the provider's own rail — settles for real.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status roadmap">In progress</div><div><h3>The inbound leg</h3><p>The payment you make to the Router. Until this lands, the inbound side runs against a synthetic counterparty, not real funds.</p></div><div class="mono muted">building</div></div>
-<div class="timeline-row" data-reveal><div class="status roadmap">In progress</div><div><h3>MCP access for agents</h3><p>So an agent can discover, quote, approve and pay through the Router directly.</p></div><div class="mono muted">building</div></div>
-<div class="timeline-row" data-reveal><div class="status roadmap">Planned</div><div><h3>A hosted endpoint</h3><p>Something an agent can be pointed at without running anything locally.</p></div><div class="mono muted">next</div></div>
+<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Paying the Router over x402</h3><p>The inbound leg settles on chain with real funds: a caller holding only Base Sepolia USDC reaches a provider that only takes MPP. Both legs are recorded, on two different networks.</p></div><div class="mono muted">verified</div></div>
+<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>MCP access for agents</h3><p>Discover, quote, approve and pay through the Router, over local stdio or the hosted HTTP endpoint. Both have settled real payments.</p></div><div class="mono muted">verified</div></div>
+<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>A hosted endpoint</h3><p>One line of setup, with nothing to clone and no key to place. The Router never holds the caller's key — you sign locally and it receives only the signed credential.</p></div><div class="mono muted">verified</div></div>
+<div class="timeline-row" data-reveal><div class="status roadmap">In progress</div><div><h3>The SubEtha inbound leg</h3><p>Paying the Router through SubEtha's own private rail, rather than x402. This one still runs against a synthetic counterparty, so the privacy claim is not yet settled on chain the way the x402 leg is.</p></div><div class="mono muted">building</div></div>
 </div>
-<p class="hero-note" style="max-width:none;margin-top:26px">Setup instructions for agents will appear here once the access path is settled, rather than being written ahead of what works.</p>
+<p class="hero-note" style="max-width:none;margin-top:26px">Finality (deciding when a payment is canonical) is not implemented, and the existing chat UI has not been verified against this end to end. Both are listed here rather than left for you to discover.</p>
+</div></section>
+
+<section id="use" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">05 / Use it</div><div><h2>Point an agent at it.<br>One line.</h2><p class="section-intro">The Router runs as an MCP server you can register with Claude Code. Nothing to clone, no install, and no key to place anywhere — you sign each payment locally and the Router receives only the signed credential.</p></div></div>
+<div class="split">
+<div><div class="mono eyebrow">What you need</div><h3>About one cent, and no gas.</h3><ul><li><strong>Base Sepolia USDC</strong> — 10000 base units ($0.01) per call. A few calls' worth is plenty.</li><li><strong>No gas.</strong> The x402 EIP-3009 path has the facilitator submit the transaction and pay for it.</li><li>Discovery and quoting are free. Only <code>purchase</code> costs anything.</li></ul><p style="font-size:15px;line-height:1.7;color:var(--muted)">The Router holds no key of yours. Its source reads no private key, from the environment or anywhere else, so a hosted Router cannot spend a caller's funds.</p></div>
+<div class="codebox"><div class="mono">Register the hosted Router</div><br>claude mcp add --transport http \<br>  subetha-router \<br>  <span class="accent">https://router.subethalabs.com/mcp</span><br><br><div class="mono">Then, from the agent</div><br>1. <span class="accent">subetha_router_quote</span><br>   → what you will pay, with decimals<br>2. <span class="accent">subetha_router_purchase</span><br>   → the quote + your signed credential<br>3. <span class="accent">subetha_router_status</span><br>   → the real tx for both legs</div>
+</div>
+<div class="caveat" style="margin-top:40px">
+<p><strong>Two things worth knowing before you try it.</strong></p>
+<p><strong>Leave a few seconds between payments.</strong> The public x402 facilitator collides with its own pending transactions when calls arrive back to back — measured at 2 failures in 20 with no gap, and 0 in 15 with a three second gap.</p>
+<p><strong>You may see <code>paid_data_unavailable</code>.</strong> That means the payment went through but fetching the data did not, so the funds did move. The Router does not retry on its own, because a blind retry is how you pay twice. Retrying the call works. Our own production check hit this on the first attempt and succeeded on the second.</p>
+</div>
 </div></section>
 
 <section id="faq" class="band section"><div class="wrap faq">
-<div class="mono eyebrow">05 / FAQ</div>
+<div class="mono eyebrow">06 / FAQ</div>
 <h2 style="margin:16px 0 38px">The short answers.</h2>
 <details><summary>Is this a swap or a bridge?<span>+</span></summary><p>No. Nothing is converted and nothing crosses a chain. The Router receives a payment on one rail and makes a separate, independently funded payment on the other. The two legs are never exchanged for one another, which is why the balances on each chain have to be prefunded.</p></details>
-<details><summary>What actually settles for real today?<span>+</span></summary><p>The outbound leg — the Router paying a provider on the provider's own rail — settles on testnet against the live providers, on both x402 exact and MPP tempo charge. The inbound leg, the payment you make to the Router, is still being built and currently runs against a synthetic counterparty.</p></details>
+<details><summary>What actually settles for real today?<span>+</span></summary><p>Both legs. A caller paying over x402 on Base Sepolia reaches a provider that only accepts MPP on Tempo, and both payments are recorded on their own chains. What is still synthetic is the SubEtha inbound rail specifically — paying the Router privately, through SubEtha rather than x402 — so that part of the privacy story is not yet settled on chain.</p></details>
+<details><summary>Does the Router hold my key?<span>+</span></summary><p>No. You sign each payment locally and the Router receives only the signed credential. Its source reads no private key, from the environment or anywhere else, so the hosted Router cannot spend a caller's funds even though it settles their payments.</p></details>
 <details><summary>Do I need a wallet to check the providers?<span>+</span></summary><p>Not to read the offer. An unauthenticated GET returns the entire 402 challenge — price, asset, chain, recipient — and that is what the buttons above fetch live. You only need testnet funds on the matching rail if you want to actually pay and receive the data.</p></details>
 <details><summary>Can the Router spend without my approval?<span>+</span></summary><p>Approval is bound to one specific quote. A conversational turn alone moves nothing, and if the provider's offer changes between quoting and paying, the purchase is refused rather than paid at the new terms.</p></details>
 <details><summary>What happens if a request is retried?<span>+</span></summary><p>A durable journal records each purchase, so repeat or concurrent requests re-send neither leg. An outcome that cannot be confirmed is kept as uncertain rather than retried blindly, since a blind retry is how you pay twice.</p></details>
 <details><summary>Is this production software?<span>+</span></summary><p>No. It is a hackathon-stage implementation on testnet, unaudited, and not operated as a service. The market data the providers return is a read-only mainnet reference and is not an executable quote.</p></details>
 </div></section>
 
-<section class="contact"><div class="wrap"><div class="mono">06 / Context</div>
+<section class="contact"><div class="wrap"><div class="mono">07 / Context</div>
 <h2>Why we ended up<br>building this.</h2>
 <p>We were building SubEtha — private machine payments for x402, settled on zERC20 — and kept hitting the same wall from the other side: a payment method is only as useful as the set of APIs that accept it. Routing is what makes a rail worth holding. The privacy work and this are the same problem approached from two ends.</p>
-<div class="contact-actions"><a class="btn btn-dark" href="/">Read about SubEtha →</a><a class="btn btn-light" href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
+<div class="contact-actions"><a class="btn btn-dark" href="/">Read about SubEtha →</a><a class="btn btn-light" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
 </main>
 <footer><div class="wrap"><span>SubEtha Router · testnet only, unaudited, not production</span><a href="/">SubEtha ↗</a></div></footer>
 </div><div id="ja" lang="ja">
 <div class="topbar"><div class="wrap"><span>決済レールをまたぐルーティング · testnet 限定</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ja" aria-pressed="true">日本語</button></div><a class="btn btn-dark" href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">コードを見る ↗</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ja" aria-pressed="true">日本語</button></div><a class="btn btn-dark" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">コードを見る ↗</a></div></header>
 <main id="top-ja">
 <section class="hero"><div class="wrap hero-grid">
 <div><div class="mono eyebrow">SubEtha Router</div>
 <h1>手元のレールと、<br><em>APIのレールが噛み合わない。</em></h1>
 <p class="hero-lede">APIの品質に問題がなくても、決済レールが手持ちと違うだけで到達できません。Routerはあるレールで支払いを受け取り、別のレールでプロバイダに支払います。2つのレグは独立した支払いで、交換もブリッジもしません。</p>
 <div class="hero-actions"><a class="btn btn-green" href="#try-ja">公開中のプロバイダを試す</a><a class="btn btn-light" href="#how-ja">仕組みを見る →</a></div>
-<p class="hero-note">ハッカソン段階の実装です。未監査・テストネット限定・非本番。送信レグは実決済が動いていますが、受信レグは構築中です。</p></div>
+<p class="hero-note">ハッカソン段階の実装です。未監査・テストネット限定・非本番。両レグとも実決済がオンチェーンで成立しており、ホスト済みMCPエンドポイントから利用できます。</p></div>
 <div class="ledger"><div class="ledger-head"><span class="mono">2 rails / 1 request</span><strong>LIVE PROVIDERS</strong></div>
 <div><div class="ledger-line"><span class="ok">X402</span><span>provider-x402<br><small>Base Sepolia · USDC</small></span><strong class="ok">10000</strong></div>
 <div class="ledger-line"><span class="ok">MPP</span><span>provider-mpp<br><small>Tempo Moderato · pathUSD</small></span><strong class="ok">10000</strong></div></div>
@@ -179,28 +199,43 @@ curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
 <div class="timeline-row"><div class="status">動作</div><div><h3>2つのプロバイダを公開</h3><p>どちらも HTTPS で402を返し、ウォレットなしで誰でも検証できます。</p></div><div class="mono muted">検証済み</div></div>
 <div class="timeline-row"><div class="status">動作</div><div><h3>両レールの実テストネット決済</h3><p>Base Sepolia の x402 exact と Tempo Moderato の MPP tempo charge を、公開プロバイダに対して端から端まで通しています。</p></div><div class="mono muted">検証済み</div></div>
 <div class="timeline-row"><div class="status">動作</div><div><h3>Routerからプロバイダへの支払い</h3><p>送信レグ——Routerがプロバイダ側のレールで支払う部分——は実決済が成立しています。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status roadmap">構築中</div><div><h3>受信レグ</h3><p>利用者がRouterに支払う部分です。これが入るまで、受信側は合成の相手に対して動作し、実資金は動きません。</p></div><div class="mono muted">実装中</div></div>
-<div class="timeline-row"><div class="status roadmap">構築中</div><div><h3>エージェント向けMCP</h3><p>エージェントがRouter経由で発見・見積・承認・支払いを直接行えるようにします。</p></div><div class="mono muted">実装中</div></div>
-<div class="timeline-row"><div class="status roadmap">予定</div><div><h3>ホスト済みエンドポイント</h3><p>ローカルで何も起動せずに、エージェントから指定できる形。</p></div><div class="mono muted">次</div></div>
+<div class="timeline-row"><div class="status">動作</div><div><h3>x402でRouterに支払う（受信レグ）</h3><p>受信レグが実資金でオンチェーン成立します。Base Sepolia の USDC しか持たない呼び出し側が、MPPしか受け付けないプロバイダに到達できます。両レグとも別々のネットワーク上に記録が残ります。</p></div><div class="mono muted">検証済み</div></div>
+<div class="timeline-row"><div class="status">動作</div><div><h3>エージェント向けMCP</h3><p>Router経由での発見・見積・承認・支払い。ローカルのstdioと、ホスト版のHTTPの両方で実決済が成立しています。</p></div><div class="mono muted">検証済み</div></div>
+<div class="timeline-row"><div class="status">動作</div><div><h3>ホスト済みエンドポイント</h3><p>セットアップは1行。cloneも鍵の事前配置も不要です。Routerは呼び出し側の鍵を持たず、署名は手元で作られ、サーバには署名済みのcredentialだけが届きます。</p></div><div class="mono muted">検証済み</div></div>
+<div class="timeline-row"><div class="status roadmap">構築中</div><div><h3>SubEthaの受信レグ</h3><p>x402ではなく、SubEtha自身の秘匿レールでRouterに支払う部分です。ここは依然として合成の相手に対して動作するため、秘匿性の主張はx402レグのようにはオンチェーンで成立していません。</p></div><div class="mono muted">実装中</div></div>
 </div>
-<p class="hero-note" style="max-width:none;margin-top:26px">エージェント向けのセットアップ手順は、アクセス経路が固まってからここに掲載します。動く前に書くことはしません。</p>
+<p class="hero-note" style="max-width:none;margin-top:26px">finality（どの時点で決済を確定とみなすか）は未実装で、既存のchat UIとの端から端までの検証も行っていません。後から気づくより先に書いておきます。</p>
+</div></section>
+
+<section id="use-ja" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">05 / 使う</div><div><h2>エージェントから、<br>1行で。</h2><p class="section-intro">RouterはMCPサーバとして動いており、Claude Codeに登録できます。cloneもインストールも、鍵をどこかに置く必要もありません。支払いごとの署名は手元で作られ、Routerには署名済みのcredentialだけが届きます。</p></div></div>
+<div class="split">
+<div><div class="mono eyebrow">必要なもの</div><h3>1セント程度。ガスは不要。</h3><ul><li><strong>Base Sepolia の USDC</strong> — 1回 10000 base units（$0.01）。数回分あれば足ります。</li><li><strong>ガスは不要です。</strong> x402 の EIP-3009 経路では facilitator が送信し、gas を負担します。</li><li>発見と見積は無料です。費用がかかるのは <code>purchase</code> だけです。</li></ul><p style="font-size:15px;line-height:1.7;color:var(--muted)">Routerは利用者の鍵を持ちません。ソースは環境変数を含めどこからも秘密鍵を読まないため、ホスト版のRouterが呼び出し側の資金を動かすことはできません。</p></div>
+<div class="codebox"><div class="mono">ホスト版Routerを登録する</div><br>claude mcp add --transport http \<br>  subetha-router \<br>  <span class="accent">https://router.subethalabs.com/mcp</span><br><br><div class="mono">エージェントからの呼び出し</div><br>1. <span class="accent">subetha_router_quote</span><br>   → 支払う額（decimals つき）<br>2. <span class="accent">subetha_router_purchase</span><br>   → quote と自分で署名した credential<br>3. <span class="accent">subetha_router_status</span><br>   → 両レグの実 tx</div>
+</div>
+<div class="caveat" style="margin-top:40px">
+<p><strong>試す前に知っておくとよいことが2つあります。</strong></p>
+<p><strong>決済は数秒空けてください。</strong> 公開の x402 facilitator は、連続して呼ぶと自分の保留中トランザクションと衝突します（実測で、間隔なしでは20回中2回失敗、3秒空けると15回中0回）。</p>
+<p><strong><code>paid_data_unavailable</code> が返ることがあります。</strong> 支払いは成立したがデータ取得に失敗した状態で、<strong>資金は動いています</strong>。安易な再送は二重払いにつながるため、Routerは自動では再試行しません。呼び直せば通ります。私たち自身の本番確認でも1回目がこれで、2回目は成功しました。</p>
+</div>
 </div></section>
 
 <section id="faq-ja" class="band section"><div class="wrap faq">
-<div class="mono eyebrow">05 / FAQ</div>
+<div class="mono eyebrow">06 / FAQ</div>
 <h2 style="margin:16px 0 38px">短い回答。</h2>
 <details><summary>スワップやブリッジですか？<span>+</span></summary><p>いいえ。何も変換せず、チェーンを跨ぎもしません。あるレールで支払いを受け取り、別のレールで独立に資金手当てされた支払いを行います。2つのレグが互いに交換されることはなく、だからこそ各チェーン上の残高を事前に用意しておく必要があります。</p></details>
-<details><summary>今、実際に決済が動いているのはどこまで？<span>+</span></summary><p>送信レグ——Routerがプロバイダ側のレールで支払う部分——は、公開プロバイダに対して x402 exact と MPP tempo charge の両方でテストネット実決済が成立しています。受信レグ（利用者がRouterに支払う部分）は構築中で、現在は合成の相手に対して動作します。</p></details>
+<details><summary>今、実際に決済が動いているのはどこまで？<span>+</span></summary><p>両レグです。Base Sepolia の x402 で支払う呼び出し側が、Tempo の MPP しか受け付けないプロバイダに到達し、それぞれのチェーンに記録が残ります。まだ合成なのは SubEtha の受信レール——x402 ではなく SubEtha 経由で秘匿的にRouterへ支払う部分——であり、秘匿性に関してはその分がまだオンチェーンで成立していません。</p></details>
+<details><summary>Routerは私の鍵を預かりますか？<span>+</span></summary><p>いいえ。署名は手元で作られ、Routerには署名済みのcredentialだけが届きます。ソースは環境変数を含めどこからも秘密鍵を読まないため、決済を仲介していても、ホスト版のRouterが呼び出し側の資金を動かすことはできません。</p></details>
 <details><summary>プロバイダを確認するのにウォレットは要りますか？<span>+</span></summary><p>提示を読むだけなら不要です。認証なしの GET で402チャレンジ全体——金額・資産・チェーン・受取先——がそのまま返り、上のボタンはそれを実際に取得しています。実際に支払ってデータを受け取る場合のみ、該当レールのテストネット資金が必要です。</p></details>
 <details><summary>承認なしにRouterが支払うことはありますか？<span>+</span></summary><p>承認は特定の見積もり1つに束縛されます。会話のやり取りだけでは何も動かず、見積もりから支払いまでの間にプロバイダの提示が変われば、新しい条件で支払うのではなく拒否します。</p></details>
 <details><summary>リクエストが再送された場合は？<span>+</span></summary><p>各購入は耐久的な journal に記録されるため、再送・並行要求でもどちらのレグも再実行されません。確認できない結果は不確かなまま保持します。安易な再試行こそが二重払いの原因だからです。</p></details>
 <details><summary>本番運用できますか？<span>+</span></summary><p>いいえ。ハッカソン段階のテストネット実装で、未監査、サービスとして運用してもいません。プロバイダが返すマーケットデータは読み取り専用のメインネット参照値であり、執行可能な気配値ではありません。</p></details>
 </div></section>
 
-<section class="contact"><div class="wrap"><div class="mono">06 / 背景</div>
+<section class="contact"><div class="wrap"><div class="mono">07 / 背景</div>
 <h2>なぜこれを<br>作ることになったか。</h2>
 <p>私たちは SubEtha——x402 の秘匿マシン決済を zERC20 で精算する仕組み——を作っていて、反対側から同じ壁にぶつかりました。決済手段の有用性は、それを受け付けるAPIの数で決まります。ルーティングは、そのレールを持つ価値を成立させる部分です。秘匿性の取り組みとこれは、同じ問題を両端から見たものです。</p>
-<div class="contact-actions"><a class="btn btn-dark" href="/">SubEtha について読む →</a><a class="btn btn-light" href="https://github.com/peaceandwhisky/SubEtha" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
+<div class="contact-actions"><a class="btn btn-dark" href="/">SubEtha について読む →</a><a class="btn btn-light" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
 </main>
 <footer><div class="wrap"><span>SubEtha Router · テストネット限定・未監査・非本番</span><a href="/">SubEtha ↗</a></div></footer>
 </div><script>
