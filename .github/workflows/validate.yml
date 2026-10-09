@@ -39,6 +39,7 @@ jobs:
           HTMLParser().feed(text)
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
+          python3 scripts/check-private-source-links.py
 
       - name: Validate Router wallet-free onboarding (offline)
         run: python3 scripts/check-router.py
