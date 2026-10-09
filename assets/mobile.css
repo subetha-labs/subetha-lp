@@ -1,0 +1,91 @@
+/* Shared phone layout. Keep the existing tablet/desktop composition. */
+.mobile-menu,.lang-short{display:none}
+summary:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+
+@media(max-width:560px){
+  .wrap{padding-left:20px;padding-right:20px}
+  header .wrap{position:relative;min-height:64px;gap:8px;flex-wrap:nowrap;padding-top:8px;padding-bottom:8px}
+  header .wrap>a:first-child{display:flex;align-items:center;min-height:44px}
+  header .brand{width:96px}
+  header .wrap>.nav,header .wrap>a:not(:first-child){display:none}
+  header .lang{margin-left:auto}
+  header .lang button{min-width:44px;min-height:44px;padding:0 8px;font-size:12px}
+  .lang-full{display:none}
+  .lang-short{display:inline}
+  .mobile-menu{display:block;white-space:normal}
+  .mobile-menu summary{display:flex;align-items:center;justify-content:center;gap:4px;width:72px;min-height:44px;padding:8px 4px;border:1px solid var(--line);cursor:pointer;font-size:12px;list-style:none}
+  .mobile-menu summary::-webkit-details-marker{display:none}
+  .mobile-menu summary::after{content:'+';font:16px var(--mono)}
+  .mobile-menu[open] summary::after{content:'−'}
+  .mobile-menu nav{position:absolute;top:100%;left:20px;right:20px;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:12px;background:var(--paper);border:1px solid var(--line);box-shadow:0 8px 16px #182b3814;max-height:calc(100dvh - 160px);overflow-y:auto}
+  .mobile-menu nav a{display:flex;align-items:center;min-height:44px;padding:10px 12px;font-size:16px;line-height:1.5;white-space:normal}
+  .mobile-menu nav .btn{grid-column:1 / -1;margin-top:4px}
+  .mobile-menu nav a:hover{background:var(--paper-2);color:var(--green)}
+  /* Keep the notice subordinate to the header, with a distinct, usable link. */
+  .topbar .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding-top:8px;padding-bottom:8px;font-size:12px;line-height:1.5}
+  .topbar span{display:block}
+  .topbar a{display:flex;align-items:center;min-height:44px;max-width:118px}
+  section[id],main[id],#how,#how-ja{scroll-margin-top:80px}
+  .hero{padding:32px 0 44px}
+  .hero-grid,.history,.demo{gap:28px}
+  .hero-grid>*,.section-head>*,.split>*,.history>*,.demo>*{min-width:0}
+  .hero .eyebrow{line-height:1.6;letter-spacing:.08em}
+  .hero h1,#ja .hero h1{font-size:clamp(32px,9.75vw,40px);line-height:1.12;letter-spacing:-.045em;margin:16px 0 20px;word-break:normal;overflow-wrap:normal;text-wrap:balance}
+  #ja .hero h1{line-height:1.3;letter-spacing:-.04em}
+  #ja .hero h1 span,#ja .hero h1 em{white-space:normal}
+  .hero-lede{font-size:16px;line-height:1.65;margin-bottom:24px}
+  .hero-actions{gap:10px}
+  .btn{min-height:44px;max-width:100%;font-size:16px;line-height:1.6;text-align:center;white-space:normal}
+  .hero-note{font-size:14px;line-height:1.65;margin:16px 0 0}
+  .section,.contact{padding:48px 0}
+  .section-head{gap:16px;margin-bottom:28px}
+  .section h2,.history h2,.demo h2,.contact h2{font-size:30px;line-height:1.2;letter-spacing:-.04em;text-wrap:balance;word-break:normal}
+  .section-intro:not(:empty){margin-top:16px}
+  .section-intro,.manifesto p,.flow p,.split p,.split li,.timeline-row p,.history p,.use-grid p,.demo p,.faq p,.contact p,
+  .rails .meta,.caveat p,.scope-note,.evidence p,.instruction p,.advanced p{font-size:16px;line-height:1.65}
+  .manifesto>div{padding:24px 0}
+  .manifesto h3,.split h3,.instruction h3{font-size:23px;line-height:1.3}
+  .split{grid-template-columns:minmax(0,1fr);gap:24px;margin-top:32px}
+  .onboarding{margin-top:0}
+  .flow article{padding:22px 0;min-height:0}
+  .flow h3{margin:12px 0 8px;font-size:20px;line-height:1.3}
+  .timeline-row{padding:22px 0;gap:10px}
+  .timeline-row h3{line-height:1.35}
+  .use-grid article{padding:22px;min-height:0}
+  .use-grid h3{margin:16px 0 10px;line-height:1.3}
+  .ledger{padding:20px;min-height:0;gap:20px}
+  .ledger-head{gap:8px;flex-wrap:wrap;line-height:1.6}
+  .ledger-line{grid-template-columns:64px minmax(0,1fr);gap:8px 12px;padding:16px 0;line-height:1.6}
+  .ledger-line strong{grid-column:2}
+  .ledger-foot{font-size:14px;line-height:1.65;padding-top:0}
+  .receipt{padding:20px}
+  .receipt-top{gap:12px;flex-wrap:wrap;line-height:1.6}
+  .receipt table{font-size:12px}
+  .receipt td{padding:10px 4px;line-height:1.6}
+  .receipt-note{font-size:14px;line-height:1.65}
+  .codebox,.copy-block .codebox{max-width:100%;padding:16px;font-size:13px;line-height:1.75}
+  /* Prose instructions wrap; commands and tables scroll within their own box. */
+  .copy-block pre:not([id^="instruction"]){white-space:pre;overflow-wrap:normal}
+  .rail-table{min-width:360px}
+  .rail-table th,.rail-table td{font-size:14px;line-height:1.6;padding:12px 10px}
+  .rail-table caption{line-height:1.6}
+  .rail-table-wrap{max-width:100%}
+  .rails article{padding:20px}
+  .rails h3{line-height:1.35}
+  .probe,.probe button,.copy-button{width:100%}
+  .instruction{margin-top:28px}
+  .instruction p code,.advanced p code,.caveat code{overflow-wrap:anywhere}
+  .caveat{padding:20px}
+  .demo img{box-shadow:8px 8px 0 #dfe4dc}
+  .faq details{padding:12px 0}
+  .faq summary,.advanced summary{min-height:44px;align-items:center;font-size:16px;line-height:1.6}
+  .faq summary span{flex-shrink:0}
+  .contact-actions{gap:10px;margin-top:24px}
+  .contact-actions .btn{width:100%;padding:12px 8px}
+  footer .wrap{gap:12px;line-height:1.6}
+  footer .footer-links{flex-wrap:wrap;gap:8px 20px}
+  footer a{display:inline-flex;align-items:center;min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){
+  .btn:hover{transform:none}
+}

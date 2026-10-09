@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          # PR base SHAs must be available to the offline preservation/scope guards.
+          fetch-depth: 0
 
       - name: Validate HTML and language switch markers
         run: |
@@ -43,6 +46,23 @@ jobs:
 
       - name: Validate Router wallet-free onboarding (offline)
         run: python3 scripts/check-router.py
+
+      - name: Validate mobile layout contract (offline)
+        run: python3 scripts/check-mobile-layout.py
+
+      - name: Validate mobile scope regression fixtures (offline)
+        run: python3 -B scripts/check-mobile-scope.py
+
+      - name: Validate bounded mobile PR changes (offline)
+        if: github.event_name == 'pull_request'
+        env:
+          MOBILE_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if git diff --quiet "$MOBILE_BASE" -- assets/mobile.css assets/mobile-nav.js scripts/check-mobile-layout.py scripts/check-mobile-scope.py; then
+            echo "No mobile-specific changes; mobile task scope does not apply"
+          else
+            python3 -B scripts/check-router.py --scope mobile --base "$MOBILE_BASE"
+          fi
 
       - name: Check for accidental credentials
         run: |
