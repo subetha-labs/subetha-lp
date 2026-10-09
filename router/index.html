@@ -73,10 +73,12 @@ section[id],#how,#how-ja{scroll-margin-top:100px}
 .advanced summary{cursor:pointer;font-weight:600;min-height:44px}
 @media(max-width:560px){.ledger-head{gap:12px;flex-wrap:wrap}.rail-table th,.rail-table td{padding:12px 8px;font-size:13px}.copy-block .codebox{padding:18px;font-size:12px}}
 </style>
+<link rel="stylesheet" href="../assets/mobile.css">
+<script src="../assets/mobile-nav.js" defer></script>
 </head><body>
 <div id="en">
 <div class="topbar"><div class="wrap"><span>Routing payments across rails · testnet only</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="ja" aria-pressed="false">日本語</button></div><a class="btn btn-dark" href="#use">Try a quote →</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang" role="group" aria-label="Language / 言語"><button type="button" data-lang="en" aria-label="English" aria-pressed="true">EN</button><button type="button" data-lang="ja" aria-pressed="false" aria-label="日本語"><span class="lang-full">日本語</span><span class="lang-short" aria-hidden="true">JA</span></button></div><a class="btn btn-dark" href="#use">Try a quote →</a><details class="mobile-menu"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a><a class="btn btn-dark" href="#use">Try a quote →</a></nav></details></div></header>
 <main id="top">
 <section class="hero"><div class="wrap hero-grid">
 <div><div class="mono eyebrow">SubEtha Router · testnet-only PoC</div>
@@ -96,7 +98,7 @@ section[id],#how,#how-ja{scroll-margin-top:100px}
 </div>
 </div></section><section id="status" class="section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">02 / Scope</div><div><h2>5 payment-rail combinations.<br>4 test networks.</h2><p class="section-intro">10 fixed routes · 20 dynamic profiles in the public listing checked on 2026-10-09. Use the live list for current availability; a listing is not a payment-success guarantee.</p></div></div>
-<div class="rail-table-wrap"><table class="rail-table"><caption>Supported combinations, inbound and outbound</caption><thead><tr><th scope="col">Protocol</th><th scope="col">Test network</th><th scope="col">Asset</th></tr></thead><tbody>
+<div class="rail-table-wrap" tabindex="0" role="region" aria-label="Payment rails"><table class="rail-table"><caption>Supported combinations, inbound and outbound</caption><thead><tr><th scope="col">Protocol</th><th scope="col">Test network</th><th scope="col">Asset</th></tr></thead><tbody>
 <tr><td>x402 exact</td><td>Base Sepolia</td><td>USDC</td></tr>
 <tr><td>x402 exact</td><td>Arc testnet</td><td>USDC</td></tr>
 <tr><td>x402 exact</td><td>Solana devnet</td><td>USDC</td></tr>
@@ -108,11 +110,11 @@ section[id],#how,#how-ja{scroll-margin-top:100px}
 </div></section><section id="use" class="band section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">03 / Try without a wallet</div><div><h2>List. Quote. Stop.</h2><p class="section-intro">No repository clone, wallet, key or Router account is needed. The list and quote tools never initiate payment. Choose an MCP client, or use curl below to list routes without a paid agent client.</p></div></div>
 <div class="split onboarding">
-<div><h3>1 · Connect an MCP client</h3><p>In Claude Code, register the hosted HTTP endpoint with this command.</p><div class="copy-block"><pre class="codebox" id="register"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register" aria-controls="register" aria-describedby="copy-status">Copy command</button></div></div>
-<div><h3>Any compatible MCP client</h3><p>Add this HTTPS MCP endpoint in your client’s connection settings. Client availability and pricing are separate from Router access.</p><div class="copy-block"><pre class="codebox" id="endpoint"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint" aria-controls="endpoint" aria-describedby="copy-status">Copy endpoint</button></div></div>
+<div><h3>1 · Connect an MCP client</h3><p>In Claude Code, register the hosted HTTP endpoint with this command.</p><div class="copy-block"><pre tabindex="0" class="codebox" id="register"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register" aria-controls="register" aria-describedby="copy-status">Copy command</button></div></div>
+<div><h3>Any compatible MCP client</h3><p>Add this HTTPS MCP endpoint in your client’s connection settings. Client availability and pricing are separate from Router access.</p><div class="copy-block"><pre tabindex="0" class="codebox" id="endpoint"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint" aria-controls="endpoint" aria-describedby="copy-status">Copy endpoint</button></div></div>
 </div>
-<div class="instruction"><h3>2 · Ask for one static quote, then stop</h3><p>Paste this instruction into the connected agent. If the example route is no longer listed, it must stop without substituting another route.</p><div class="copy-block"><pre class="codebox" id="instruction"><code>Do not pay. Use only subetha_router_list_routes and subetha_router_quote. First call subetha_router_list_routes. If md-mpp-eth-snapshot is still listed, call subetha_router_quote exactly once with that routeId and a fresh UUID requestId. If it is absent, stop. Explain the source (agent to Router) and destination (Router to provider), including protocol, network, asset, amount, decimals, expiry and fundsMoveOnCredential. Then STOP at the quote. Do not sign, read keys, create a wallet, approve, or call purchase. Do not call any other tools.</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction" aria-controls="instruction" aria-describedby="copy-status">Copy instruction</button></div></div>
-<div class="instruction"><h3>Or: list routes from a terminal</h3><p>This raw HTTP request uses curl only. It lists routes; it does not quote, sign or pay.</p><div class="copy-block"><pre class="codebox" id="curl"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
+<div class="instruction"><h3>2 · Ask for one static quote, then stop</h3><p>Paste this instruction into the connected agent. If the example route is no longer listed, it must stop without substituting another route.</p><div class="copy-block"><pre tabindex="0" class="codebox" id="instruction"><code>Do not pay. Use only subetha_router_list_routes and subetha_router_quote. First call subetha_router_list_routes. If md-mpp-eth-snapshot is still listed, call subetha_router_quote exactly once with that routeId and a fresh UUID requestId. If it is absent, stop. Explain the source (agent to Router) and destination (Router to provider), including protocol, network, asset, amount, decimals, expiry and fundsMoveOnCredential. Then STOP at the quote. Do not sign, read keys, create a wallet, approve, or call purchase. Do not call any other tools.</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction" aria-controls="instruction" aria-describedby="copy-status">Copy instruction</button></div></div>
+<div class="instruction"><h3>Or: list routes from a terminal</h3><p>This raw HTTP request uses curl only. It lists routes; it does not quote, sign or pay.</p><div class="copy-block"><pre tabindex="0" class="codebox" id="curl"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
   -H &#x27;Content-Type: application/json&#x27; \
   -H &#x27;Accept: application/json, text/event-stream&#x27; \
   -H &#x27;MCP-Protocol-Version: 2025-03-26&#x27; \
@@ -124,11 +126,11 @@ section[id],#how,#how-ja{scroll-margin-top:100px}
 <div class="rails">
 <article data-reveal><div class="mono live">Provider A · x402 exact</div><h3>ETH perpetual snapshot</h3><p class="meta">Hyperliquid mark price and 24h change. Base Sepolia · USDC · 10000 base units.</p>
 <div class="probe"><button type="button" class="btn btn-dark" data-probe="x402" aria-controls="probe-x402">View payment requirements (no payment)</button></div>
-<pre class="out" id="probe-x402" data-probe-out="x402" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
+<pre tabindex="0" class="out" id="probe-x402" data-probe-out="x402" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
 Payment requirements appear here.</pre></article>
 <article data-reveal><div class="mono live">Provider B · MPP tempo/charge</div><h3>Uniswap v3 spot reference</h3><p class="meta">USDC/WETH pool reference price. Tempo testnet (42431) · pathUSD · 10000 base units.</p>
 <div class="probe"><button type="button" class="btn btn-dark" data-probe="mpp" aria-controls="probe-mpp">View payment requirements (no payment)</button></div>
-<pre class="out" id="probe-mpp" data-probe-out="mpp" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
+<pre tabindex="0" class="out" id="probe-mpp" data-probe-out="mpp" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
 Payment requirements appear here.</pre></article>
 </div>
 <p class="hero-note wide-note">Both are operated by us, not Hyperliquid or Uniswap. The paid market data is a read-only mainnet reference, not an executable trading quote. These buttons only read payment requirements.</p>
@@ -156,7 +158,7 @@ Payment requirements appear here.</pre></article>
 <footer><div class="wrap"><span>SubEtha Router · testnet only, unaudited, not production</span><a href="/">SubEtha ↗</a></div></footer>
 </div><div id="ja" lang="ja">
 <div class="topbar"><div class="wrap"><span>決済レールをまたぐルーティング · testnet 限定</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ja" aria-pressed="true">日本語</button></div><a class="btn btn-dark" href="#use-ja">見積を試す →</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang" role="group" aria-label="Language / 言語"><button type="button" data-lang="en" aria-label="English" aria-pressed="false">EN</button><button type="button" data-lang="ja" aria-pressed="true" aria-label="日本語"><span class="lang-full">日本語</span><span class="lang-short" aria-hidden="true">JA</span></button></div><a class="btn btn-dark" href="#use-ja">見積を試す →</a><details class="mobile-menu"><summary>メニュー</summary><nav aria-label="モバイルナビゲーション"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a><a class="btn btn-dark" href="#use-ja">見積を試す →</a></nav></details></div></header>
 <main id="top-ja">
 <section class="hero"><div class="wrap hero-grid">
 <div><div class="mono eyebrow">SubEtha Router · テストネット限定 PoC</div>
@@ -176,7 +178,7 @@ Payment requirements appear here.</pre></article>
 </div>
 </div></section><section id="status-ja" class="section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">02 / 対応範囲</div><div><h2>5つの決済レールの組み合わせ。<br>4つのテストネット。</h2><p class="section-intro">2026-10-09 に確認した公開一覧は、10の固定ルート・20の動的プロファイル。現在の可用性は最新の一覧で確認してください。一覧への掲載は決済成功の保証ではありません。</p></div></div>
-<div class="rail-table-wrap"><table class="rail-table"><caption>受信・送信の両方で対応する組み合わせ</caption><thead><tr><th scope="col">プロトコル</th><th scope="col">テストネット</th><th scope="col">資産</th></tr></thead><tbody>
+<div class="rail-table-wrap" tabindex="0" role="region" aria-label="決済レール"><table class="rail-table"><caption>受信・送信の両方で対応する組み合わせ</caption><thead><tr><th scope="col">プロトコル</th><th scope="col">テストネット</th><th scope="col">資産</th></tr></thead><tbody>
 <tr><td>x402 exact</td><td>Base Sepolia</td><td>USDC</td></tr>
 <tr><td>x402 exact</td><td>Arc testnet</td><td>USDC</td></tr>
 <tr><td>x402 exact</td><td>Solana devnet</td><td>USDC</td></tr>
@@ -188,11 +190,11 @@ Payment requirements appear here.</pre></article>
 </div></section><section id="use-ja" class="band section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">03 / ウォレットなしで試す</div><div><h2>一覧。見積。そこで停止。</h2><p class="section-intro">リポジトリの clone、ウォレット、鍵、Router のアカウントは不要です。一覧と見積のツールは支払いを開始しません。MCPクライアントを使うか、下の curl で有料エージェントクライアントなしに一覧を取得できます。</p></div></div>
 <div class="split onboarding">
-<div><h3>1 · MCPクライアントを接続</h3><p>Claude Code では、このコマンドでホスト済みHTTPエンドポイントを登録します。</p><div class="copy-block"><pre class="codebox" id="register-ja"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register-ja" aria-controls="register-ja" aria-describedby="copy-status-ja">登録コマンドをコピー</button></div></div>
-<div><h3>他の対応MCPクライアントでも</h3><p>クライアントの接続設定に、この HTTPS MCP エンドポイントを追加してください。クライアント自体の利用条件・料金は Router への接続とは別です。</p><div class="copy-block"><pre class="codebox" id="endpoint-ja"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint-ja" aria-controls="endpoint-ja" aria-describedby="copy-status-ja">接続先をコピー</button></div></div>
+<div><h3>1 · MCPクライアントを接続</h3><p>Claude Code では、このコマンドでホスト済みHTTPエンドポイントを登録します。</p><div class="copy-block"><pre tabindex="0" class="codebox" id="register-ja"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register-ja" aria-controls="register-ja" aria-describedby="copy-status-ja">登録コマンドをコピー</button></div></div>
+<div><h3>他の対応MCPクライアントでも</h3><p>クライアントの接続設定に、この HTTPS MCP エンドポイントを追加してください。クライアント自体の利用条件・料金は Router への接続とは別です。</p><div class="copy-block"><pre tabindex="0" class="codebox" id="endpoint-ja"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint-ja" aria-controls="endpoint-ja" aria-describedby="copy-status-ja">接続先をコピー</button></div></div>
 </div>
-<div class="instruction"><h3>2 · 固定ルートの見積を1回だけ取り、停止</h3><p>接続したエージェントに次の指示を貼り付けてください。例のルートが一覧になければ、別ルートに置き換えずに停止します。</p><div class="copy-block"><pre class="codebox" id="instruction-ja"><code>支払いはしないでください。使うツールは subetha_router_list_routes と subetha_router_quote だけです。まず subetha_router_list_routes を呼んでください。md-mpp-eth-snapshot がまだ一覧にあれば、その routeId と新しい UUID の requestId で subetha_router_quote を1回だけ呼んでください。なければ停止してください。受信側（エージェント→Router）と送信側（Router→プロバイダ）の protocol・network・asset・金額・decimals・有効期限・fundsMoveOnCredential を説明し、見積で必ず停止してください。署名、鍵の読取、ウォレット作成、承認、purchase はしないでください。他のツールも呼ばないでください。</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction-ja" aria-controls="instruction-ja" aria-describedby="copy-status-ja">指示をコピー</button></div></div>
-<div class="instruction"><h3>または、ターミナルから一覧を取得</h3><p>curl だけで送れるHTTPリクエストです。一覧のみを取得し、見積・署名・支払いは行いません。</p><div class="copy-block"><pre class="codebox" id="curl-ja"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
+<div class="instruction"><h3>2 · 固定ルートの見積を1回だけ取り、停止</h3><p>接続したエージェントに次の指示を貼り付けてください。例のルートが一覧になければ、別ルートに置き換えずに停止します。</p><div class="copy-block"><pre tabindex="0" class="codebox" id="instruction-ja"><code>支払いはしないでください。使うツールは subetha_router_list_routes と subetha_router_quote だけです。まず subetha_router_list_routes を呼んでください。md-mpp-eth-snapshot がまだ一覧にあれば、その routeId と新しい UUID の requestId で subetha_router_quote を1回だけ呼んでください。なければ停止してください。受信側（エージェント→Router）と送信側（Router→プロバイダ）の protocol・network・asset・金額・decimals・有効期限・fundsMoveOnCredential を説明し、見積で必ず停止してください。署名、鍵の読取、ウォレット作成、承認、purchase はしないでください。他のツールも呼ばないでください。</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction-ja" aria-controls="instruction-ja" aria-describedby="copy-status-ja">指示をコピー</button></div></div>
+<div class="instruction"><h3>または、ターミナルから一覧を取得</h3><p>curl だけで送れるHTTPリクエストです。一覧のみを取得し、見積・署名・支払いは行いません。</p><div class="copy-block"><pre tabindex="0" class="codebox" id="curl-ja"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
   -H &#x27;Content-Type: application/json&#x27; \
   -H &#x27;Accept: application/json, text/event-stream&#x27; \
   -H &#x27;MCP-Protocol-Version: 2025-03-26&#x27; \
@@ -204,11 +206,11 @@ Payment requirements appear here.</pre></article>
 <div class="rails">
 <article data-reveal><div class="mono live">Provider A · x402 exact</div><h3>ETH 無期限先物スナップショット</h3><p class="meta">Hyperliquid の mark price と24時間変化。Base Sepolia · USDC · 10000 base units。</p>
 <div class="probe"><button type="button" class="btn btn-dark" data-probe="x402-ja" aria-controls="probe-x402-ja">支払い条件を見る（支払いなし）</button></div>
-<pre class="out" id="probe-x402-ja" data-probe-out="x402-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
+<pre tabindex="0" class="out" id="probe-x402-ja" data-probe-out="x402-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
 支払い条件をここに表示します。</pre></article>
 <article data-reveal><div class="mono live">Provider B · MPP tempo/charge</div><h3>Uniswap v3 スポット参照値</h3><p class="meta">USDC/WETH プールの参照価格。Tempo testnet (42431) · pathUSD · 10000 base units。</p>
 <div class="probe"><button type="button" class="btn btn-dark" data-probe="mpp-ja" aria-controls="probe-mpp-ja">支払い条件を見る（支払いなし）</button></div>
-<pre class="out" id="probe-mpp-ja" data-probe-out="mpp-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
+<pre tabindex="0" class="out" id="probe-mpp-ja" data-probe-out="mpp-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
 支払い条件をここに表示します。</pre></article>
 </div>
 <p class="hero-note wide-note">どちらも当方が運営しており、Hyperliquid・Uniswap による運営ではありません。有料の市場データはメインネットの読み取り専用参照値で、約定可能な気配値ではありません。このボタンで読むのは支払い条件だけです。</p>

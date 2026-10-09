@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ENDPOINT = 'https://router.subethalabs.com/mcp'
@@ -178,33 +179,65 @@ def check_page(source):
     print('ROUTER_STRUCTURE_OK bilingual counts rails commands safety anchors copy-controls A/B-only')
 
 
-def check_scope(base, source):
+def check_scope(base, source, scope='router'):
     allowed = {'router/index.html', 'scripts/check-router.py', '.github/workflows/validate.yml'}
+    if scope == 'mobile':
+        # Exact task files only: never allow assets/** or scripts/** wholesale.
+        allowed |= {'index.html', 'assets/mobile.css', 'assets/mobile-nav.js',
+                    'scripts/check-mobile-layout.py', 'scripts/check-mobile-scope.py'}
     def git(*args):
         return subprocess.check_output(['git', *args], cwd=ROOT, text=True)
     changed = set(git('diff', '--name-only', base, '--').splitlines())
     untracked = set(git('ls-files', '--others', '--exclude-standard').splitlines())
     assert changed | untracked <= allowed, f'Out-of-scope changes: {(changed | untracked) - allowed}'
-    before = git('show', f'{base}:router/index.html')
-    for pattern in (r'<nav\b.*?</nav>', r'<footer\b.*?</footer>',
-                    r'<div class="topbar">.*?</div></div>', r'<img\b[^>]*>'):
-        assert re.findall(pattern, before, re.S) == re.findall(pattern, source, re.S), f'Changed site chrome: {pattern}'
+    pages = ('index.html', 'router/index.html') if scope == 'mobile' else ('router/index.html',)
+    for name in pages:
+        before = git('show', f'{base}:{name}')
+        current = source if name == 'router/index.html' else (ROOT / name).read_text(encoding='utf-8')
+        if scope == 'mobile':
+            script_pattern = r'<script\b[^>]*>.*?</script>'
+            prefix = '../' if name.startswith('router/') else ''
+            mobile_script = f'<script src="{prefix}assets/mobile-nav.js" defer></script>'
+            def original_scripts(html):
+                return [script for script in re.findall(script_pattern, html, re.S)
+                        if script != mobile_script]
+            assert original_scripts(before) == original_scripts(current), f'{name}: changed product scripts'
+            # Only the new native mobile menus are exempt from chrome equality.
+            # Their contract and destinations are checked by the mandatory guard below.
+            menu = r'<details class="mobile-menu">.*?</details>'
+            before = re.sub(menu, '', before, flags=re.S)
+            current = re.sub(menu, '', current, flags=re.S)
+        for pattern in (r'<nav\b.*?</nav>', r'<footer\b.*?</footer>',
+                        r'<div class="topbar">.*?</div></div>', r'<img\b[^>]*>'):
+            assert re.findall(pattern, before, re.S) == re.findall(pattern, current, re.S), f'{name}: Changed site chrome: {pattern}'
     # Track all other files, including unrelated pages and official SVGs, byte for byte.
     for name in git('ls-tree', '-r', '--name-only', base).splitlines():
         if name not in allowed:
             prior = subprocess.check_output(['git', 'show', f'{base}:{name}'], cwd=ROOT)
             assert (ROOT / name).read_bytes() == prior, f'Unrelated file changed: {name}'
-    print(f'ROUTER_SCOPE_OK base={base} unrelated files, navigation, branding and footers unchanged')
+    if scope == 'mobile':
+        # Scope permission does not replace content/product-script or private-link checks.
+        subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/check-mobile-layout.py'),
+                        '--base', base], cwd=ROOT, check=True)
+        subprocess.run([sys.executable, '-B', str(ROOT / 'scripts/check-private-source-links.py')],
+                       cwd=ROOT, check=True)
+        print(f'MOBILE_SCOPE_OK base={base} exact mobile/guard files; original navigation, branding and footers unchanged')
+    else:
+        print(f'ROUTER_SCOPE_OK base={base} unrelated files, navigation, branding and footers unchanged')
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base', help='Local Git revision for bounded-change checks; no network access')
+    parser.add_argument('--scope', choices=('router', 'mobile'), default='router',
+                        help='Bounded change scope (default: router); mobile requires --base and preservation guards')
     args = parser.parse_args()
+    if args.scope == 'mobile' and not args.base:
+        parser.error('--scope mobile requires --base')
     source = (ROOT / 'router/index.html').read_text(encoding='utf-8')
     check_page(source)
     if args.base:
-        check_scope(args.base, source)
+        check_scope(args.base, source, args.scope)
 
 
 if __name__ == '__main__':
