@@ -3,8 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SubEtha Router — Pay with the rail you have</title>
-<meta name="description" content="A router that takes a payment on one rail and pays an API provider on another. Two self-hosted providers are live: one accepts x402 exact, the other MPP tempo charge. Testnet only, unaudited, not production.">
+<title>SubEtha Router — Explore payment routes without a wallet</title>
+<meta name="description" content="Explore 10 fixed routes and 20 dynamic profiles across 5 payment-rail combinations and 4 test networks. List routes and get a quote without a wallet. SubEtha Router is a testnet-only PoC, unaudited and not for production.">
+<meta property="og:title" content="SubEtha Router — Explore payment routes without a wallet">
+<meta property="og:description" content="An agent pays the Router; the Router separately pays the provider. Try wallet-free discovery and a quote. Testnet-only PoC; public local signing setup is being prepared.">
+<meta property="og:url" content="https://subethalabs.com/router/">
 <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/brand/subetha-glyph-favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/brand/apple-touch-icon.png">
@@ -38,247 +41,214 @@
 .chain h3{font-size:17px;margin:34px 0 8px;letter-spacing:-.02em}
 .chain p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
 @media(max-width:900px){.rails{grid-template-columns:1fr}.rails article+article{border-left:0;border-top:1px solid var(--line)}.split{grid-template-columns:1fr;gap:30px}}
+
+/* Keep the brand and language labels intact at narrow widths. */
+header .wrap>a:first-child,.lang,.lang button{flex-shrink:0}
+.lang button{white-space:nowrap}
+#ja .hero h1{font-size:clamp(36px,5.4vw,68px);line-height:1.15}
+#ja .hero h1 span,#ja .hero h1 em{white-space:nowrap}
+@media(max-width:900px){header .wrap{gap:16px}.lang{margin-left:auto}}
+@media(max-width:560px){header .wrap>.btn{display:none}}
+
+/* Readable, copyable wallet-free onboarding within the existing Router design. */
+.hero-grid>*,.split>*{min-width:0}
+section[id],#how,#how-ja{scroll-margin-top:100px}
+.section-intro:not(:empty){margin-top:20px}
+.ledger-foot code{overflow-wrap:anywhere}
+.rail-table-wrap{overflow-x:auto}
+.rail-table{width:100%;border-collapse:collapse;font-size:15px}
+.rail-table caption{text-align:left;color:var(--green);font:12px var(--mono);padding-bottom:16px}
+.rail-table th,.rail-table td{text-align:left;padding:16px 18px;border-bottom:1px solid var(--line)}
+.rail-table thead{background:var(--paper-2)}
+.scope-note,.evidence p,.instruction p,.advanced p{font-size:15px;line-height:1.75;color:var(--muted)}
+.evidence{margin-top:28px}.evidence p{margin-bottom:0}
+.onboarding{margin-top:0}.instruction{margin-top:40px}
+.instruction h3{font-size:24px;letter-spacing:-.03em}
+.copy-block .codebox{white-space:pre-wrap;overflow-wrap:anywhere;margin:16px 0 12px;line-height:1.75}
+.codebox code{font:inherit}
+.copy-button,.probe button{min-height:44px;cursor:pointer}
+.copy-status{min-height:24px;font-size:14px;color:var(--green)}
+.wide-note{max-width:none;margin-top:22px}
+.advanced{margin-top:28px;border-top:1px solid var(--line);padding-top:24px}
+.advanced summary{cursor:pointer;font-weight:600;min-height:44px}
+@media(max-width:560px){.ledger-head{gap:12px;flex-wrap:wrap}.rail-table th,.rail-table td{padding:12px 8px;font-size:13px}.copy-block .codebox{padding:18px;font-size:12px}}
 </style>
 </head><body>
 <div id="en">
 <div class="topbar"><div class="wrap"><span>Routing payments across rails · testnet only</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="ja" aria-pressed="false">日本語</button></div><a class="btn btn-dark" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">Read the code ↗</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why">Why</a><a href="#try">Try it</a><a href="#how">How it works</a><a href="#use">Use it</a><a href="#status">Scope</a><a href="#faq">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="true">EN</button><button data-lang="ja" aria-pressed="false">日本語</button></div><a class="btn btn-dark" href="#use">Try a quote →</a></div></header>
 <main id="top">
 <section class="hero"><div class="wrap hero-grid">
-<div><div class="mono eyebrow">SubEtha Router</div>
-<h1>Your wallet speaks one rail.<br><em>The API speaks another.</em></h1>
-<p class="hero-lede">An API can be perfectly good and still be unreachable — not because of the data, but because it settles on a rail your wallet does not hold. The Router takes a payment on one rail and pays the provider on another. Two legs, two separate funds. No swap, no bridge.</p>
-<div class="hero-actions"><a class="btn btn-green" href="#try">Try the live providers</a><a class="btn btn-light" href="#how">How it works →</a></div>
-<p class="hero-note">Hackathon-stage implementation on testnet. Unaudited, not production. Both legs settle for real on chain today, and the Router is reachable as a hosted MCP endpoint.</p></div>
-<div class="ledger" data-reveal><div class="ledger-head"><span class="mono">2 rails / 1 request</span><strong>LIVE PROVIDERS</strong></div>
-<div><div class="ledger-line"><span class="ok">X402</span><span>provider-x402<br><small>Base Sepolia · USDC</small></span><strong class="ok">$0.01<br><small style="font-weight:400">10000 units</small></strong></div>
-<div class="ledger-line"><span class="ok">MPP</span><span>provider-mpp<br><small>Tempo Moderato · pathUSD</small></span><strong class="ok">$0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
-<div class="ledger-foot">Reading the 402 offer is free and open to anyone. Paying needs testnet funds on that rail.</div></div>
-</div></section>
-
-<section id="why" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">01 / Why</div><div><h2>The barrier is the rail,<br>not the data.</h2><p class="section-intro">Paid APIs are converging on pricing per call over HTTP 402. How you pay has not converged: x402 exact on one chain, MPP tempo charge on another, each with its own asset.</p></div></div>
-<div class="manifesto">
-<div><div class="mono eyebrow">Without a router</div><h3>Hold the wrong asset and the endpoint is closed.</h3><p>You need the exact asset, on the exact chain, that each provider demands. Two providers, two rails, two funded wallets — before you read a single byte.</p></div>
-<div><div class="mono eyebrow">With the router</div><h3>Pay once, on the rail you already hold.</h3><p>The Router pays the provider on theirs, from its own prefunded balance, and hands back the provider's response unchanged.</p></div>
+<div><div class="mono eyebrow">SubEtha Router · testnet-only PoC</div>
+<h1>Pay on your rail.<br><em>Reach an API on another.</em></h1>
+<p class="hero-lede">An agent can pay the Router in Base Sepolia USDC to reach a provider paid in Tempo pathUSD. The Router makes that second payment from its own prefunded balance. Start by exploring routes and a quote, without a wallet.</p>
+<div class="hero-actions"><a class="btn btn-green" href="#use">Try a quote without a wallet</a><a class="btn btn-light" href="#how">How it works →</a></div>
+<p class="hero-note">Testnet-only proof of concept. Unaudited, not for production.</p></div>
+<div class="ledger" data-reveal><div class="ledger-head"><span class="mono">One fixed-route example</span><strong>QUOTE ONLY</strong></div>
+<div><div class="ledger-line"><span class="ok">AGENT →<br>ROUTER</span><span>x402 · Base Sepolia<br><small>USDC · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div>
+<div class="ledger-line"><span class="ok">ROUTER →<br>PROVIDER</span><span>MPP · Tempo testnet<br><small>pathUSD · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
+<div class="ledger-foot"><code>md-mpp-eth-snapshot</code><br>Quote checked 2026-10-09 without payment. Read a fresh quote for current terms.</div></div>
+</div></section><section id="why" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">01 / Why</div><div><h2>Use the rail you hold.</h2><p class="section-intro">A supported payment rail can connect your agent to an API that accepts another, without acquiring the provider’s asset.</p></div></div>
+<div class="manifesto" id="how">
+<div><div class="mono eyebrow">Agent → Router</div><h3>Pay on the source rail.</h3><p>The agent pays the Router using a supported asset and network. Listing routes and requesting a quote never initiate payment.</p></div>
+<div><div class="mono eyebrow">Router → Provider</div><h3>Two independently funded payments.</h3><p>The Router separately pays the provider from its own prefunded balance, then returns the API response. This is not a swap or bridge; it does not guarantee unlinkability or anonymity. The two payments are not atomic.</p></div>
 </div>
-<div class="split">
-<div><div class="mono eyebrow">The mismatch, concretely</div><h3>Same request.<br>Two incompatible answers.</h3><ul><li>Both providers price the same shape of request: one call, 10000 base units.</li><li>Neither will accept the other's asset, and neither runs on the other's chain.</li><li>Holding one of these does not get you the other, so an agent funded for x402 simply cannot read the MPP provider.</li></ul></div>
-<div class="codebox"><div class="mono">What each provider demands</div><br><span class="accent">x402 exact</span><br>  network  eip155:84532 <span class="accent">(Base Sepolia)</span><br>  asset    USDC<br>  amount   10000<br><br><span class="accent">MPP tempo charge</span><br>  chainId  42431 <span class="accent">(Tempo Moderato)</span><br>  currency pathUSD<br>  amount   10000<br><br>Same price. No common rail.</div>
-</div></div></section>
-
-<section id="try" class="section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">02 / Try it</div><div><h2>Two providers are live.<br>Check them yourself.</h2><p class="section-intro">Self-hosted market-data providers we run. You need no wallet, no account and no permission from us to see the payment contract — an unauthenticated request returns the whole offer in the open.</p></div></div>
+</div></section><section id="status" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">02 / Scope</div><div><h2>5 payment-rail combinations.<br>4 test networks.</h2><p class="section-intro">10 fixed routes · 20 dynamic profiles in the public listing checked on 2026-10-09. Use the live list for current availability; a listing is not a payment-success guarantee.</p></div></div>
+<div class="rail-table-wrap"><table class="rail-table"><caption>Supported combinations, inbound and outbound</caption><thead><tr><th scope="col">Protocol</th><th scope="col">Test network</th><th scope="col">Asset</th></tr></thead><tbody>
+<tr><td>x402 exact</td><td>Base Sepolia</td><td>USDC</td></tr>
+<tr><td>x402 exact</td><td>Arc testnet</td><td>USDC</td></tr>
+<tr><td>x402 exact</td><td>Solana devnet</td><td>USDC</td></tr>
+<tr><td>MPP tempo/charge</td><td>Tempo testnet</td><td>pathUSD</td></tr>
+<tr><td>MPP solana/charge</td><td>Solana devnet</td><td>USDC</td></tr>
+</tbody></table></div>
+<p class="scope-note">Same-rail pairs are excluded: 5 × 4 = 20 dynamic profiles. These include different chains using the same protocol, and x402 ↔ MPP on Solana devnet. Fixed routes use operator-selected providers; dynamic profiles let you specify a compatible provider.</p>
+<div class="receipt evidence"><div class="mono eyebrow">Historical testnet evidence · through 2026-10-08</div><p>Through 2026-10-08, all 20 cross-rail pairs have historical hosted-testnet records verifying both payment legs on chain and an API response.</p><details class="advanced" id="verification-scope"><summary>Verification scope</summary><p>Not every attempt succeeded: a paid attempt also ended without usable data. This is historical evidence, not a fresh sweep or a production guarantee. Independent finality checks in those records do not mean the Router automatically verifies finality; its <code>proof.onChainFinality</code> reports <code>not_checked</code>.</p></details></div>
+</div></section><section id="use" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">03 / Try without a wallet</div><div><h2>List. Quote. Stop.</h2><p class="section-intro">No repository clone, wallet, key or Router account is needed. The list and quote tools never initiate payment. Choose an MCP client, or use curl below to list routes without a paid agent client.</p></div></div>
+<div class="split onboarding">
+<div><h3>1 · Connect an MCP client</h3><p>In Claude Code, register the hosted HTTP endpoint with this command.</p><div class="copy-block"><pre class="codebox" id="register"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register" aria-controls="register" aria-describedby="copy-status">Copy command</button></div></div>
+<div><h3>Any compatible MCP client</h3><p>Add this HTTPS MCP endpoint in your client’s connection settings. Client availability and pricing are separate from Router access.</p><div class="copy-block"><pre class="codebox" id="endpoint"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint" aria-controls="endpoint" aria-describedby="copy-status">Copy endpoint</button></div></div>
+</div>
+<div class="instruction"><h3>2 · Ask for one static quote, then stop</h3><p>Paste this instruction into the connected agent. If the example route is no longer listed, it must stop without substituting another route.</p><div class="copy-block"><pre class="codebox" id="instruction"><code>Do not pay. Use only subetha_router_list_routes and subetha_router_quote. First call subetha_router_list_routes. If md-mpp-eth-snapshot is still listed, call subetha_router_quote exactly once with that routeId and a fresh UUID requestId. If it is absent, stop. Explain the source (agent to Router) and destination (Router to provider), including protocol, network, asset, amount, decimals, expiry and fundsMoveOnCredential. Then STOP at the quote. Do not sign, read keys, create a wallet, approve, or call purchase. Do not call any other tools.</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction" aria-controls="instruction" aria-describedby="copy-status">Copy instruction</button></div></div>
+<div class="instruction"><h3>Or: list routes from a terminal</h3><p>This raw HTTP request uses curl only. It lists routes; it does not quote, sign or pay.</p><div class="copy-block"><pre class="codebox" id="curl"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -H &#x27;Accept: application/json, text/event-stream&#x27; \
+  -H &#x27;MCP-Protocol-Version: 2025-03-26&#x27; \
+  --data &#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;subetha_router_list_routes&quot;,&quot;arguments&quot;:{}}}&#x27;</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="curl" aria-controls="curl" aria-describedby="copy-status">Copy curl command</button></div>
+<p>Check the JSON-RPC <code>result.structuredContent</code>: expect <code>ok: true</code>, <code>routes</code> and <code>dynamic.profiles</code>. SSE responses may put the JSON on <code>data:</code> lines. <strong>HTTP 200 alone is not success</strong>; check for JSON-RPC or tool errors. Use the returned listing for current counts.</p></div>
+<p class="copy-status" id="copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div></section><section id="try" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">04 / Browser preview</div><div><h2>View payment requirements.<br>No payment.</h2><p class="section-intro">These two reference providers let you inspect an unpaid HTTP 402 response in your browser. This is a provider payment challenge, not API data or a Router quote.</p></div></div>
 <div class="rails">
-<article data-reveal><div class="mono live">Live · x402 exact</div><h3>ETH perpetual snapshot</h3><p class="meta">Hyperliquid mark price and 24h change. Base Sepolia · USDC · 10000 base units.</p>
-<div class="probe"><button class="btn btn-dark" data-probe="x402">Run it →</button><span class="probe-note" data-probe-note="x402"></span></div>
-<pre class="out" data-probe-out="x402"><span class="accent"># the 402 offer, no payment involved</span>
-curl -si https://provider-x402.subethalabs.com/v1/eth/snapshot \
-  | grep -i payment-required</pre></article>
-<article data-reveal><div class="mono live">Live · MPP tempo charge</div><h3>Uniswap v3 spot reference</h3><p class="meta">USDC/WETH pool reference price. Tempo Moderato (42431) · pathUSD · 10000 base units.</p>
-<div class="probe"><button class="btn btn-dark" data-probe="mpp">Run it →</button><span class="probe-note" data-probe-note="mpp"></span></div>
-<pre class="out" data-probe-out="mpp"><span class="accent"># the 402 challenge, no payment involved</span>
-curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
-  | grep -i www-authenticate</pre></article>
+<article data-reveal><div class="mono live">Provider A · x402 exact</div><h3>ETH perpetual snapshot</h3><p class="meta">Hyperliquid mark price and 24h change. Base Sepolia · USDC · 10000 base units.</p>
+<div class="probe"><button type="button" class="btn btn-dark" data-probe="x402" aria-controls="probe-x402">View payment requirements (no payment)</button></div>
+<pre class="out" id="probe-x402" data-probe-out="x402" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
+Payment requirements appear here.</pre></article>
+<article data-reveal><div class="mono live">Provider B · MPP tempo/charge</div><h3>Uniswap v3 spot reference</h3><p class="meta">USDC/WETH pool reference price. Tempo testnet (42431) · pathUSD · 10000 base units.</p>
+<div class="probe"><button type="button" class="btn btn-dark" data-probe="mpp" aria-controls="probe-mpp">View payment requirements (no payment)</button></div>
+<pre class="out" id="probe-mpp" data-probe-out="mpp" aria-live="polite">GET /v1/eth/snapshot → expected HTTP 402
+Payment requirements appear here.</pre></article>
 </div>
-<p class="hero-note" style="max-width:none;margin-top:22px">Both answer <code>GET /v1/eth/snapshot</code> and publish <code>/health</code> and <code>/manifest</code>. Payment is testnet; the market data is a read-only mainnet reference and is not an executable quote. Neither provider is operated by Hyperliquid or Uniswap.</p>
-</div></section>
-
-<section id="how" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">03 / How it works</div><div><h2>Two payments,<br>deliberately unlinked.</h2><p class="section-intro">The Router converts nothing. It takes a payment on the inbound rail and makes a separate payment on the outbound rail, each prefunded on its own chain. Calling it a swap or a bridge would be wrong.</p></div></div>
-<div class="flow">
-<article data-reveal><div class="num">01 · QUOTE</div><h3>Read the real offer</h3><p>The Router reads the provider's live offer before quoting, so the price you approve is bound to the offer that will actually be paid.</p></article>
-<article data-reveal><div class="num">02 · APPROVE</div><h3>Explicit, bound approval</h3><p>Nothing moves on a conversational turn alone. Approval is bound to one quote, and an offer that changes after approval is refused.</p></article>
-<article data-reveal><div class="num">03 · PAY IN</div><h3>Your rail, your asset</h3><p>The inbound leg settles on the rail you already hold, against the Router's own address on that chain.</p></article>
-<article data-reveal><div class="num accepted">04 · PAY OUT</div><h3>The provider's rail</h3><p>A separate payment, from the Router's prefunded balance on the provider's chain. The two legs are never exchanged for one another.</p></article>
-<article data-reveal><div class="num">05 · RECORD</div><h3>At most once</h3><p>A durable journal records each purchase. Repeat or concurrent requests re-send neither leg, and an uncertain outcome stays uncertain rather than retrying blindly.</p></article>
-</div></div></section>
-
-<section id="status" class="section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">04 / Scope</div><div><h2>What runs today.</h2><p class="section-intro">Stated narrowly on purpose, so the parts that are still being built are not mistaken for the parts that work.</p></div></div>
-<div class="timeline">
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Two providers, publicly reachable</h3><p>Both serve their 402 over HTTPS and can be inspected by anyone, without a wallet.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Real testnet settlement on both rails</h3><p>x402 exact on Base Sepolia and MPP tempo charge on Tempo Moderato, each settled end to end against the live providers.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Router paying a provider</h3><p>The outbound leg — the Router paying a provider on the provider's own rail — settles for real.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>Routing in both directions</h3><p>x402 in and MPP out, and MPP in and x402 out, each settled on chain with real funds. Whichever of the two rails you hold, the Router can reach a provider that insists on the other one.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>MCP access for agents</h3><p>Discover, quote, approve and pay through the Router, over local stdio or the hosted HTTP endpoint. Both have settled real payments.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status">Live</div><div><h3>A hosted endpoint, both rails</h3><p>Registering it takes one line and no account, and it now accepts payment on either rail: two routes, one per direction. The Router never holds the caller's key — you sign locally with a key you made yourself, and it receives only the signed credential.</p></div><div class="mono muted">verified</div></div>
-<div class="timeline-row" data-reveal><div class="status roadmap">In progress</div><div><h3>The SubEtha inbound leg</h3><p>Paying the Router through SubEtha's own private rail, rather than x402. This one still runs against a synthetic counterparty, so the privacy claim is not yet settled on chain the way the x402 leg is.</p></div><div class="mono muted">building</div></div>
+<p class="hero-note wide-note">Both are operated by us, not Hyperliquid or Uniswap. The paid market data is a read-only mainnet reference, not an executable trading quote. These buttons only read payment requirements.</p>
+</div></section><section id="payments" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">05 / Before a paid trial</div><div><h2>Local signing needs<br>explicit approval.</h2><p class="section-intro">Public local signing setup is being prepared. Paid trials require an available local signer, funds on the matching testnet (including any network fees), and explicit human approval.</p></div></div>
+<div class="caveat">
+<p><strong>Approve before any potentially spending signing step.</strong> Tempo MPP credential creation sends funds before <code>purchase</code>. Solana MPP locally signs first; the Router broadcasts at purchase, and the caller needs devnet SOL for the fee. Read <code>fundsMoveOnCredential</code> and the rail-specific behavior; the flag is not evidence that payment completed.</p>
+<p><strong><code>approval=quoteId</code> binds a purchase to a quote; it does not prove human consent.</strong> The client must obtain that consent. The server cannot verify that a human actually approved. A Router rejection does not mean no funds moved: a Tempo credential may already have sent them.</p>
+<p><strong>Do not automatically retry <code>paid_data_unavailable</code>, <code>unknown</code> or <code>awaiting_payment</code>.</strong> These outcomes are not proof of nonpayment. Reconcile the existing outcome first; a new purchase requires a fresh quote and renewed human approval before signing. No refund is guaranteed.</p>
 </div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">Evidence</div><h3>Look the payments up yourself.</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">Six transactions, in pairs: an inbound payment to the Router and the separate outbound payment it made to reach the provider. The last pair ran against the hosted endpoint, where the outbound leg leaves the Router's own wallet rather than a developer's. Nothing here has to be taken on trust: the hashes resolve on their public RPCs, and every one was checked against its chain before being printed.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">The MPP leg is also where the fee asymmetry shows. That receipt carries a payment of 10000 and a fee of 23370 beside it. Later payments of exactly the same amount cost 2283, 945 and 505, which is the whole point: the fee is not a function of what you are paying, and that is why the note above suggests x402 for a one-off.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">One thing to expect if you open the x402 transactions in an explorer: the sender is always <code>0xd407e409…</code>, the facilitator, because EIP-3009 has it submit and pay the gas. It reads the same whoever paid. The address that actually paid is in the transfer log.</p></div>
-<div class="codebox" style="font-size:11px;line-height:1.8"><div class="mono">MPP in → x402 out</div><br>in&nbsp;&nbsp;<span class="accent">Tempo</span> block 36964883<br>0xb6507960b87de4f2448f47221cb475cd<br>49c01a0857c97fc20c18aa3801111883<br>out <span class="accent">Base Sepolia</span> block 47321957<br>0xf0c16b3a2bed7a7c69e7f4ef080ea7ed<br>450e783d9b62b28fc3fe0bc12d0e094e<br><br><div class="mono">x402 in → MPP out</div><br>in&nbsp;&nbsp;<span class="accent">Base Sepolia</span> block 47309247<br>0x239b601938741ef2ba09fbeee684998d<br>52e8c0f6a4f96485a6e699505c5f74a2<br>out <span class="accent">Tempo</span> block 36922546<br>0xe4477dfae416a37621c614cf92cc0272<br>051542d8a6f92b8f108506d610f6d491<br><br><div class="mono">Against the hosted endpoint</div><br>in&nbsp;&nbsp;<span class="accent">Tempo</span> block 36967307<br>0xcbe845e4f18f17bcdd14c8b2ce446e04<br>2e88bdb43cf9a905be48094682cdd698<br>out <span class="accent">Base Sepolia</span> block 47322681<br>0xb7ba21dc9d8ae772de8d21c255e96d7b<br>34083f829e05593cb1bdbd287098b381<br><span class="accent">paid from the Router's own wallet</span></div>
-</div>
-<p class="hero-note" style="max-width:none;margin-top:26px">Finality (deciding when a payment is canonical) is not implemented, and the existing chat UI has not been verified against this end to end. Both are listed here rather than left for you to discover.</p>
-</div></section>
-
-<section id="use" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">05 / Use it</div><div><h2>Buy something,<br>from a fresh session.</h2><p class="section-intro">End to end: a disposable wallet, a cent of testnet USDC, and one paid call made by an agent on your behalf. Everything below was run from a clean machine before it was written down.</p></div></div>
-<div class="split">
-<div><div class="mono eyebrow">Setup · about five minutes</div><h3>A wallet, a cent, one line.</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">You sign every payment yourself, so you need a key the Router never sees. The repository carries the wallet and signing helpers, which is why this step clones it.</p><ul><li><strong>Base Sepolia USDC</strong> — 10000 base units ($0.01) per call, from <a href="https://faucet.circle.com" target="_blank" rel="noopener">faucet.circle.com</a>. A few calls' worth is plenty.</li><li><strong>No gas.</strong> Under EIP-3009 the facilitator submits the transaction and pays for it, so you never need testnet ETH.</li><li>Discovery and quoting are free. Only <code>purchase</code> costs anything.</li></ul></div>
-<div class="codebox"><div class="mono">1 · Clone and install</div><br>git clone https://github.com/\<br>  subetha-labs/subetha-router-egt.git<br>cd subetha-router-egt<br>npm install --legacy-peer-deps \<br>  --ignore-scripts --no-audit --no-fund<br>npm rebuild fs-ext --foreground-scripts<br><br><div class="mono">2 · Make a throwaway wallet</div><br>npm run wallet:new<br><span class="accent">→ save the key to .env.local</span><br><span class="accent">→ fund the address at faucet.circle.com</span><br>npm run wallet:balance<br><br><div class="mono">3 · Register the Router</div><br>claude mcp add --transport http \<br>  subetha-router \<br>  <span class="accent">https://router.subethalabs.com/mcp</span></div>
-</div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">Then just ask</div><h3>The agent quotes, you approve,<br>it pays.</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">Start Claude Code <strong>in that directory</strong> so the signing helper and your key are in reach, and ask in plain language. There is no payment syntax to learn.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">The agent reads the Router's live offer, then stops and shows you the amount, the asset and the deadline. Nothing moves until you say yes: approval is bound to that one quote, and the Router refuses a purchase it did not receive explicit approval for. If you decline, nothing was spent. Say yes and the rail decides when the money leaves — on x402 at settlement, on MPP the instant the signing step runs.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">When it completes you get the provider's data, plus a real transaction on each chain — one on Base Sepolia where you paid, one on Tempo where the Router paid.</p></div>
-<div class="codebox"><div class="mono">In a fresh Claude Code session</div><br><span class="accent">&gt; Use subetha-router to fetch the ETH<br>&nbsp;&nbsp;price. Show me the quote first.</span><br><br>· the agent calls <span class="accent">quote</span><br>· it shows you 10000 base units,<br>&nbsp;&nbsp;decimals 6, and the deadline<br>· <span class="accent">you approve</span><br>· it signs with your local key<br>&nbsp;&nbsp;<span class="accent">on MPP, this is the payment</span><br>· it calls <span class="accent">purchase</span><br><br>→ the ETH snapshot, and two txRefs<br>&nbsp;&nbsp;you can look up yourself<br><br><div class="mono">Two routes, pick by what you hold</div><br><span class="accent">md-mpp-eth-snapshot</span><br>&nbsp;&nbsp;pay USDC on Base Sepolia,<br>&nbsp;&nbsp;reach an MPP-only provider<br><span class="accent">md-x402-eth-snapshot</span><br>&nbsp;&nbsp;pay pathUSD on Tempo,<br>&nbsp;&nbsp;reach an x402-only provider<br>&nbsp;&nbsp;<span class="accent">signing spends — see below</span></div>
-</div>
-<div class="caveat" style="margin-top:40px">
-<p><strong>Five things worth knowing before you try it.</strong></p>
-<p><strong>On the MPP route, signing is spending.</strong> Paying in x402 produces a signature and nothing else; the money moves later, when the Router settles. Paying in MPP means broadcasting the transfer yourself, so the moment the signing step runs, the funds are gone — before <code>purchase</code> is ever called. Approve it as a payment, not as a preparation, and expect no refund if the purchase then fails. On this route the Router says so too: its quote marks the payment as moving when the credential is made, so a well-behaved agent should ask for approval before signing rather than before <code>purchase</code>.</p>
-<p><strong>Pass the quote back to <code>purchase</code>.</strong> The hosted endpoint is stateless, so it does not keep your quote between calls. Send the <code>quote</code> object you received, and put the same quoteId in <code>approval</code> — the Router refuses a purchase that is not explicitly approved. Omitting either fails closed and moves no money.</p>
-<p><strong>The two rails are not equally cheap to pay on.</strong> Paying in x402 costs you no gas, because the facilitator submits the transaction. Paying in MPP means broadcasting it yourself and covering the fee, and that fee is wildly variable: on one unchanging 10000 payment we have measured anywhere from 505 to 23370, a spread of about fifty times, with no way to predict which you get. Treat the fee as unknown until you see it rather than budgeting from any figure here. An MPP payment that fails after broadcasting does not come back either. If you are only trying this once, pay in x402.</p>
-<p><strong>Leave a few seconds between payments.</strong> The public x402 facilitator collides with its own pending transactions when calls arrive back to back — measured at 2 failures in 20 with no gap, and 0 in 15 with a three second gap.</p>
-<p><strong>You may see <code>paid_data_unavailable</code>.</strong> That means the payment went through but fetching the data did not, so the funds did move. The Router does not retry on its own, because a blind retry is how you pay twice. Retrying the call works. We hit this on our own first real payment against the hosted endpoint, and the retry delivered. Both legs of the first attempt had already settled on chain.</p>
-</div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">Signing the credential</div><h3>The agent handles this.<br>Unless you skipped the clone.</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">Following the steps above, you never touch this: the agent runs <code>npm run sign</code> against the key in your <code>.env.local</code>, and only the signature leaves your machine.</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">It matters if you want to call the endpoint from your own code without the repository, since the signer is the only one we ship. The shape is on the right. Two fields are easy to miss, and leaving either out fails with <code>invalid_payment_header</code>, which does not say which: the <code>accepted</code> object, the offer exactly as the Router issued it, and <code>challengeNonce</code> inside <code>payload</code>. That same nonce is the <code>nonce</code> of the EIP-3009 authorization you sign.</p></div>
-<div class="codebox"><div class="mono">The credential, before base64</div><br>{<br>  <span class="accent">"x402Version"</span>: 2,<br>  <span class="accent">"accepted"</span>: { …the offer, verbatim },<br>  <span class="accent">"payload"</span>: {<br>    <span class="accent">"challengeNonce"</span>: "0x…",<br>    "signature": "0x…",<br>    "authorization": { from, to, value,<br>      validAfter, validBefore, nonce }<br>  }<br>}<br><br>base64 the whole object.</div>
-</div>
-
-</div></section>
-
-<section id="faq" class="band section"><div class="wrap faq">
-<div class="mono eyebrow">06 / FAQ</div>
-<h2 style="margin:16px 0 38px">The short answers.</h2>
-<details><summary>Is this a swap or a bridge?<span>+</span></summary><p>No. Nothing is converted and nothing crosses a chain. The Router receives a payment on one rail and makes a separate, independently funded payment on the other. The two legs are never exchanged for one another, which is why the balances on each chain have to be prefunded.</p></details>
-<details><summary>What actually settles for real today?<span>+</span></summary><p>Both legs. A caller paying over x402 on Base Sepolia reaches a provider that only accepts MPP on Tempo, and both payments are recorded on their own chains. What is still synthetic is the SubEtha inbound rail specifically — paying the Router privately, through SubEtha rather than x402 — so that part of the privacy story is not yet settled on chain.</p></details>
-<details><summary>Does the Router hold my key?<span>+</span></summary><p>No. You sign each payment locally and the Router receives only the signed credential. Its source reads no private key, from the environment or anywhere else, so the hosted Router cannot spend a caller's funds even though it settles their payments.</p></details>
-<details><summary>Do I need a wallet to check the providers?<span>+</span></summary><p>Not to read the offer. An unauthenticated GET returns the entire 402 challenge — price, asset, chain, recipient — and that is what the buttons above fetch live. You only need testnet funds on the matching rail if you want to actually pay and receive the data.</p></details>
-<details><summary>Can the Router spend without my approval?<span>+</span></summary><p>Approval is bound to one specific quote. A conversational turn alone moves nothing, and if the provider's offer changes between quoting and paying, the purchase is refused rather than paid at the new terms.</p></details>
-<details><summary>What happens if a request is retried?<span>+</span></summary><p>A durable journal records each purchase, so repeat or concurrent requests re-send neither leg. An outcome that cannot be confirmed is kept as uncertain rather than retried blindly, since a blind retry is how you pay twice.</p></details>
-<details><summary>Is this production software?<span>+</span></summary><p>No. It is a hackathon-stage implementation on testnet, unaudited, and not operated as a service. The market data the providers return is a read-only mainnet reference and is not an executable quote.</p></details>
+<details class="advanced"><summary>Advanced: compatible third-party providers</summary><p>Dynamic profiles accept conditional provider URLs, not arbitrary APIs: public HTTPS, a supported protocol, network and asset, and matching price and challenge constraints. Redirects are not supported. The quote includes the provider price plus the Router fee. Providers are unverified; only a GET response containing an <code>application/json</code> object up to 256 KiB is supported. Payment can succeed without usable data, and there is no refund guarantee.</p></details>
+</div></section><section id="faq" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">06 / FAQ</div><div><h2>The short answers.</h2><p class="section-intro"></p></div></div>
+<div class="faq"><details><summary>Can I complete a paid trial from these instructions?<span>+</span></summary><p>These instructions end at discovery and a static quote. Public local signing setup is still being prepared; connecting an MCP client alone does not provide a signer or testnet funds.</p></details>
+<details><summary>Does the Router hold my key?<span>+</span></summary><p>No caller private key is given to the Router. The caller signs locally and supplies a signed payment credential, which can authorize inbound settlement. The Router uses its own key and prefunded balance for the separate outbound payment.</p></details>
+<details><summary>Does this make my payments anonymous?<span>+</span></summary><p>No. Separate funding does not guarantee unlinkability or anonymity. This routing PoC makes no privacy or atomic-settlement guarantee.</p></details>
+<details><summary>Is this production software?<span>+</span></summary><p>No. It is an unaudited, testnet-only proof of concept. Historical settlement and data-delivery records do not guarantee current availability or future purchase results.</p></details></div>
 </div></section>
 
 <section class="contact"><div class="wrap"><div class="mono">07 / Context</div>
 <h2>Why we ended up<br>building this.</h2>
 <p>We were building SubEtha — private machine payments for x402, settled on zERC20 — and kept hitting the same wall from the other side: a payment method is only as useful as the set of APIs that accept it. Routing is what makes a rail worth holding. The privacy work and this are the same problem approached from two ends.</p>
-<div class="contact-actions"><a class="btn btn-dark" href="/">Read about SubEtha →</a><a class="btn btn-light" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
+<div class="contact-actions"><a class="btn btn-dark" href="/">Read about SubEtha →</a><a class="btn btn-light" href="#use">Try a quote →</a></div></div></section>
 </main>
 <footer><div class="wrap"><span>SubEtha Router · testnet only, unaudited, not production</span><a href="/">SubEtha ↗</a></div></footer>
 </div><div id="ja" lang="ja">
 <div class="topbar"><div class="wrap"><span>決済レールをまたぐルーティング · testnet 限定</span><a href="/">SubEtha ↗</a></div></div>
-<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ja" aria-pressed="true">日本語</button></div><a class="btn btn-dark" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">コードを見る ↗</a></div></header>
+<header><div class="wrap"><a href="/" aria-label="SubEtha home"><img class="brand" src="../assets/brand/subetha-wordmark-color.svg" alt="SubEtha"></a><nav class="nav"><a href="#why-ja">背景</a><a href="#try-ja">試す</a><a href="#how-ja">仕組み</a><a href="#use-ja">使う</a><a href="#status-ja">現在地</a><a href="#faq-ja">FAQ</a></nav><div class="lang"><button data-lang="en" aria-pressed="false">EN</button><button data-lang="ja" aria-pressed="true">日本語</button></div><a class="btn btn-dark" href="#use-ja">見積を試す →</a></div></header>
 <main id="top-ja">
 <section class="hero"><div class="wrap hero-grid">
-<div><div class="mono eyebrow">SubEtha Router</div>
-<h1>手元のレールと、<br><em>APIのレールが噛み合わない。</em></h1>
-<p class="hero-lede">APIの品質に問題がなくても、決済レールが手持ちと違うだけで到達できません。Routerはあるレールで支払いを受け取り、別のレールでプロバイダに支払います。2つのレグは独立した支払いで、交換もブリッジもしません。</p>
-<div class="hero-actions"><a class="btn btn-green" href="#try-ja">公開中のプロバイダを試す</a><a class="btn btn-light" href="#how-ja">仕組みを見る →</a></div>
-<p class="hero-note">ハッカソン段階の実装です。未監査・テストネット限定・非本番。両レグとも実決済がオンチェーンで成立しており、ホスト済みMCPエンドポイントから利用できます。</p></div>
-<div class="ledger"><div class="ledger-head"><span class="mono">2 rails / 1 request</span><strong>LIVE PROVIDERS</strong></div>
-<div><div class="ledger-line"><span class="ok">X402</span><span>provider-x402<br><small>Base Sepolia · USDC</small></span><strong class="ok">$0.01<br><small style="font-weight:400">10000 units</small></strong></div>
-<div class="ledger-line"><span class="ok">MPP</span><span>provider-mpp<br><small>Tempo Moderato · pathUSD</small></span><strong class="ok">$0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
-<div class="ledger-foot">402の提示は無料で誰でも確認できます。支払いには該当レールのテストネット資金が要ります。</div></div>
-</div></section>
-
-<section id="why-ja" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">01 / 背景</div><div><h2>障壁はデータではなく、<br>レール。</h2><p class="section-intro">有料APIは HTTP 402 で1回ごとに課金する形に収束しつつあります。収束していないのは支払い方法です。あるチェーンでは x402 exact、別のチェーンでは MPP tempo charge、資産もそれぞれ違います。</p></div></div>
-<div class="manifesto">
-<div><div class="mono eyebrow">Routerがない場合</div><h3>手持ちが違えば、APIは閉じている。</h3><p>プロバイダごとに、要求されるチェーンの、要求される資産が要ります。プロバイダが2つならレールも2つ、資金を入れたウォレットも2つ。データを1バイト読む前の話です。</p></div>
-<div><div class="mono eyebrow">Routerがある場合</div><h3>手持ちのレールで、1回払うだけ。</h3><p>Routerが自分の事前資金でプロバイダ側のレールに支払い、プロバイダの応答をそのまま返します。</p></div>
+<div><div class="mono eyebrow">SubEtha Router · テストネット限定 PoC</div>
+<h1><span>使える決済で、</span><br><em>使いたいAPIへ。</em></h1>
+<p class="hero-lede">エージェントは Base Sepolia の USDC で Router に払い、Tempo の pathUSD を受け取るプロバイダに到達できます。Router は自身の事前資金で、その2つ目の支払いを行います。まずはウォレットなしで、ルートと見積を確認できます。</p>
+<div class="hero-actions"><a class="btn btn-green" href="#use-ja">ウォレットなしで見積を試す</a><a class="btn btn-light" href="#how-ja">仕組みを見る →</a></div>
+<p class="hero-note">テストネット限定の概念実証（PoC）です。未監査・本番用途には使えません。</p></div>
+<div class="ledger" data-reveal><div class="ledger-head"><span class="mono">固定ルートの1例</span><strong>見積のみ</strong></div>
+<div><div class="ledger-line"><span class="ok">AGENT →<br>ROUTER</span><span>x402 · Base Sepolia<br><small>USDC · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div>
+<div class="ledger-line"><span class="ok">ROUTER →<br>PROVIDER</span><span>MPP · Tempo testnet<br><small>pathUSD · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
+<div class="ledger-foot"><code>md-mpp-eth-snapshot</code><br>2026-10-09 に支払いなしで見積を確認。現在の条件は新しい見積で確認してください。</div></div>
+</div></section><section id="why-ja" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">01 / 背景</div><div><h2>手持ちのレールを使う。</h2><p class="section-intro">対応する決済レールがあれば、プロバイダの資産を手に入れずに、別のレールを受け付けるAPIへエージェントが到達できます。</p></div></div>
+<div class="manifesto" id="how-ja">
+<div><div class="mono eyebrow">エージェント → Router</div><h3>受信側のレールで支払う。</h3><p>エージェントは対応する資産・ネットワークで Router に支払います。ルート一覧と見積の取得は、支払いを開始しません。</p></div>
+<div><div class="mono eyebrow">Router → プロバイダ</div><h3>別々の資金による、2つの支払い。</h3><p>Router は自身の事前資金から別途プロバイダに支払い、APIの応答を返します。スワップでもブリッジでもなく、支払い同士を関連付けられないことや匿名性を保証しません。2つの支払いはアトミックではありません。</p></div>
 </div>
-<div class="split">
-<div><div class="mono eyebrow">具体的な不一致</div><h3>同じリクエスト。<br>噛み合わない2つの答え。</h3><ul><li>どちらのプロバイダも、同じ形のリクエストに同じ 10000 base units を提示します。</li><li>しかし互いの資産は受け付けず、互いのチェーン上にも存在しません。</li><li>一方を持っていても他方にはならないため、x402 用に資金を入れたエージェントは MPP のプロバイダを読めません。</li></ul></div>
-<div class="codebox"><div class="mono">各プロバイダの要求</div><br><span class="accent">x402 exact</span><br>  network  eip155:84532 <span class="accent">(Base Sepolia)</span><br>  asset    USDC<br>  amount   10000<br><br><span class="accent">MPP tempo charge</span><br>  chainId  42431 <span class="accent">(Tempo Moderato)</span><br>  currency pathUSD<br>  amount   10000<br><br>同じ金額。共通のレールなし。</div>
-</div></div></section>
-
-<section id="try-ja" class="section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">02 / 試す</div><div><h2>2つのプロバイダが公開中。<br>ご自身で確認できます。</h2><p class="section-intro">当方が自前でホストしているマーケットデータ提供元です。ウォレットもアカウントも許可も不要——認証なしのリクエストで、支払い条件がそのまま返ります。</p></div></div>
+</div></section><section id="status-ja" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">02 / 対応範囲</div><div><h2>5つの決済レールの組み合わせ。<br>4つのテストネット。</h2><p class="section-intro">2026-10-09 に確認した公開一覧は、10の固定ルート・20の動的プロファイル。現在の可用性は最新の一覧で確認してください。一覧への掲載は決済成功の保証ではありません。</p></div></div>
+<div class="rail-table-wrap"><table class="rail-table"><caption>受信・送信の両方で対応する組み合わせ</caption><thead><tr><th scope="col">プロトコル</th><th scope="col">テストネット</th><th scope="col">資産</th></tr></thead><tbody>
+<tr><td>x402 exact</td><td>Base Sepolia</td><td>USDC</td></tr>
+<tr><td>x402 exact</td><td>Arc testnet</td><td>USDC</td></tr>
+<tr><td>x402 exact</td><td>Solana devnet</td><td>USDC</td></tr>
+<tr><td>MPP tempo/charge</td><td>Tempo testnet</td><td>pathUSD</td></tr>
+<tr><td>MPP solana/charge</td><td>Solana devnet</td><td>USDC</td></tr>
+</tbody></table></div>
+<p class="scope-note">同一レール同士は対象外のため、5 × 4 = 20の動的プロファイルです。同じプロトコルで異なるチェーンを使う組み合わせや、Solana devnet 上の x402 ↔ MPP も含みます。固定ルートは運営側が選んだプロバイダを使い、動的プロファイルでは条件に合うプロバイダを指定できます。</p>
+<div class="receipt evidence"><div class="mono eyebrow">過去のテストネット検証 · 2026-10-08 まで</div><p>2026-10-08 までに、全20組について、ホスト版で両方の支払いのオンチェーン成立とAPI応答を確認した記録があります。</p><details class="advanced" id="verification-scope-ja"><summary>検証の範囲</summary><p>すべての試行が成功したわけではなく、支払ったのに利用可能なデータが得られなかった試行もあります。今回全組を再検証した結果でも、本番運用の保証でもありません。記録上の独立した finality 照合は、Router による自動検証を意味しません。Router の <code>proof.onChainFinality</code> は <code>not_checked</code> を返します。</p></details></div>
+</div></section><section id="use-ja" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">03 / ウォレットなしで試す</div><div><h2>一覧。見積。そこで停止。</h2><p class="section-intro">リポジトリの clone、ウォレット、鍵、Router のアカウントは不要です。一覧と見積のツールは支払いを開始しません。MCPクライアントを使うか、下の curl で有料エージェントクライアントなしに一覧を取得できます。</p></div></div>
+<div class="split onboarding">
+<div><h3>1 · MCPクライアントを接続</h3><p>Claude Code では、このコマンドでホスト済みHTTPエンドポイントを登録します。</p><div class="copy-block"><pre class="codebox" id="register-ja"><code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="register-ja" aria-controls="register-ja" aria-describedby="copy-status-ja">登録コマンドをコピー</button></div></div>
+<div><h3>他の対応MCPクライアントでも</h3><p>クライアントの接続設定に、この HTTPS MCP エンドポイントを追加してください。クライアント自体の利用条件・料金は Router への接続とは別です。</p><div class="copy-block"><pre class="codebox" id="endpoint-ja"><code>https://router.subethalabs.com/mcp</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="endpoint-ja" aria-controls="endpoint-ja" aria-describedby="copy-status-ja">接続先をコピー</button></div></div>
+</div>
+<div class="instruction"><h3>2 · 固定ルートの見積を1回だけ取り、停止</h3><p>接続したエージェントに次の指示を貼り付けてください。例のルートが一覧になければ、別ルートに置き換えずに停止します。</p><div class="copy-block"><pre class="codebox" id="instruction-ja"><code>支払いはしないでください。使うツールは subetha_router_list_routes と subetha_router_quote だけです。まず subetha_router_list_routes を呼んでください。md-mpp-eth-snapshot がまだ一覧にあれば、その routeId と新しい UUID の requestId で subetha_router_quote を1回だけ呼んでください。なければ停止してください。受信側（エージェント→Router）と送信側（Router→プロバイダ）の protocol・network・asset・金額・decimals・有効期限・fundsMoveOnCredential を説明し、見積で必ず停止してください。署名、鍵の読取、ウォレット作成、承認、purchase はしないでください。他のツールも呼ばないでください。</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="instruction-ja" aria-controls="instruction-ja" aria-describedby="copy-status-ja">指示をコピー</button></div></div>
+<div class="instruction"><h3>または、ターミナルから一覧を取得</h3><p>curl だけで送れるHTTPリクエストです。一覧のみを取得し、見積・署名・支払いは行いません。</p><div class="copy-block"><pre class="codebox" id="curl-ja"><code>curl -sS --max-time 30 https://router.subethalabs.com/mcp \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -H &#x27;Accept: application/json, text/event-stream&#x27; \
+  -H &#x27;MCP-Protocol-Version: 2025-03-26&#x27; \
+  --data &#x27;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;subetha_router_list_routes&quot;,&quot;arguments&quot;:{}}}&#x27;</code></pre><button type="button" class="btn btn-light copy-button" data-copy-target="curl-ja" aria-controls="curl-ja" aria-describedby="copy-status-ja">curl コマンドをコピー</button></div>
+<p>JSON-RPC の <code>result.structuredContent</code> で、<code>ok: true</code>・<code>routes</code>・<code>dynamic.profiles</code> を確認してください。SSE形式では <code>data:</code> 行にJSONが入る場合があります。<strong>HTTP 200 だけでは成功とは判定できません</strong>。JSON-RPCやツールのエラーがないかも確認し、現在の件数は返された一覧を優先してください。</p></div>
+<p class="copy-status" id="copy-status-ja" role="status" aria-live="polite" aria-atomic="true"></p>
+</div></section><section id="try-ja" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">04 / ブラウザで確認</div><div><h2>支払い条件を見る。<br>支払いなし。</h2><p class="section-intro">2つの参考プロバイダから、未払いの HTTP 402 応答をブラウザで確認できます。これはプロバイダの支払い条件であり、APIデータでも Router の見積でもありません。</p></div></div>
 <div class="rails">
-<article><div class="mono live">Live · x402 exact</div><h3>ETH 無期限先物スナップショット</h3><p class="meta">Hyperliquid の mark price と24時間変化。Base Sepolia · USDC · 10000 base units。</p>
-<div class="probe"><button class="btn btn-dark" data-probe="x402-ja">実行する →</button><span class="probe-note" data-probe-note="x402-ja"></span></div>
-<pre class="out" data-probe-out="x402-ja"><span class="accent"># 402の提示内容。支払いは発生しません</span>
-curl -si https://provider-x402.subethalabs.com/v1/eth/snapshot \
-  | grep -i payment-required</pre></article>
-<article><div class="mono live">Live · MPP tempo charge</div><h3>Uniswap v3 スポット参照値</h3><p class="meta">USDC/WETH プールの参照価格。Tempo Moderato (42431) · pathUSD · 10000 base units。</p>
-<div class="probe"><button class="btn btn-dark" data-probe="mpp-ja">実行する →</button><span class="probe-note" data-probe-note="mpp-ja"></span></div>
-<pre class="out" data-probe-out="mpp-ja"><span class="accent"># 402チャレンジ。支払いは発生しません</span>
-curl -si https://provider-mpp.subethalabs.com/v1/eth/snapshot \
-  | grep -i www-authenticate</pre></article>
+<article data-reveal><div class="mono live">Provider A · x402 exact</div><h3>ETH 無期限先物スナップショット</h3><p class="meta">Hyperliquid の mark price と24時間変化。Base Sepolia · USDC · 10000 base units。</p>
+<div class="probe"><button type="button" class="btn btn-dark" data-probe="x402-ja" aria-controls="probe-x402-ja">支払い条件を見る（支払いなし）</button></div>
+<pre class="out" id="probe-x402-ja" data-probe-out="x402-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
+支払い条件をここに表示します。</pre></article>
+<article data-reveal><div class="mono live">Provider B · MPP tempo/charge</div><h3>Uniswap v3 スポット参照値</h3><p class="meta">USDC/WETH プールの参照価格。Tempo testnet (42431) · pathUSD · 10000 base units。</p>
+<div class="probe"><button type="button" class="btn btn-dark" data-probe="mpp-ja" aria-controls="probe-mpp-ja">支払い条件を見る（支払いなし）</button></div>
+<pre class="out" id="probe-mpp-ja" data-probe-out="mpp-ja" aria-live="polite">GET /v1/eth/snapshot → 想定 HTTP 402
+支払い条件をここに表示します。</pre></article>
 </div>
-<p class="hero-note" style="max-width:none;margin-top:22px">どちらも <code>GET /v1/eth/snapshot</code> で応答し、<code>/health</code> と <code>/manifest</code> を公開しています。決済はテストネット、市場データはメインネットの読み取り専用の参照値で、約定可能な気配値ではありません。Hyperliquid・Uniswap が運営するものでもありません。</p>
-</div></section>
-
-<section id="how-ja" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">03 / 仕組み</div><div><h2>2つの支払いは、<br>意図的に切り離す。</h2><p class="section-intro">Routerは資産を変換しません。受信レールで支払いを受け取り、送信レールで別の支払いを行います。各レールはそれぞれのチェーンで事前に資金供給されており、交換やブリッジと説明するのは誤りです。</p></div></div>
-<div class="flow">
-<article><div class="num">01 · QUOTE</div><h3>実提示を読む</h3><p>見積もりの前にプロバイダの実提示を読むため、承認する金額は実際に支払われる提示に束縛されます。</p></article>
-<article><div class="num">02 · APPROVE</div><h3>明示的な承認</h3><p>会話のやり取りだけでは何も動きません。承認は1つの見積もりに束縛され、承認後に提示が変われば拒否します。</p></article>
-<article><div class="num">03 · PAY IN</div><h3>手元のレールで払う</h3><p>受信レグは、あなたが既に持っているレール上で、そのチェーンにあるRouterのアドレスに対して成立します。</p></article>
-<article><div class="num accepted">04 · PAY OUT</div><h3>プロバイダのレールへ</h3><p>プロバイダ側チェーンにあるRouterの事前資金からの、別個の支払いです。2つのレグが互いに交換されることはありません。</p></article>
-<article><div class="num">05 · RECORD</div><h3>多くとも1回</h3><p>各購入は耐久的な journal に記録されます。再送・並行要求でもどちらのレグも再実行されず、結果が不確かな場合は不確かなまま保持します。</p></article>
-</div></div></section>
-
-<section id="status-ja" class="section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">04 / 現在地</div><div><h2>いま動いているもの。</h2><p class="section-intro">構築中の部分が、動いている部分と混同されないよう、意図的に狭く記載しています。</p></div></div>
-<div class="timeline">
-<div class="timeline-row"><div class="status">動作</div><div><h3>2つのプロバイダを公開</h3><p>どちらも HTTPS で402を返し、ウォレットなしで誰でも検証できます。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status">動作</div><div><h3>両レールの実テストネット決済</h3><p>Base Sepolia の x402 exact と Tempo Moderato の MPP tempo charge を、公開プロバイダに対して端から端まで通しています。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status">動作</div><div><h3>Routerからプロバイダへの支払い</h3><p>送信レグ——Routerがプロバイダ側のレールで支払う部分——は実決済が成立しています。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status">動作</div><div><h3>双方向のルーティング</h3><p>x402受信→MPP送信と、MPP受信→x402送信の両方が、実資金でオンチェーン成立しています。2つのレールのどちらを持っていても、もう一方を要求するプロバイダに到達できます。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status">動作</div><div><h3>エージェント向けMCP</h3><p>Router経由での発見・見積・承認・支払い。ローカルのstdioと、ホスト版のHTTPの両方で実決済が成立しています。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status">動作</div><div><h3>ホスト済みエンドポイント、両レール対応</h3><p>登録は1行、アカウントも不要で、どちらのレールでの支払いも受け付けます（各方向に1本ずつ、計2本のroute）。Routerは呼び出し側の鍵を持ちません。署名は自分で用意した鍵を使って手元で作られ、サーバには署名済みのcredentialだけが届きます。</p></div><div class="mono muted">検証済み</div></div>
-<div class="timeline-row"><div class="status roadmap">構築中</div><div><h3>SubEthaの受信レグ</h3><p>x402ではなく、SubEtha自身の秘匿レールでRouterに支払う部分です。ここは依然として合成の相手に対して動作するため、秘匿性の主張はx402レグのようにはオンチェーンで成立していません。</p></div><div class="mono muted">実装中</div></div>
+<p class="hero-note wide-note">どちらも当方が運営しており、Hyperliquid・Uniswap による運営ではありません。有料の市場データはメインネットの読み取り専用参照値で、約定可能な気配値ではありません。このボタンで読むのは支払い条件だけです。</p>
+</div></section><section id="payments-ja" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">05 / 有料試用の前に</div><div><h2>ローカル署名には、<br>明示的な承認を。</h2><p class="section-intro">一般向けのローカル署名の導入手順は準備中です。有料試用には、利用可能なローカル署名手段、対応テストネットの資金（必要なネットワーク手数料を含む）、人間による明示的な承認が必要です。</p></div></div>
+<div class="caveat">
+<p><strong>支出が起こり得る署名工程より前に承認してください。</strong> Tempo MPP は credential 作成時に送金し、<code>purchase</code> より先に資金が動きます。Solana MPP はローカルで署名のみを行い、購入時に Router が broadcast します。呼び出し側は手数料用の devnet SOL が必要です。<code>fundsMoveOnCredential</code> と各レールの挙動を確認してください。このフラグは支払い完了の証拠ではありません。</p>
+<p><strong><code>approval=quoteId</code> は購入を見積に束縛しますが、人間の同意を証明しません。</strong> クライアントが同意を得る必要があり、サーバは実際に人間が承認したかを検証できません。Router が拒否しても、未払いとは限りません。Tempo の credential 作成ですでに送金されている可能性があります。</p>
+<p><strong><code>paid_data_unavailable</code>・<code>unknown</code>・<code>awaiting_payment</code> の後は自動再試行しないでください。</strong> これらは未払いの証拠ではありません。まず既存の結果を照合してください。新しい購入には、新しい見積と、署名前の人間による再承認が必要です。返金の保証はありません。</p>
 </div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">根拠</div><h3>決済はご自身で照会できます。</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">2本1組で計6本。Routerへの受信の支払いと、Routerがプロバイダに到達するために行った別個の送信の支払いです。最後の1組はホスト版に対する決済で、送信レグはRouter自身のウォレットから出ています。信用していただく必要はありません。ハッシュは公開RPCで解決でき、掲載前にすべてチェーン上で確認しています。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">手数料の非対称性が見えるのもMPPレグです。このレシートでは支払いが 10000、その隣の手数料が 23370 です。まったく同額の後の決済では 2283、945、505 でした。つまり手数料は支払額から決まるものではなく、そこが要点です。1回試すだけなら x402 を上で勧めているのは、この振れ幅があるためです。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">x402 のトランザクションをエクスプローラで開く場合に1点。送信元は常に facilitator の <code>0xd407e409…</code> になります。EIP-3009 では facilitator が送信して gas を負担するためで、誰が払っても同じ表示です。実際に払ったアドレスは Transfer ログにあります。</p></div>
-<div class="codebox" style="font-size:11px;line-height:1.8"><div class="mono">MPP受信 → x402送信</div><br>受信 <span class="accent">Tempo</span> block 36964883<br>0xb6507960b87de4f2448f47221cb475cd<br>49c01a0857c97fc20c18aa3801111883<br>送信 <span class="accent">Base Sepolia</span> block 47321957<br>0xf0c16b3a2bed7a7c69e7f4ef080ea7ed<br>450e783d9b62b28fc3fe0bc12d0e094e<br><br><div class="mono">x402受信 → MPP送信</div><br>受信 <span class="accent">Base Sepolia</span> block 47309247<br>0x239b601938741ef2ba09fbeee684998d<br>52e8c0f6a4f96485a6e699505c5f74a2<br>送信 <span class="accent">Tempo</span> block 36922546<br>0xe4477dfae416a37621c614cf92cc0272<br>051542d8a6f92b8f108506d610f6d491<br><br><div class="mono">ホスト版に対する決済</div><br>受信 <span class="accent">Tempo</span> block 36967307<br>0xcbe845e4f18f17bcdd14c8b2ce446e04<br>2e88bdb43cf9a905be48094682cdd698<br>送信 <span class="accent">Base Sepolia</span> block 47322681<br>0xb7ba21dc9d8ae772de8d21c255e96d7b<br>34083f829e05593cb1bdbd287098b381<br><span class="accent">Router自身のウォレットから支払い</span></div>
-</div>
-<p class="hero-note" style="max-width:none;margin-top:26px">finality（どの時点で決済を確定とみなすか）は未実装で、既存のchat UIとの端から端までの検証も行っていません。後から気づくより先に書いておきます。</p>
-</div></section>
-
-<section id="use-ja" class="band section"><div class="wrap">
-<div class="section-head"><div class="mono eyebrow">05 / 使う</div><div><h2>新規セッションから、<br>実際に買ってみる。</h2><p class="section-intro">使い捨てウォレットを作り、1セント分のテストネットUSDCを入れ、エージェントに1回だけ有料の呼び出しをさせるまで。以下はすべて、まっさらな環境で実行してから書いています。</p></div></div>
-<div class="split">
-<div><div class="mono eyebrow">準備 · 5分程度</div><h3>ウォレットと、1セントと、1行。</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">支払いは毎回あなた自身が署名するので、Routerが見ることのない鍵が必要です。ウォレット作成と署名の補助ツールはリポジトリに入っているため、この手順では clone します。</p><ul><li><strong>Base Sepolia の USDC</strong> — 1回 10000 base units（$0.01）。<a href="https://faucet.circle.com" target="_blank" rel="noopener">faucet.circle.com</a> で入手でき、数回分あれば足ります。</li><li><strong>ガスは不要です。</strong> EIP-3009 では facilitator が送信して gas を負担するため、テストネットETHは要りません。</li><li>発見と見積は無料です。費用がかかるのは <code>purchase</code> だけです。</li></ul></div>
-<div class="codebox"><div class="mono">1 · clone して install</div><br>git clone https://github.com/\<br>  subetha-labs/subetha-router-egt.git<br>cd subetha-router-egt<br>npm install --legacy-peer-deps \<br>  --ignore-scripts --no-audit --no-fund<br>npm rebuild fs-ext --foreground-scripts<br><br><div class="mono">2 · 使い捨てウォレットを作る</div><br>npm run wallet:new<br><span class="accent">→ 鍵を .env.local に保存</span><br><span class="accent">→ faucet.circle.com でアドレスに入金</span><br>npm run wallet:balance<br><br><div class="mono">3 · Routerを登録する</div><br>claude mcp add --transport http \<br>  subetha-router \<br>  <span class="accent">https://router.subethalabs.com/mcp</span></div>
-</div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">あとは頼むだけ</div><h3>エージェントが見積を出し、<br>承認したら支払う。</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">署名ツールと鍵が届く場所で動かすため、Claude Code は<strong>そのディレクトリで</strong>起動してください。あとは普通の言葉で頼むだけで、支払い用の書式を覚える必要はありません。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">エージェントはRouterの実提示を読み、金額・資産・期限を提示していったん止まります。承認するまで何も動きません。承認は1つの見積もりに束縛され、明示的な承認のない購入をRouterは拒否します。断れば、何も支払われていません。承認した後にいつ資金が出ていくかはレールによって違い、x402では決済時、MPPでは署名の工程を実行した瞬間です。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">完了すると、プロバイダのデータに加えて、両方のチェーンに実トランザクションが残ります。あなたが払った Base Sepolia と、Routerが払った Tempo です。</p></div>
-<div class="codebox"><div class="mono">新規のClaude Codeセッションで</div><br><span class="accent">&gt; subetha-router で ETH の価格を<br>&nbsp;&nbsp;取ってきて。先に見積もりを見せて。</span><br><br>· エージェントが <span class="accent">quote</span> を呼ぶ<br>· 10000 base units・decimals 6・<br>&nbsp;&nbsp;期限が提示される<br>· <span class="accent">あなたが承認する</span><br>· 手元の鍵で署名される<br>&nbsp;&nbsp;<span class="accent">MPPではここで送金される</span><br>· <span class="accent">purchase</span> が呼ばれる<br><br>→ ETHのスナップショットと、<br>&nbsp;&nbsp;自分で確認できる2つの txRef<br><br><div class="mono">routeは2本。持っている方で選ぶ</div><br><span class="accent">md-mpp-eth-snapshot</span><br>&nbsp;&nbsp;Base Sepolia の USDC で払い、<br>&nbsp;&nbsp;MPPのみのプロバイダに到達<br><span class="accent">md-x402-eth-snapshot</span><br>&nbsp;&nbsp;Tempo の pathUSD で払い、<br>&nbsp;&nbsp;x402のみのプロバイダに到達<br>&nbsp;&nbsp;<span class="accent">署名＝送金。下の注意を参照</span></div>
-</div>
-<div class="caveat" style="margin-top:40px">
-<p><strong>試す前に知っておくとよいことが5つあります。</strong></p>
-<p><strong>MPPのrouteでは、署名がそのまま送金です。</strong> x402で払う場合、署名は署名でしかなく、実際に資金が動くのは後段でRouterが決済するときです。MPPで払う場合は自分でtransferをbroadcastするため、<strong>署名の工程を実行した瞬間に資金が出ていきます</strong>。<code>purchase</code> を呼ぶ前の話です。準備ではなく支払いとして承認してください。そのあと購入が失敗しても戻りません。このrouteではRouter自身も同じことを返します。見積もりに「credentialを作る時点で送金が起きる」と明示されるので、正しく動くエージェントは <code>purchase</code> の前ではなく<strong>署名の前</strong>に承認を求めてくるはずです。</p>
-<p><strong><code>purchase</code> には quote をそのまま渡してください。</strong> ホスト版はステートレスなので、呼び出しをまたいで quote を保持しません。返ってきた <code>quote</code> オブジェクトを渡し、<code>approval</code> には同じ quoteId を入れてください。Routerは明示的に承認されていない購入を拒否します。どちらを欠いても、資金を動かさずに失敗します。</p>
-<p><strong>2つのレールは、払う側の負担が同じではありません。</strong> x402で払う場合、送信はfacilitatorが行うのでガスはかかりません。MPPで払う場合は自分でbroadcastし手数料も負担しますが、この手数料は極端に変動します。まったく同じ 10000 の支払いに対して 505 から 23370 まで、約50倍の開きを実測しており、どれになるかは予測できません。ここに書かれた数字から見積もるのではなく、実際に見るまで手数料は不明だと考えてください。さらに、broadcast後に失敗したMPPの支払いは戻りません。1回試すだけなら、x402で払うほうが簡単です。</p>
-<p><strong>決済は数秒空けてください。</strong> 公開の x402 facilitator は、連続して呼ぶと自分の保留中トランザクションと衝突します（実測で、間隔なしでは20回中2回失敗、3秒空けると15回中0回）。</p>
-<p><strong><code>paid_data_unavailable</code> が返ることがあります。</strong> 支払いは成立したがデータ取得に失敗した状態で、<strong>資金は動いています</strong>。安易な再送は二重払いにつながるため、Routerは自動では再試行しません。呼び直せば通ります。ホスト版に対する私たち自身の初回の実決済がこれで、再試行では配信されました。1回目も両レグはオンチェーンで成立済みでした。</p>
-</div>
-<div class="split" style="margin-top:52px">
-<div><div class="mono eyebrow">credential の署名</div><h3>これはエージェントがやります。<br>cloneを省く場合を除いて。</h3><p style="font-size:15px;line-height:1.7;color:var(--muted)">上の手順どおりなら、ここに触ることはありません。エージェントが <code>.env.local</code> の鍵に対して <code>npm run sign</code> を実行し、ネットワークに出るのは署名だけです。</p><p style="font-size:15px;line-height:1.7;color:var(--muted)">必要になるのは、リポジトリを使わず自分のコードからエンドポイントを叩きたい場合です。こちらが配布している署名手段はこれ1つだけなので。形は右のとおりです。見落としやすいフィールドが2つあり、どちらを欠いても <code>invalid_payment_header</code> で失敗しますが、どちらが足りないかは返ってきません。Routerが発行した offer をそのまま入れる <code>accepted</code> と、<code>payload</code> 内の <code>challengeNonce</code> です。この nonce は、署名する EIP-3009 authorization の <code>nonce</code> と同じ値です。</p></div>
-<div class="codebox"><div class="mono">base64 前の credential</div><br>{<br>  <span class="accent">"x402Version"</span>: 2,<br>  <span class="accent">"accepted"</span>: { …offer をそのまま },<br>  <span class="accent">"payload"</span>: {<br>    <span class="accent">"challengeNonce"</span>: "0x…",<br>    "signature": "0x…",<br>    "authorization": { from, to, value,<br>      validAfter, validBefore, nonce }<br>  }<br>}<br><br>全体を base64 にする。</div>
-</div>
-
-</div></section>
-
-<section id="faq-ja" class="band section"><div class="wrap faq">
-<div class="mono eyebrow">06 / FAQ</div>
-<h2 style="margin:16px 0 38px">短い回答。</h2>
-<details><summary>スワップやブリッジですか？<span>+</span></summary><p>いいえ。何も変換せず、チェーンを跨ぎもしません。あるレールで支払いを受け取り、別のレールで独立に資金手当てされた支払いを行います。2つのレグが互いに交換されることはなく、だからこそ各チェーン上の残高を事前に用意しておく必要があります。</p></details>
-<details><summary>今、実際に決済が動いているのはどこまで？<span>+</span></summary><p>両レグです。Base Sepolia の x402 で支払う呼び出し側が、Tempo の MPP しか受け付けないプロバイダに到達し、それぞれのチェーンに記録が残ります。まだ合成なのは SubEtha の受信レール——x402 ではなく SubEtha 経由で秘匿的にRouterへ支払う部分——であり、秘匿性に関してはその分がまだオンチェーンで成立していません。</p></details>
-<details><summary>Routerは私の鍵を預かりますか？<span>+</span></summary><p>いいえ。署名は手元で作られ、Routerには署名済みのcredentialだけが届きます。ソースは環境変数を含めどこからも秘密鍵を読まないため、決済を仲介していても、ホスト版のRouterが呼び出し側の資金を動かすことはできません。</p></details>
-<details><summary>プロバイダを確認するのにウォレットは要りますか？<span>+</span></summary><p>提示を読むだけなら不要です。認証なしの GET で402チャレンジ全体——金額・資産・チェーン・受取先——がそのまま返り、上のボタンはそれを実際に取得しています。実際に支払ってデータを受け取る場合のみ、該当レールのテストネット資金が必要です。</p></details>
-<details><summary>承認なしにRouterが支払うことはありますか？<span>+</span></summary><p>承認は特定の見積もり1つに束縛されます。会話のやり取りだけでは何も動かず、見積もりから支払いまでの間にプロバイダの提示が変われば、新しい条件で支払うのではなく拒否します。</p></details>
-<details><summary>リクエストが再送された場合は？<span>+</span></summary><p>各購入は耐久的な journal に記録されるため、再送・並行要求でもどちらのレグも再実行されません。確認できない結果は不確かなまま保持します。安易な再試行こそが二重払いの原因だからです。</p></details>
-<details><summary>本番運用できますか？<span>+</span></summary><p>いいえ。ハッカソン段階のテストネット実装で、未監査、サービスとして運用してもいません。プロバイダが返すマーケットデータは読み取り専用のメインネット参照値であり、執行可能な気配値ではありません。</p></details>
+<details class="advanced"><summary>上級者向け：条件に合う第三者プロバイダ</summary><p>動的プロファイルで使えるURLには条件があり、任意のAPIが使えるわけではありません。公開 HTTPS、対応プロトコル・ネットワーク・資産、価格とチャレンジの制約に合う必要があり、リダイレクトは非対応です。見積にはプロバイダの代金と Router 手数料が含まれます。プロバイダは未検証です。対応する応答は GET による <code>application/json</code> のオブジェクトで、最大 256 KiB です。支払いが成立しても利用可能なデータが得られない場合があり、返金の保証はありません。</p></details>
+</div></section><section id="faq-ja" class="section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">06 / FAQ</div><div><h2>短い回答。</h2><p class="section-intro"></p></div></div>
+<div class="faq"><details><summary>この手順で有料試用を完了できますか？<span>+</span></summary><p>この手順は一覧取得と固定ルートの見積で終了します。一般向けのローカル署名の導入手順は準備中です。MCPクライアントを接続するだけでは、署名手段やテストネット資金は用意されません。</p></details>
+<details><summary>Router は私の鍵を預かりますか？<span>+</span></summary><p>呼び出し側の秘密鍵を Router に渡すことはありません。呼び出し側がローカルで署名し、受信決済を許可し得る署名済みの支払い credential を渡します。Router は別個の送信決済に自身の鍵と事前資金を使います。</p></details>
+<details><summary>支払いは匿名になりますか？<span>+</span></summary><p>いいえ。資金が別であることは、支払い同士を関連付けられないことや匿名性を保証しません。このルーティング PoC は、秘匿性やアトミックな決済を保証しません。</p></details>
+<details><summary>本番運用できますか？<span>+</span></summary><p>いいえ。未監査・テストネット限定の概念実証です。過去の決済・データ取得記録は、現在の可用性や今後の購入結果を保証しません。</p></details></div>
 </div></section>
 
 <section class="contact"><div class="wrap"><div class="mono">07 / 背景</div>
 <h2>なぜこれを<br>作ることになったか。</h2>
 <p>私たちは SubEtha——x402 の秘匿マシン決済を zERC20 で精算する仕組み——を作っていて、反対側から同じ壁にぶつかりました。決済手段の有用性は、それを受け付けるAPIの数で決まります。ルーティングは、そのレールを持つ価値を成立させる部分です。秘匿性の取り組みとこれは、同じ問題を両端から見たものです。</p>
-<div class="contact-actions"><a class="btn btn-dark" href="/">SubEtha について読む →</a><a class="btn btn-light" href="https://github.com/subetha-labs/subetha-router-egt" target="_blank" rel="noopener">GitHub ↗</a></div></div></section>
+<div class="contact-actions"><a class="btn btn-dark" href="/">SubEtha について読む →</a><a class="btn btn-light" href="#use-ja">見積を試す →</a></div></div></section>
 </main>
 <footer><div class="wrap"><span>SubEtha Router · テストネット限定・未監査・非本番</span><a href="/">SubEtha ↗</a></div></footer>
 </div><script>
 (function(){
 const root=document.documentElement,en=document.getElementById('en'),ja=document.getElementById('ja'),
-titleEn='SubEtha Router — Pay any rail from the rail you hold.',
-titleJa='SubEtha Router — 手元のレールから、どのレールへでも払う。';
+titleEn='SubEtha Router — Explore payment routes without a wallet.',
+titleJa='SubEtha Router — ウォレットなしでルートと見積を確認。';
 function setLang(lang){const isJa=lang==='ja';en.style.display=isJa?'none':'block';ja.style.display=isJa?'block':'none';document.documentElement.lang=lang;document.title=isJa?titleJa:titleEn;document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));try{localStorage.setItem('subetha-lp-lang',lang)}catch(e){}window.scrollTo({top:0,behavior:'auto'});document.querySelectorAll('[data-reveal]').forEach(x=>x.classList.add('visible'))}
 document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
-document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{const old=b.textContent;try{await navigator.clipboard.writeText(b.dataset.copy);b.textContent=langNow()==='ja'?'コピーしました ✓':'Copied ✓'}catch(e){b.textContent=langNow()==='ja'?'コピーできませんでした':'Copy failed'}setTimeout(()=>b.textContent=old,1800)}));
-function langNow(){return document.documentElement.lang}
+document.querySelectorAll('[data-copy-target]').forEach(b=>b.addEventListener('click',async()=>{
+  const target=document.getElementById(b.dataset.copyTarget),status=document.getElementById(b.getAttribute('aria-describedby'));
+  const isJa=b.closest('[lang="ja"]')!==null,old=b.textContent;
+  b.disabled=true;status.textContent='';
+  try{await navigator.clipboard.writeText(target.textContent);status.textContent=isJa?'コピーしました。':'Copied to clipboard.';b.textContent=isJa?'コピーしました ✓':'Copied ✓'}
+  catch(e){status.textContent=isJa?'コピーできませんでした。上のテキストを選択してコピーしてください。':'Copy failed. Select and copy the text above.'}
+  setTimeout(()=>{b.textContent=old;b.disabled=false},1800);
+}));
 root.classList.add('motion-ready');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
 document.querySelectorAll('[data-reveal]').forEach(x=>io.observe(x));
@@ -291,10 +261,10 @@ const ENDPOINTS={
   'mpp':'https://provider-mpp.subethalabs.com/v1/eth/snapshot'
 };
 const T={
-  en:{run:'Run it →',running:'Requesting…',again:'Run again →',
+  en:{running:'Requesting…',again:'View payment requirements (no payment)',
       fail:'Could not reach the provider from this browser. The endpoint is testnet infrastructure and may be restarting.',
       status:'HTTP status',head:'Payment challenge header',body:'Response body'},
-  ja:{run:'実行する →',running:'リクエスト中…',again:'もう一度実行 →',
+  ja:{running:'リクエスト中…',again:'支払い条件を見る（支払いなし）',
       fail:'このブラウザから Provider に到達できませんでした。testnet の環境なので再起動中の可能性があります。',
       status:'HTTP ステータス',head:'支払いチャレンジヘッダー',body:'レスポンス本文'}
 };

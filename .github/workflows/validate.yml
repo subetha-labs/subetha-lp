@@ -40,6 +40,9 @@ jobs:
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
 
+      - name: Validate Router wallet-free onboarding (offline)
+        run: python3 scripts/check-router.py
+
       - name: Check for accidental credentials
         run: |
           if grep -RInE '(CLOUDFLARE_API_TOKEN|CF_API_TOKEN|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' . \
