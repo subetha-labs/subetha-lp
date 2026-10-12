@@ -90,6 +90,13 @@ section[id],#how,#how-ja{scroll-margin-top:100px}
 <div><div class="ledger-line"><span class="ok">AGENT →<br>ROUTER</span><span>x402 · Base Sepolia<br><small>USDC · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div>
 <div class="ledger-line"><span class="ok">ROUTER →<br>PROVIDER</span><span>MPP · Tempo testnet<br><small>pathUSD · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
 <div class="ledger-foot"><code>md-mpp-eth-snapshot</code><br>Quote checked 2026-10-09 without payment. Read a fresh quote for current terms.</div></div>
+</div></section><section id="agents" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">00 / For agents</div><div><h2>Let the agent set it up.<br>You only restart.</h2><p class="section-intro">There is no app for people here. The Router is an MCP server, and the page you are reading has a plain-text twin for agents: <a href="/router/llms.txt">/router/llms.txt</a>. Tell Claude Code what you want; it reads that file, registers the Router itself and asks you to restart. Keys, passphrases and the approval of each purchase stay with you.</p></div></div>
+<div class="instruction"><h3>Say this to Claude Code</h3><p>A newly added MCP server is loaded when a session starts, so expect one restart. Nothing is paid until you approve a purchase yourself.</p><div class="copy-block"><pre tabindex="0" class="codebox"><code>Set up SubEtha Router for me. The instructions are at
+https://subethalabs.com/router/llms.txt
+Then list the routes and quote https://x402.vercel.app/protected
+through a dynamic profile. Quote only; do not purchase.</code></pre></div>
+<p>What the agent will do: run <code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code>, ask you to restart, list the routes, and show you a quote with the upstream URL, the price and the fee. To pay, it installs the local payer (<code>npm i -g @subetha/payer</code>) and asks you to start the daemon in your own terminal; every purchase is approved in a native dialog on your Mac.</p></div>
 </div></section><section id="why" class="band section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">01 / Why</div><div><h2>Use the rail you hold.</h2><p class="section-intro">A supported payment rail can connect your agent to an API that accepts another, without acquiring the provider’s asset.</p></div></div>
 <div class="manifesto" id="how">
@@ -170,6 +177,13 @@ Payment requirements appear here.</pre></article>
 <div><div class="ledger-line"><span class="ok">AGENT →<br>ROUTER</span><span>x402 · Base Sepolia<br><small>USDC · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div>
 <div class="ledger-line"><span class="ok">ROUTER →<br>PROVIDER</span><span>MPP · Tempo testnet<br><small>pathUSD · decimals 6</small></span><strong class="ok">0.01<br><small style="font-weight:400">10000 units</small></strong></div></div>
 <div class="ledger-foot"><code>md-mpp-eth-snapshot</code><br>2026-10-09 に支払いなしで見積を確認。現在の条件は新しい見積で確認してください。</div></div>
+</div></section><section id="agents-ja" class="band section"><div class="wrap">
+<div class="section-head"><div class="mono eyebrow">00 / エージェント向け</div><div><h2>設定はエージェントに。<br>あなたは再起動するだけ。</h2><p class="section-intro">ここに人間向けのアプリはありません。Router は MCP サーバで、このページにはエージェント向けのテキスト版 <a href="/router/llms.txt">/router/llms.txt</a> があります。Claude Code にやりたいことを伝えれば、エージェントがそれを読んで自分で Router を登録し、再起動を頼んできます。鍵、パスフレーズ、各購入の承認はあなたの手元に残ります。</p></div></div>
+<div class="instruction"><h3>Claude Code にこう伝える</h3><p>追加した MCP サーバはセッション開始時に読み込まれるため、再起動が 1 回入ります。あなたが購入を承認するまで、何も支払われません。</p><div class="copy-block"><pre tabindex="0" class="codebox"><code>Set up SubEtha Router for me. The instructions are at
+https://subethalabs.com/router/llms.txt
+Then list the routes and quote https://x402.vercel.app/protected
+through a dynamic profile. Quote only; do not purchase.</code></pre></div>
+<p>エージェントがすること: <code>claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp</code> を実行し、再起動を頼み、ルートを一覧し、上流 URL・価格・手数料つきの見積を見せます。支払うときはローカルの payer（<code>npm i -g @subetha/payer</code>）を入れ、デーモンの起動はあなた自身の端末で行うよう頼みます。各購入は Mac のネイティブダイアログで承認します。</p></div>
 </div></section><section id="why-ja" class="band section"><div class="wrap">
 <div class="section-head"><div class="mono eyebrow">01 / 背景</div><div><h2>手持ちのレールを使う。</h2><p class="section-intro">対応する決済レールがあれば、プロバイダの資産を手に入れずに、別のレールを受け付けるAPIへエージェントが到達できます。</p></div></div>
 <div class="manifesto" id="how-ja">
