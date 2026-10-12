@@ -22,6 +22,14 @@
 4. Choosing a dynamic profile: ids read `dyn-<what you pay with>-to-<what the provider accepts>` with `x402` = Base Sepolia USDC over x402, `arc` = Arc testnet USDC over x402, `sol` = Solana devnet USDC over x402, `mpp` = Tempo testnet pathUSD over MPP, `solmpp` = Solana devnet USDC over MPP. Read the provider's 402 offer (its network and scheme) and pick a profile whose destination matches it; for a quote only, any profile with that destination works (example: an x402 provider on Base Sepolia such as https://x402.vercel.app/protected → `dyn-sol-to-x402`, `dyn-arc-to-x402` or `dyn-mpp-to-x402`). Same-rail pairs do not exist.
 5. Discovery and quotes need no wallet and move no funds: `subetha_router_quote` ({routeId, requestId}) for a fixed route, `subetha_router_quote_url` ({profileId, url, requestId}) for a provider URL. Use a fresh requestId per quote. Show the user the whole `subject` (what they pay, with decimals, network and asset; the recipient; the deadline; for dynamic quotes the upstream URL and the price breakdown upstream + fee = total).
 
+## Example: quote a provider the Router has never seen (no funds move)
+
+The x402.org demo endpoint https://x402.vercel.app/protected is an x402 provider that accepts USDC on Base Sepolia (and on Solana devnet). Its offer is not in the response body: x402 v2 puts it in the `PAYMENT-REQUIRED` response header (base64 JSON), and MPP providers put theirs in `WWW-Authenticate`. You do not need to read it yourself: `subetha_router_quote_url` fetches and checks the offer for you. Because the provider side is x402 on Base Sepolia, the profile must END in `-to-x402` and start with a different rail:
+
+    subetha_router_quote_url {"profileId": "dyn-sol-to-x402", "url": "https://x402.vercel.app/protected", "requestId": "<fresh id>"}
+
+(`dyn-arc-to-x402` and `dyn-mpp-to-x402` quote it too; `dyn-x402-to-x402` does not exist.) The result's `subject` shows the upstream URL, the provider's price (10000 base units = 0.01 USDC), the Router fee (1000) and the total (11000), the recipient and the deadline, plus `disclosures` (destination not verified by the operator, no refund). If a profile does not match the provider's offer, the tool answers with an error such as `offer_unavailable`; try a profile whose destination matches. Never purchase just to find out.
+
 ## To actually pay (the local payer)
 
 Paying needs a key. Do not ask the user for keys, passphrases or security phrases, and never put them in arguments, env, files, chat or piped stdin. Use the published payer, which keeps the key in a daemon the human starts:
