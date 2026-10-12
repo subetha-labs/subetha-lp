@@ -165,7 +165,9 @@ def check_page(source):
     flat = source + '\n' + '\n'.join(page.ids[lang]['text'] for lang in ('en', 'ja'))
     forbidden = [r'subetha-router-egt', r'github\.com/subetha-labs/subetha-router',
                  r'git\s+clone', r'npm\s+(?:install|rebuild|run\s+(?:wallet|sign))',
-                 r'@subetha/payer', r'\.env(?:\.local)?', r'ownerKey',
+                 # '@subetha/payer' was a private claim until 2026-10-10; the package is published on npm since then (0.1.0 / 0.1.2),
+                 # so the page may name it (For agents section, 2026-10-12).
+                 r'\.env(?:\.local)?', r'ownerKey',
                  r'Only\s+purchase\s+costs', r'費用がかかるのは\s*purchase\s*だけ',
                  r'Retrying the call works', r'呼び直せば通ります',
                  r'fails closed and moves no money', r'資金を動かさずに失敗',
@@ -180,7 +182,7 @@ def check_page(source):
 
 
 def check_scope(base, source, scope='router'):
-    allowed = {'router/index.html', 'scripts/check-router.py', '.github/workflows/validate.yml'}
+    allowed = {'router/index.html', 'router/llms.txt', 'scripts/check-router.py', '.github/workflows/validate.yml'}
     if scope == 'mobile':
         # Exact task files only: never allow assets/** or scripts/** wholesale.
         allowed |= {'index.html', 'assets/mobile.css', 'assets/mobile-nav.js',
