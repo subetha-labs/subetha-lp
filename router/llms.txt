@@ -22,7 +22,7 @@
 
 ## Step 1 — register the Router (per agent CLI, user scope so it works in every project)
 
-- Claude Code: `claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp`
+- Claude Code: `claude mcp add --scope user --transport http subetha-router https://router.subethalabs.com/mcp`
 - OpenAI Codex CLI: `codex mcp add subetha-router --url https://router.subethalabs.com/mcp`
 - Grok Build: `grok mcp add --transport http --scope user subetha-router https://router.subethalabs.com/mcp`
 - Any other MCP client: a Streamable HTTP server at https://router.subethalabs.com/mcp, no authentication.

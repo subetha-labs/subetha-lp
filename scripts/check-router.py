@@ -133,7 +133,7 @@ def check_page(source):
              '今回全組を再検証した結果でも、本番運用の保証でもありません',
              '独立した finality 照合']))
         assert page.ids['endpoint' + suffix]['text'] == ENDPOINT
-        assert page.ids['register' + suffix]['text'] == f'claude mcp add --transport http subetha-router {ENDPOINT}'
+        assert page.ids['register' + suffix]['text'] == f'claude mcp add --scope user --transport http subetha-router {ENDPOINT}'
         # Parse the rendered shell command, without executing it or making requests.
         argv = shlex.split(page.ids['curl' + suffix]['text'].replace('\\\n', ''))
         assert argv[:5] == ['curl', '-sS', '--max-time', '30', ENDPOINT]
