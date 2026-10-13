@@ -22,7 +22,7 @@
 
 ## Step 1 — register the Router (per agent CLI, user scope so it works in every project)
 
-- Claude Code: `claude mcp add --transport http subetha-router https://router.subethalabs.com/mcp`
+- Claude Code: `claude mcp add --scope user --transport http subetha-router https://router.subethalabs.com/mcp`
 - OpenAI Codex CLI: `codex mcp add subetha-router --url https://router.subethalabs.com/mcp`
 - Grok Build: `grok mcp add --transport http --scope user subetha-router https://router.subethalabs.com/mcp`
 - Any other MCP client: a Streamable HTTP server at https://router.subethalabs.com/mcp, no authentication.
@@ -70,6 +70,8 @@ Paying needs a key. Do not ask the human for keys, passphrases or security phras
    - Claude Code: `claude mcp add --scope user subetha-payer -- subetha-payer mcp`
    - OpenAI Codex CLI: `codex mcp add subetha-payer -- subetha-payer mcp`
    - Grok Build: `grok mcp add --scope user subetha-payer subetha-payer -- mcp`
+
+   Codex CLI and Grok Build time out an MCP tool call after 60 seconds by default, but `subetha_payer_purchase` waits for the human's dialog (up to 195 seconds). Raise the limit for the payer server: add `tool_timeout_sec = 200` under `[mcp_servers.subetha-payer]` in `~/.codex/config.toml` or `~/.grok/config.toml` (verified 2026-10-12: with it, both CLIs completed a purchase through the payer). During purchase the shim also sends a display-only MCP elicitation; some clients show it as a prompt or report the call as cancelled when it is closed. That cancels nothing: the daemon finishes on its own, and `subetha_payer_status` has the result.
 5. A wallet made by payer 0.1.x has only the EVM key; the human adds the Solana key with `subetha-payer wallet add solana`.
 
 ## Step 4 — pay (five payer tools)
