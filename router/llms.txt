@@ -11,6 +11,7 @@
 - The Router takes a payment on the inbound rail and makes a separate payment on the outbound rail from its own prefunded balance. No swap, no bridge, no key custody: the Router never holds the caller's key.
 - Rails today (all testnets): x402 exact on Base Sepolia (USDC), Arc testnet (USDC), Solana devnet (USDC); MPP tempo/charge on Tempo testnet (pathUSD); MPP solana/charge on Solana devnet (USDC). 10 fixed routes and 20 dynamic profiles (every cross-rail pair).
 - Dynamic profiles reach any x402 or MPP provider the caller names by URL. The operator has not verified those providers.
+- Not on the hosted Router: on 2026-10-13 three more EVM testnets (Robinhood Chain testnet USDG, Arbitrum Sepolia USDC, HyperEVM testnet USDC; x402 with a self-hosted facilitator) were verified on a local Router build only, 36 cross pairs settled. If `subetha_router_list_routes` does not list a rail, it does not exist for you. The human page shows the eight-rail table and a step-by-step walkthrough of a purchase: https://subethalabs.com/router/#walkthrough
 - The Router delivers only an `application/json` object up to 256 KiB. A provider that answers with a web page or anything else is "paid, no data" (`paid_data_unavailable`), as the disclosures say; nothing is refunded. Quote such a provider freely (no funds move), but purchase only from providers that return JSON.
 
 ## The whole flow, in order
