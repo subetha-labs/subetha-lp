@@ -90,7 +90,7 @@ def check_page(source):
     for lang, suffix in [('en', ''), ('ja', '-ja')]:
         body = page.ids[lang]['text']
         require(body, shared)
-        for anchor in ('why', 'how', 'status', 'use', 'try', 'payments', 'faq'):
+        for anchor in ('walkthrough', 'why', 'how', 'status', 'use', 'try', 'payments', 'faq', 'mainnet-evidence'):
             assert anchor + suffix in page.ids
         prompt = page.ids['instruction' + suffix]['text']
         require(prompt, ['md-mpp-eth-snapshot', 'UUID', 'requestId', 'protocol',
@@ -107,7 +107,9 @@ def check_page(source):
                            'Solana MPP locally signs first', 'does not prove human consent',
                            'Do not automatically retry', 'No refund is guaranteed',
                            'Providers are unverified', 'provider price plus the Router fee',
-                           'HTTP 200 alone is not success', 'not API data or a Router quote'])
+                           'HTTP 200 alone is not success', 'not API data or a Router quote',
+                           'local Router build', 'The hosted Router does not offer these rails yet', 'Robinhood Chain testnet',
+                           'Arbitrum Sepolia', 'HyperEVM testnet', '36 pairs', 'A purchase, step by step', 'not a hosted feature'])
             require(prompt, ['still listed', 'exactly once', 'fresh UUID', 'amount', 'expiry',
                              'Then STOP', 'Do not sign, read keys, create a wallet, approve, or call purchase'])
         else:
@@ -119,7 +121,8 @@ def check_page(source):
                            'Solana MPP はローカルで署名のみ', '人間の同意を証明しません',
                            '自動再試行しない', '返金の保証はありません', 'プロバイダは未検証',
                            'プロバイダの代金と Router 手数料', 'HTTP 200 だけでは成功とは判定できません',
-                           'APIデータでも Router の見積でもありません'])
+                           'APIデータでも Router の見積でもありません',
+                           'ローカルの Router ビルド', 'ホスト済み Router はこれらのレールをまだ提供していません', '36 組', '購入の手順', 'ホストの機能ではありません'])
             require(prompt, ['まだ一覧にあれば', '1回だけ', '新しい UUID', '金額', '有効期限',
                              '必ず停止', '署名、鍵の読取、ウォレット作成、承認、purchase はしない'])
         scope = page.ids['verification-scope' + suffix]
@@ -147,8 +150,11 @@ def check_page(source):
             'params': {'name': 'subetha_router_list_routes', 'arguments': {}}}
 
     tables = re.findall(r'<tbody>(.*?)</tbody>', source, re.S)
-    assert len(tables) == 2 and tables[0] == tables[1]
+    # hosted rail table (EN, JA) and, since 2026-10-13, the eight-rail pair matrix (EN, JA; local-build pairs marked)
+    assert len(tables) == 4 and tables[0] == tables[2]   # document order: EN hosted, EN matrix, JA hosted, JA matrix
     assert tables[0].count('<tr>') == 5
+    for m in (tables[1], tables[3]):
+        assert m.count('<tr>') == 8 and m.count('pair-hosted') == 20 and m.count('pair-local') == 36 and m.count('pair-none') == 8
     assert Counter(n['attrs']['data-probe'] for n in page.nodes if 'data-probe' in n['attrs']) == {
         'x402': 1, 'mpp': 1, 'x402-ja': 1, 'mpp-ja': 1}
     scripts = re.findall(r'<script>(.*?)</script>', source, re.S)
