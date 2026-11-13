@@ -1,7 +1,7 @@
 # SubEtha LP — Design Notes
 
-Status: v2 content on the v4 visual design (2026-11-13). The V1-era page is preserved as `index-v3-previous.html`
-(redirected to `/`). The visual system is unchanged; this revision replaces what the page says.
+Status: v2 content on the v4 visual design (2026-11-13). The V1-era archive page was removed on 2026-11-14 (its
+old URLs still redirect to `/`). The visual system is unchanged; this revision replaces what the page says.
 
 ## Why the rewrite
 
@@ -41,8 +41,8 @@ ledger reading, timeline rows); restrained motion with a reduced-motion path. No
   a reversing frame, or is split from the rest of its sentence by a formatting boundary. Fixtures in `tests/claims/`.
 - `scripts/check-private-source-links.py`: served inventory derived from `_redirects` (fail-closed), exact expected
   redirect rules, the v2 page contract (ids, headline, subline qualifiers, configuration captions, Docs v2 links, no
-  V1 wording), D3 shape rules plus a digest denylist, D4 private-repository links with count-fixed exceptions for
-  pre-existing occurrences in files this revision does not edit, and a `--repo` pass over the whole repository.
+  V1 wording), D3 shape rules plus a digest denylist, D4 private-repository links (since 2026-11-14 only the one
+  count-fixed mobile-scope fixture occurrence remains; everything else counts zero), and a `--repo` pass over the whole repository.
   Fixtures in `tests/output/`.
 - `scripts/check-router.py`, `scripts/check-mobile-layout.py`, `scripts/check-mobile-scope.py`: unchanged.
 

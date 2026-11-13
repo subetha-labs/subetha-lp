@@ -142,11 +142,6 @@ EXTERNAL = {
         ('anonymity', 'No anonymity or unlinkability is claimed', 'denial', 1),
         ('unlinkable', 'No anonymity or unlinkability is claimed', 'denial', 1),
     ],
-    'index-v3-previous.html': [
-        ('anonymity', 'Is this anonymous payment or a mixer?', 'denial', 1),
-        ('anonymity', '匿名決済やミキサーですか？', 'denial', 1),
-        ('production-ready', '本番運用できますか？', 'denial', 1),
-    ],
 }
 
 
