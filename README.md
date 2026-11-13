@@ -1,13 +1,19 @@
 # SubEtha LP
 
-SubEtha の静的ランディングページ。x402-compatible private machine payments と、現行実装に追加された facilitator / participant-scoped payment history / explicit lifecycle を、依存なしのHTMLとして説明します。
+SubEtha の静的ランディングページ（subethalabs.com）。SubEtha v2 を、依存なしの HTML として x402 Provider 向けに説明します:
+顧客は無改造の公式 x402 クライアントで zUSDC（wrap した USDC）を払い、注文ごとに異なる受取アドレスを使う。payer・金額・token・時刻は公開のまま。
+テストネット、設計パートナー向け。
 
 ## Files
 
-- `index.html` — 現行LP（EN/JA、レスポンシブ、FAQ、言語切替、コピーCTA）
-- `index-v3-previous.html` — 改修前のLP保存版
-- `assets/web-demo.png` — ガイド付きWebデモのスクリーンショット
-- `DESIGN_NOTES.md` — 改修方針・実装内容・公開前ゲート
+- `index.html` — 現行 LP（EN/JA、レスポンシブ、FAQ、言語切替、コピー CTA）
+- `router/index.html`, `router/llms.txt` — SubEtha Router のページ（別製品）
+- `index-v3-previous.html` — V1 時代の LP 保存版（`_redirects` で `/` へ 302）
+- `assets/` — ブランド、モバイル CSS/JS
+- `_redirects` — Cloudflare Pages の配信境界: archive と、`scripts/` `tests/` `.github/` `.claude_workflow/` `README.md` `DESIGN_NOTES.md` を `/` へ 302
+- `scripts/` — オフラインの検証スクリプト（下記）
+- `tests/claims/`, `tests/output/` — ガードの fixture。fail 系は `*.b64`（base64）で格納し、public repo に禁止表現や D3 形状の平文を置かない。読むときは `base64 -d`、直すときは平文を編集して再エンコードする（合成値のみ。実際のホスト名・パス・アドレス・価格は使わない）
+- `DESIGN_NOTES.md`, `.claude_workflow/` — 設計・検証ノート
 
 ## Start locally
 
@@ -19,38 +25,44 @@ Open `http://127.0.0.1:4173/`.
 
 ## Page structure
 
-1. Hero — payment/link boundary and public ledger visual
-2. Problem — payer-side strategy leakage / provider-side revenue leakage
-3. Protocol — request → 402 → authorize → accepted → finalized
-4. Operational layer — participant-scoped history and explicit lifecycle
-5. Current scope — facilitator, history, profile gates, roadmap
-6. Use cases — research, providers, agents, trading/procurement, infrastructure
-7. Demo — current guided browser demo
-8. FAQ / Contact
+1. Hero — 見出し、必須 subline（全修飾語）、hosted testnet の公開台帳の読み方
+2. Problem (`#problem`) — 買い手側の利用の露出 / Provider 側の売上の露出（仮説と明記）
+3. How it works (`#how-it-works`) — 標準 x402 `exact` の 5 ステップ（hosted testnet 構成と明記）、配信のあと、構成図
+4. Who sees what (`#visibility`) — 公開チェーン / 買い手 / Provider / 運用者（hosted と self-run は別行）/ 直接結び付かないもの / 公開 withdraw、相関、信頼境界
+5. For Providers (`#providers`) — 変わらないもの・変わるもの、hosted の配信リスク開示、必要なもの、登録の概要、ソースとライセンス、Docs `/v2/providers/`
+6. Status (`#status`) — 日付つきの repository の記録、検証の限界、計画、hosted が約束しないもの、パッケージとライセンス、Docs `/v2/status/`
+7. FAQ (`#faq`) — 匿名か、既存 x402 との両立、顧客側の要件、Router との違い、本番利用、ソース公開、「配信済み」の意味
+8. Contact (`#contact`) — コピー CTA、X、テストネット登録の相談
+
+JA ブロックの id は `-ja` 付き。
 
 ## Verification
 
+CI（`.github/workflows/validate.yml`）と同じ手順:
+
 ```bash
-python3 - <<'PY'
-from html.parser import HTMLParser
-from pathlib import Path
-p = Path('index.html')
-s = p.read_text()
-HTMLParser().feed(s)
-for marker in ['accepted', 'finalized', 'participant-scoped', 'fail-closed', 'data-lang', 'prefers-reduced-motion']:
-    assert marker in s, marker
-assert 'mailto:' not in s
-print('HTML parser: OK')
-print('bytes:', len(s.encode()))
-PY
+python3 -B scripts/check-private-source-links.py            # 配信インベントリ、_redirects、v2 ページ契約、D3 形状、D4 リンク
+python3 -B scripts/check-private-source-links.py --fixtures # 出力ガードの fixture
+python3 -B scripts/check-private-source-links.py --repo     # public repo 全体に D3/D4
+python3 -B scripts/check-claims.py --fixtures               # claims ガードの fixture
+python3 -B scripts/check-claims.py                          # 配信インベントリの主張レベル検査
+python3 scripts/check-router.py
+python3 scripts/check-mobile-layout.py
+python3 -B scripts/check-mobile-scope.py
+python3 -B scripts/check-private-source-links.py --list     # URL・コマンド・金額・NAME=・トークン様値の棚卸し（目視レビュー用）
 ```
 
-ブラウザでEN/JA切替、FAQ、コピーCTA、desktop/mobile幅、console error、画像404、reduced-motionを確認してください。
+HTML マーカー（CI）: `exact`, `EIP-3009`, `mined receipt`, `zUSDC`, `testnet`, `public`, `independently quantified`, `correlation`。
+構造: doctype、`lang="en"`、`data-lang` EN/JA、`aria-pressed`、`prefers-reduced-motion`、`mailto:` なし、コピー CTA。
+
+claims ガードの例外は 1 文・1 出現ごとに `<!-- claims-ok rule=<rule> text="<文全体>" reason=denial|limitation|plan|technical -->` で付けます。
+行・段落・ページ単位の免除はありません。
+
+ブラウザで EN/JA 切替、FAQ、コピー CTA、390px / 1280px、console error、reduced-motion を確認してください。
 
 ## Publication gates
 
-- zERC20 の名称・公式関係・ライセンス表現
-- 実装済み / testnet-enabled / production-gated / roadmap の分類
-- accepted / finalized、payment history、offline verificationのclaim boundary
-- デモの実挙動と記載の整合
-- 公開チャネルとデプロイ先
+- 文言の根拠は内部の主張マトリクスに固定（主張 ID で参照。マトリクス自体は repo に置かない）
+- 非公開のホスト名・パス・テンプレート・アドレス・価格・資格情報・private repo リンクを公開物に載せない
+- hosted testnet と self-run facilitator の構成を 1 文・1 行・1 図に混ぜない
+- merge は公開（Cloudflare Pages）。オーナー承認が必要
