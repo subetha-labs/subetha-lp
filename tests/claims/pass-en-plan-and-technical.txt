@@ -1,0 +1,4 @@
+<!-- claims-ok rule=mainnet-support text="Mainnet support is planned per chain and asset, not available today." reason=plan -->
+Mainnet support is planned per chain and asset, not available today.
+<!-- claims-ok rule=trustless text="The word “trustless” is used in that paper for a narrower SDK property than the one discussed here." reason=technical -->
+The word “trustless” is used in that paper for a narrower SDK property than the one discussed here.

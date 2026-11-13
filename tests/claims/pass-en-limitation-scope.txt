@@ -1,0 +1,2 @@
+<!-- claims-ok rule=unlinkable text="Unlinkability in practice is not quantified by the evidence." reason=limitation -->
+Unlinkability in practice is not quantified by the evidence.

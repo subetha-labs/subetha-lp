@@ -37,12 +37,25 @@ jobs:
           assert "prefers-reduced-motion" in text, "reduced-motion rule is required"
           assert "mailto:" not in text, "contact email must not launch a mail client"
           assert 'data-copy="contact@subethalabs.com"' in text, "copy contact affordance is required"
-          for marker in ("accepted", "finalized", "participant-scoped", "fail-closed"):
-            assert marker in text, f"missing current implementation marker: {marker}"
+          # v2 markers encode the honest claims: standard exact wire, EIP-3009, delivery on the mined receipt,
+          # zUSDC on testnet, a public transfer, an unquantified link property and remaining correlation.
+          for marker in ("exact", "EIP-3009", "mined receipt", "zUSDC", "testnet", "public",
+                         "independently quantified", "correlation"):
+            assert marker in text, f"missing v2 claim marker: {marker}"
           HTMLParser().feed(text)
           print(f"HTML_PARSE_OK bytes={path.stat().st_size}")
           PY
-          python3 scripts/check-private-source-links.py
+          python3 -B scripts/check-private-source-links.py
+
+      - name: Validate served-output guard fixtures and the whole public repository (offline)
+        run: |
+          python3 -B scripts/check-private-source-links.py --fixtures
+          python3 -B scripts/check-private-source-links.py --repo
+
+      - name: Validate assertion-level claims guard (offline)
+        run: |
+          python3 -B scripts/check-claims.py --fixtures
+          python3 -B scripts/check-claims.py
 
       - name: Validate Router wallet-free onboarding (offline)
         run: python3 scripts/check-router.py

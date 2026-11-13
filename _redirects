@@ -1,2 +1,8 @@
 /index-v3-previous.html / 302
 /index-v3-previous / 302
+/scripts/* / 302
+/tests/* / 302
+/.github/* / 302
+/.claude_workflow/* / 302
+/README.md / 302
+/DESIGN_NOTES.md / 302
