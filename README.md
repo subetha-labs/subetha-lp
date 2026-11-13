@@ -8,9 +8,9 @@ SubEtha の静的ランディングページ（subethalabs.com）。SubEtha v2 �
 
 - `index.html` — 現行 LP（EN/JA、レスポンシブ、FAQ、言語切替、コピー CTA）
 - `router/index.html`, `router/llms.txt` — SubEtha Router のページ（別製品）
-- `index-v3-previous.html` — V1 時代の LP 保存版（`_redirects` で `/` へ 302）
+- （V1 時代の LP 保存版 `index-v3-previous.html` は 2026-11-14 に削除。旧 URL は `_redirects` で引き続き `/` へ 302）
 - `assets/` — ブランド、モバイル CSS/JS
-- `_redirects` — Cloudflare Pages の配信境界: archive と、`scripts/` `tests/` `.github/` `.claude_workflow/` `README.md` `DESIGN_NOTES.md` を `/` へ 302
+- `_redirects` — Cloudflare Pages の配信境界: 旧 archive URL と、`scripts/` `tests/` `.github/` `.claude_workflow/` `README.md` `DESIGN_NOTES.md` を `/` へ 302
 - `scripts/` — オフラインの検証スクリプト（下記）
 - `tests/claims/`, `tests/output/` — ガードの fixture。fail 系は `*.b64`（base64）で格納し、public repo に禁止表現や D3 形状の平文を置かない。読むときは `base64 -d`、直すときは平文を編集して再エンコードする（合成値のみ。実際のホスト名・パス・アドレス・価格は使わない）
 - `DESIGN_NOTES.md`, `.claude_workflow/` — 設計・検証ノート

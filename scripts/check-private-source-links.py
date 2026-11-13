@@ -34,12 +34,11 @@ PRIVATE_REPOS = {
     ('subetha-labs', 'subetha-protocol'),
     ('fixture-org', 'private-fixture'),          # synthetic entry used only by tests/output fixtures
 }
-# Count-fixed exceptions for pre-existing occurrences in files this task does not edit (parent decision 2026-11-13).
-# Identified by the PRIVATE_REPOS entry, never by writing a URL.
+# Count-fixed exceptions, identified by the PRIVATE_REPOS entry, never by writing a URL. Since 2026-11-14 the only
+# tracked file that still carries a private repository link is the mobile-scope fixture string below (owner
+# decision 2026-11-14: its removal is coupled to a review of the workflow's bounded-mobile routing, separate PR).
 PRIVATE_LINK_EXCEPTIONS = {
-    'index-v3-previous.html': (('peaceandwhisky', 'subetha'), 8, 'V1 archive page; tracked separately'),
-    'scripts/check-mobile-scope.py': (('peaceandwhisky', 'subetha'), 1, 'pre-existing fixture string'),
-    '.claude_workflow/p0e11-header-cleanup.md': (('peaceandwhisky', 'subetha'), 1, 'pre-existing workflow note'),
+    'scripts/check-mobile-scope.py': (('peaceandwhisky', 'subetha'), 1, 'pre-existing fixture string; removal deferred to a separate PR'),
     # fixture-only entries (synthetic repository) proving that fewer or more occurrences than declared fail
     'pass-privatelink-count.html': (('fixture-org', 'private-fixture'), 2, 'fixture'),
     'fail-privatelink-count-fewer.html': (('fixture-org', 'private-fixture'), 2, 'fixture'),
@@ -87,7 +86,7 @@ e0f2ef3367d341942d6369fe6ec8e85f4e6cf2305cbb63db8f27b07493442818 e81508453204821
 15e565e9cc2b3f317ed89495ae2b5435b9e19421f7d1e3efcf31163ee4da2c56 062e0914e679afa4736380510a678be0f96b336beaaecc3d028f66d9e08f9bd6 abf87c0d0b0e2148deab364b6e364cfca8c754ed2fe54c1be06d22f07c892c9c 0055b038262e562567b5a1bb6e580c489cecc0c5c9ce08ed817f873dc42d0356 ca32ad902f78bfee121f385616b828b4929ca291d2675f6917701a52de2d96d1
 '''.split())
 BINARY_SUFFIXES = {'.png', '.ico', '.jpg', '.jpeg', '.gif', '.webp', '.woff', '.woff2', '.ttf', '.otf', '.pdf'}
-MANDATORY = ('index.html', 'router/index.html', 'router/llms.txt', 'index-v3-previous.html')
+MANDATORY = ('index.html', 'router/index.html', 'router/llms.txt')   # the V1 archive page was removed on 2026-11-14; its URLs still 302 to /
 EXPECTED_REDIRECTS = {
     ('/index-v3-previous.html', '/', '302'), ('/index-v3-previous', '/', '302'),
     ('/scripts/*', '/', '302'), ('/tests/*', '/', '302'), ('/.github/*', '/', '302'),
@@ -624,6 +623,11 @@ def run_repo():
     for name in PRIVATE_LINK_EXCEPTIONS:
         if not name.startswith(('pass-', 'fail-')):
             assert name in names, f'exception refers to an untracked file: {name}'
+    # Since 2026-11-14 exactly one file-level exception is allowed: the mobile-scope fixture string, one occurrence.
+    # Everything else in the repository must count zero private repository links (checked above per file).
+    allowed = {'scripts/check-mobile-scope.py': 1}
+    actual = {n: e[1] for n, e in PRIVATE_LINK_EXCEPTIONS.items() if not n.startswith(('pass-', 'fail-'))}
+    assert actual == allowed, f'file-level private-link exceptions must be exactly {allowed}, got {actual}'
     return names, errors
 
 
@@ -719,7 +723,7 @@ def main():
             print(error)
         if errors:
             sys.exit(1)
-        print(f'REPO_OUTPUT_OK D3 shapes/digests and D4 private links over {len(names)} tracked text files')
+        print(f'REPO_OUTPUT_OK D3 shapes/digests and D4 private links over {len(names)} tracked text files; private repository links outside the one mobile-scope fixture string: 0')
         return
     inventory, errors = run_served()
     for error in errors:

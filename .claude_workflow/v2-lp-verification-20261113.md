@@ -203,3 +203,19 @@ Round 7 (scoped per the threat model): **VERDICT: LGTM**. One minor in-scope ite
 prerequisites for mainnet remain open" / 「メインネット移行の前提条件は未解決です」 (V5). No residual
 hardening items were listed in round 7; every item from rounds 1–6 was applied, so the residual count is 0.
 All checks in §1 were rerun after the wording change.
+
+## 8. Addendum 2026-11-14: archive and old-note removal
+
+Branch `chore/lp-remove-v1-archive-20261114` from `main` @ `30d1222`. Deleted: `index-v3-previous.html`,
+`.claude_workflow/p0e11-header-cleanup.md`, `.claude_workflow/codex-review-final.txt`. Changed: the checkers'
+mandatory page list (3) and private-link exceptions (only the mobile-scope fixture string remains, one occurrence),
+README, DESIGN_NOTES and these notes. Unchanged: `_redirects` (the two archive rules stay), `router/`, assets,
+`scripts/check-mobile-scope.py` and the workflow. Checks rerun after the change are listed in the PR; the
+repository-wide pass reports zero private repository links outside that one fixture string. Served behaviour is
+unchanged: the old archive URLs still answer 302 to `/`.
+
+Codex (`gpt-6-astra`, same threat model and scope) round 1 found that editing the mobile-scope fixture file would
+route the PR into the workflow's bounded-mobile gate, which rejects non-mobile changes; by owner decision that file
+and the workflow are left unchanged in this PR, and the gate was verified locally not to trigger (no mobile contract
+file and no mobile-scope file differs from the base). Round 2: **VERDICT: LGTM**; one minor (DESIGN_NOTES overstated
+the restriction as "zero allowed"), applied. All checks in this addendum were rerun afterwards.
