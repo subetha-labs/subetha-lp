@@ -80,9 +80,14 @@ each item read in context:
 
 `_redirects` now holds the two archive rules plus six splat/exact rules (`/scripts/*`, `/tests/*`, `/.github/*`,
 `/.claude_workflow/*`, `/README.md`, `/DESIGN_NOTES.md`) to `/` with 302; the checker proves statically that every
-tracked file is either a site file or redirected and fails otherwise. Pages' behaviour is not verifiable before a
-deployment: if the PR gets a Pages preview, the 302s are to be confirmed there (see the PR body); otherwise the
-boundary stays reported as unverified until the parent's post-merge check.
+tracked file is either a site file or redirected and fails otherwise.
+
+Verified on the Pages preview deployment of PR #32 (commit `084a6bb`, 2026-11-13, read-only requests): `/`,
+`/router/`, `/router/llms.txt`, `assets/mobile.css` and a brand SVG answer 200; `README.md`, `DESIGN_NOTES.md`,
+`scripts/check-router.py`, `scripts/check-claims.py`, `.github/workflows/validate.yml`, both `.claude_workflow/`
+notes probed, a `tests/claims/` and a `tests/output/` fixture, and the archive page and its alias all answer 302 to
+`/`. The served page carries the v2 headline. The same probe is to be repeated on `https://subethalabs.com/`
+after merge (PR body). CI on the PR (Validate LP) passed.
 
 ## 6. Independent review
 
