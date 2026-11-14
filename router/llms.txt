@@ -100,3 +100,4 @@ When funds move: over x402 (Base Sepolia, Arc, Solana) and over MPP on Solana th
 - Human page: https://subethalabs.com/router/
 - Hosted MCP endpoint (testnet): https://router.subethalabs.com/mcp
 - Local payer: https://www.npmjs.com/package/@subetha/payer
+- SubEtha v2 for x402 Providers (not the Router; registration by invite): https://docs.subethalabs.com/llms.txt
