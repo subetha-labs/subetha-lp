@@ -66,16 +66,30 @@ jobs:
       - name: Validate mobile scope regression fixtures (offline)
         run: python3 -B scripts/check-mobile-scope.py
 
-      - name: Validate bounded mobile PR changes (offline)
+      - name: Validate bounded mobile PR changes (offline; mobile/* branches)
         if: github.event_name == 'pull_request'
         env:
           MOBILE_BASE: ${{ github.event.pull_request.base.sha }}
+          # The bounded mobile task scope is declared by the author through the head branch name (the mobile/ prefix),
+          # not inferred from the touched files: a fixture, checker or workflow change in an ordinary PR is reviewed
+          # as an ordinary change. Since 2026-11-14 (owner decision); before that, any change to the four mobile
+          # files routed the PR into the gate, which rejects every non-mobile change.
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          if git diff --quiet "$MOBILE_BASE" -- assets/mobile.css assets/mobile-nav.js scripts/check-mobile-layout.py scripts/check-mobile-scope.py; then
-            echo "No mobile-specific changes; mobile task scope does not apply"
-          else
-            python3 -B scripts/check-router.py --scope mobile --base "$MOBILE_BASE"
-          fi
+          case "$HEAD_REF" in
+            mobile/*)
+              echo "mobile/* branch: bounded mobile task scope applies"
+              python3 -B scripts/check-router.py --scope mobile --base "$MOBILE_BASE"
+              ;;
+            *)
+              if git diff --quiet "$MOBILE_BASE" -- assets/mobile.css assets/mobile-nav.js scripts/check-mobile-layout.py scripts/check-mobile-scope.py; then
+                echo "Not a mobile/* branch and no mobile file changed; bounded mobile task scope does not apply"
+              else
+                echo "Not a mobile/* branch; mobile files changed and are reviewed as ordinary changes (bounded mobile task scope not applied)"
+                git diff --stat "$MOBILE_BASE" -- assets/mobile.css assets/mobile-nav.js scripts/check-mobile-layout.py scripts/check-mobile-scope.py
+              fi
+              ;;
+          esac
 
       - name: Check for accidental credentials
         run: |

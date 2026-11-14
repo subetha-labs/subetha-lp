@@ -71,7 +71,7 @@ def main():
                 else:
                     path.write_bytes(original)
 
-        for name in ('README.md', '_redirects', 'index-v3-previous.html',
+        for name in ('README.md', '_redirects', 'DESIGN_NOTES.md',
                      'assets/brand/subetha-wordmark-color.svg', 'assets/web-demo.png',
                      'scripts/check-private-source-links.py', 'assets/unrelated-fixture.css',
                      'unrelated-fixture.txt'):
@@ -95,9 +95,11 @@ def main():
                    'changed product scripts')
             reject(f'{name} inline style', name,
                    lambda data: data.replace(b'<style>', b'<style>/* fixture */', 1), 'changed original style')
+            # The synthetic PRIVATE_REPOS entry of check-private-source-links.py; no real private repository URL
+            # is written anywhere in this public repository.
             reject(f'{name} private menu link', name,
                    lambda data: data.replace(b'<summary>',
-                       b'<a href="https://github.com/peaceandwhisky/subetha">fixture</a><summary>', 1),
+                       b'<a href="https://github.com/fixture-org/private-fixture">fixture</a><summary>', 1),
                    'Private product repo href')
         reject('mobile contract remains mandatory', 'assets/mobile.css',
                lambda data: data + b'\nhtml{overflow-x:hidden}', 'AssertionError')
