@@ -52,6 +52,8 @@ python3 -B scripts/check-mobile-scope.py
 python3 -B scripts/check-private-source-links.py --list     # URL・コマンド・金額・NAME=・トークン様値の棚卸し（目視レビュー用）
 ```
 
+モバイル作業の境界ゲート（`python3 -B scripts/check-router.py --scope mobile --base <base>`）は、head ブランチ名が `mobile/` で始まる PR にだけ CI が適用します（2026-11-14 以降）。それ以外のブランチでモバイル系ファイル（`assets/mobile.css`、`assets/mobile-nav.js`、`scripts/check-mobile-layout.py`、`scripts/check-mobile-scope.py`）を変更した場合は通常の変更として扱い、CI は差分の stat を記録するだけです。モバイル契約（`check-mobile-layout.py`）とスコープ fixture（`check-mobile-scope.py`）は全 PR と `main` への push で実行されます。
+
 HTML マーカー（CI）: `exact`, `EIP-3009`, `mined receipt`, `zUSDC`, `testnet`, `public`, `independently quantified`, `correlation`。
 構造: doctype、`lang="en"`、`data-lang` EN/JA、`aria-pressed`、`prefers-reduced-motion`、`mailto:` なし、コピー CTA。
 

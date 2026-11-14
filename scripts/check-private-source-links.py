@@ -32,13 +32,13 @@ PRIVATE_REPOS = {
     ('peaceandwhisky', 'subetha-router'),
     ('subetha-labs', 'subetha-router'),
     ('subetha-labs', 'subetha-protocol'),
-    ('fixture-org', 'private-fixture'),          # synthetic entry used only by tests/output fixtures
+    ('fixture-org', 'private-fixture'),          # synthetic entry used only by fixtures (tests/output, check-mobile-scope.py)
 }
-# Count-fixed exceptions, identified by the PRIVATE_REPOS entry, never by writing a URL. Since 2026-11-14 the only
-# tracked file that still carries a private repository link is the mobile-scope fixture string below (owner
-# decision 2026-11-14: its removal is coupled to a review of the workflow's bounded-mobile routing, separate PR).
+# Count-fixed exceptions, identified by the PRIVATE_REPOS entry, never by writing a URL. Since 2026-11-14 no tracked
+# file carries a real private repository link: the last one (a fixture string in scripts/check-mobile-scope.py) was
+# replaced by the synthetic entry, which stays count-fixed. run_repo() rejects any exception naming a real repository.
 PRIVATE_LINK_EXCEPTIONS = {
-    'scripts/check-mobile-scope.py': (('peaceandwhisky', 'subetha'), 1, 'pre-existing fixture string; removal deferred to a separate PR'),
+    'scripts/check-mobile-scope.py': (('fixture-org', 'private-fixture'), 1, 'synthetic fixture string for the private-link rejection case'),
     # fixture-only entries (synthetic repository) proving that fewer or more occurrences than declared fail
     'pass-privatelink-count.html': (('fixture-org', 'private-fixture'), 2, 'fixture'),
     'fail-privatelink-count-fewer.html': (('fixture-org', 'private-fixture'), 2, 'fixture'),
@@ -623,11 +623,15 @@ def run_repo():
     for name in PRIVATE_LINK_EXCEPTIONS:
         if not name.startswith(('pass-', 'fail-')):
             assert name in names, f'exception refers to an untracked file: {name}'
-    # Since 2026-11-14 exactly one file-level exception is allowed: the mobile-scope fixture string, one occurrence.
-    # Everything else in the repository must count zero private repository links (checked above per file).
-    allowed = {'scripts/check-mobile-scope.py': 1}
-    actual = {n: e[1] for n, e in PRIVATE_LINK_EXCEPTIONS.items() if not n.startswith(('pass-', 'fail-'))}
+    # Since 2026-11-14 the only tracked file allowed to carry a private-repository-shaped link is the mobile-scope
+    # fixture, with the synthetic entry, one occurrence. Every other tracked file must count zero (checked above per
+    # file), and no exception, fixture or not, may name a real repository. Adding an entry here fails on purpose.
+    synthetic = ('fixture-org', 'private-fixture')
+    allowed = {'scripts/check-mobile-scope.py': (synthetic, 1)}
+    actual = {n: (e[0], e[1]) for n, e in PRIVATE_LINK_EXCEPTIONS.items() if not n.startswith(('pass-', 'fail-'))}
     assert actual == allowed, f'file-level private-link exceptions must be exactly {allowed}, got {actual}'
+    real = sorted(n for n, e in PRIVATE_LINK_EXCEPTIONS.items() if e[0] != synthetic)
+    assert not real, f'private-link exceptions may only name the synthetic fixture repository, got {real}'
     return names, errors
 
 
@@ -723,7 +727,7 @@ def main():
             print(error)
         if errors:
             sys.exit(1)
-        print(f'REPO_OUTPUT_OK D3 shapes/digests and D4 private links over {len(names)} tracked text files; private repository links outside the one mobile-scope fixture string: 0')
+        print(f'REPO_OUTPUT_OK D3 shapes/digests and D4 private links over {len(names)} tracked text files; real private repository links in tracked files: 0 (one synthetic fixture occurrence, count-fixed)')
         return
     inventory, errors = run_served()
     for error in errors:

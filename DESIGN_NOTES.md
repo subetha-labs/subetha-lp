@@ -41,10 +41,19 @@ ledger reading, timeline rows); restrained motion with a reduced-motion path. No
   a reversing frame, or is split from the rest of its sentence by a formatting boundary. Fixtures in `tests/claims/`.
 - `scripts/check-private-source-links.py`: served inventory derived from `_redirects` (fail-closed), exact expected
   redirect rules, the v2 page contract (ids, headline, subline qualifiers, configuration captions, Docs v2 links, no
-  V1 wording), D3 shape rules plus a digest denylist, D4 private-repository links (since 2026-11-14 only the one
-  count-fixed mobile-scope fixture occurrence remains; everything else counts zero), and a `--repo` pass over the whole repository.
-  Fixtures in `tests/output/`.
-- `scripts/check-router.py`, `scripts/check-mobile-layout.py`, `scripts/check-mobile-scope.py`: unchanged.
+  V1 wording), D3 shape rules plus a digest denylist, D4 private-repository links (since 2026-11-14 no tracked file
+  carries a real private repository link; the mobile-scope fixture uses the synthetic `fixture-org/private-fixture`
+  entry, count-fixed at one occurrence, and the `--repo` pass rejects any exception naming a real repository), and a
+  `--repo` pass over the whole repository. Fixtures in `tests/output/`.
+- `scripts/check-router.py`, `scripts/check-mobile-layout.py`: unchanged. `scripts/check-mobile-scope.py`: the
+  private-link rejection fixture uses the synthetic entry (2026-11-14); the stale protected-file name of the deleted
+  V1 archive was replaced by `DESIGN_NOTES.md`.
+- Bounded mobile task scope (`check-router.py --scope mobile --base`): CI applies it only to pull requests whose head
+  branch starts with `mobile/` (owner decision 2026-11-14). Before that, any change to `assets/mobile.css`,
+  `assets/mobile-nav.js`, `scripts/check-mobile-layout.py` or `scripts/check-mobile-scope.py` routed the PR into the
+  gate, which rejects every non-mobile change, so a fixture or checker edit in an ordinary PR could not pass CI.
+  On other branches CI reports whether mobile files changed and reviews them as ordinary changes; the mobile layout
+  contract and the scope fixtures still run on every PR and on pushes to `main`.
 
 ## Language parity
 
