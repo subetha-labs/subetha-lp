@@ -405,11 +405,11 @@ def check_root(page, source):
     text = {'en': page.ids['en']['text'], 'ja': page.ids['ja']['text']}
     for marker in ('Configuration: hosted testnet (since 2026-11-09)', 'Hosted testnet (since 2026-11-09)', 'Facilitator operator, self-run',
                    'Is it anonymous?', 'Can I use it in production?', 'How is this different from the Router?', 'Is the source public?',
-                   'What do my customers need?', 'design partners', 'x402.org', 'Testnet registration requests go to the same address'):
+                   'What do my customers need?', 'design partners', 'delegated x402 facilitator', 'Testnet registration requests go to the same address'):
         assert marker in text['en'], f'Missing EN marker: {marker}'
     for marker in ('構成: hosted testnet（2026-11-09 以降）', 'Hosted testnet（2026-11-09 以降）', 'facilitator 運用者、self-run',
                    '匿名ですか？', '本番で使えますか？', 'Router と何が違いますか？', 'ソースは公開ですか？', '顧客側で何が必要ですか？',
-                   '設計パートナー', 'x402.org', 'テストネット登録の相談も同じ宛先'):
+                   '設計パートナー', '委任先の x402 facilitator', 'テストネット登録の相談も同じ宛先'):
         assert marker in text['ja'], f'Missing JA marker: {marker}'
     flat = source + '\n' + text['en'] + '\n' + text['ja']
     for pattern in (r'Poseidon', r'\bpermit\b', r'payment[- ]history', r'participant-scoped', r'proof-gated', r'\btreasury\b',
